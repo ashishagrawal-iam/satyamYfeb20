@@ -18,6 +18,9 @@ class MockInterceptor : Interceptor {
         val method = request.method
 
         val json = when {
+            // Auth endpoints (services.qa.i2e1.in)
+            path.contains("SendOTP") && method == "POST" -> """{"status":0,"msg":"OTP sent successfully","data":"mock-guid-12345"}"""
+            path.contains("VerifyOTP") && method == "GET" -> """{"status":0,"msg":"Verified","data":{},"token":"mock-jwt-token-for-dev"}"""
             path == "/api/tasks" && method == "GET" -> MOCK_TASKS
             path == "/api/tasks" && method == "POST" -> """{"ok":true,"task":null}"""
             path == "/api/assurance" && method == "GET" -> MOCK_ASSURANCE
