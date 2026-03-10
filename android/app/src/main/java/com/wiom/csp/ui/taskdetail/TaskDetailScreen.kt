@@ -128,12 +128,13 @@ private fun formatShortTime(iso: String): String {
 
 @Composable
 private fun resolveTimeRemaining(dateStr: String?): String {
+    val expiredLabel = stringResource(R.string.detail_expired)
+    val minLabel = stringResource(R.string.detail_min)
     if (dateStr == null) return "--"
     return try {
         val diff = Instant.parse(dateStr).toEpochMilli() - System.currentTimeMillis()
-        if (diff <= 0) return stringResource(R.string.detail_expired)
+        if (diff <= 0) return expiredLabel
         val mins = (diff / 60000).toInt()
-        val minLabel = stringResource(R.string.detail_min)
         if (mins < 60) return "$mins $minLabel"
         val hrs = mins / 60
         "${hrs}h ${mins % 60}m"
