@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { backendGet, backendPut, transformTask } from '@/lib/backend';
+import { NextResponse } from 'next/server';
+import { getTaskById, updateTask, getTechnicianById } from '@/lib/data';
 
 type TechAction =
   | 'ACCEPT_ASSIGNMENT'
@@ -17,70 +17,93 @@ interface ActionRequest {
   detail?: string;
 }
 
-// Map action to target state based on task type
-function getTargetState(action: TechAction, taskType: string): string | null {
-  switch (action) {
-    case 'ACCEPT_ASSIGNMENT':
-      return taskType === 'INSTALL' ? 'ACCEPTED' : 'ASSIGNED';
-    case 'START_WORK':
-      return taskType === 'INSTALL' ? 'SCHEDULED' : 'IN_PROGRESS';
-    case 'MARK_INSTALLED':
-      return 'INSTALLED';
-    case 'RESOLVE':
-      return 'RESOLVED';
-    case 'MARK_COLLECTED':
-      return 'COLLECTED';
-    case 'CONFIRM_RETURN':
-      return 'RETURN_CONFIRMED';
-    case 'UPLOAD_PROOF':
-      return null; // No state change for proof upload
-    default:
-      return null;
-  }
-}
-
-export async function POST(req: NextRequest) {
-  const auth = req.headers.get('authorization');
-  const body: ActionRequest = await req.json();
+export async function POST(request: Request) {
+  const body: ActionRequest = await request.json();
   const { tech_id, task_id, action, detail } = body;
 
-  // Extract numeric task ID
-  const numericId = parseInt(task_id.replace('TSK-', ''));
-
-  try {
-    // Get current task to determine type
-    const tasksData = await backendGet('/v1/tasks', auth);
-    const tasks = tasksData.tasks || tasksData || [];
-    const task = tasks.find((t: any) => t.id === numericId);
-    if (!task) {
-      return NextResponse.json({ error: 'Task not found' }, { status: 404 });
-    }
-
-    if (action === 'UPLOAD_PROOF') {
-      const updated = await backendPut(`/v1/tasks/${numericId}/proof`, {
-        proofKey: `proof_${Date.now()}`,
-        proofUrl: `proof://img/${task_id}/tech-upload.jpg`,
-        actor: tech_id,
-        actorType: 'TECHNICIAN',
-        detail: detail || 'Technician uploaded proof.',
-      }, auth);
-      return NextResponse.json({ ok: true, task: transformTask(updated) });
-    }
-
-    const targetState = getTargetState(action, task.taskType);
-    if (!targetState) {
-      return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 });
-    }
-
-    const updated = await backendPut(`/v1/tasks/${numericId}/state`, {
-      state: targetState,
-      actor: tech_id,
-      actorType: 'TECHNICIAN',
-      detail: detail || `Technician performed ${action}`,
-    }, auth);
-
-    return NextResponse.json({ ok: true, task: transformTask(updated) });
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+  const tech = getTechnicianById(tech_id);
+  if (!tech) {
+    return NextResponse.json({ error: 'Technician not found' }, { status: 404 });
   }
+
+  const task = getTaskById(task_id);
+  if (!task) {
+    return NextResponse.json({ error: 'Task not found' }, { status: 404 });
+  }
+
+  const now = new Date().toISOString();
+  const newEvent = {
+    timestamp: now,
+    event_type: action,
+    actor: tech.name,
+    actor_type: 'TECHNICIAN' as const,
+    detail: detail || `Technician performed ${action}`,
+  };
+
+  switch (action) {
+    case 'ACCEPT_ASSIGNMENT':
+      updateTask(task_id, {
+        state: task.task_type === 'INSTALL' ? 'ACCEPTED' : task.task_type === 'RESTORE' ? 'ASSIGNED' : 'ASSIGNED',
+        delegation_state: 'ACCEPTED',
+        event_log: [...task.event_log, { ...newEvent, detail: detail || `${tech.name} accepted the assignment.` }],
+      });
+      break;
+
+    case 'START_WORK':
+      updateTask(task_id, {
+        state: task.task_type === 'INSTALL' ? 'SCHEDULED' : 'IN_PROGRESS',
+        delegation_state: 'IN_PROGRESS',
+        event_log: [...task.event_log, { ...newEvent, detail: detail || `${tech.name} started work on the task.` }],
+      });
+      break;
+
+    case 'MARK_INSTALLED':
+      updateTask(task_id, {
+        state: 'INSTALLED',
+        delegation_state: 'DONE',
+        queue_escalation_flag: 'VERIFICATION_PENDING',
+        event_log: [...task.event_log, { ...newEvent, detail: detail || `${tech.name} marked installation complete. Awaiting verification.` }],
+      });
+      // Increment completed count
+      tech.completed_count += 1;
+      break;
+
+    case 'RESOLVE':
+      updateTask(task_id, {
+        state: 'RESOLVED',
+        delegation_state: 'DONE',
+        event_log: [...task.event_log, { ...newEvent, detail: detail || `${tech.name} resolved the issue.` }],
+      });
+      tech.completed_count += 1;
+      break;
+
+    case 'MARK_COLLECTED':
+      updateTask(task_id, {
+        state: 'COLLECTED',
+        delegation_state: 'IN_PROGRESS',
+        event_log: [...task.event_log, { ...newEvent, detail: detail || `${tech.name} collected the netbox from customer.` }],
+      });
+      break;
+
+    case 'CONFIRM_RETURN':
+      updateTask(task_id, {
+        state: 'RETURN_CONFIRMED',
+        delegation_state: 'DONE',
+        event_log: [...task.event_log, { ...newEvent, detail: detail || `${tech.name} confirmed netbox return to warehouse.` }],
+      });
+      tech.completed_count += 1;
+      break;
+
+    case 'UPLOAD_PROOF':
+      updateTask(task_id, {
+        proof_bundle: { ...task.proof_bundle, [`proof_${Date.now()}`]: `proof://img/${task_id}/tech-upload.jpg` },
+        event_log: [...task.event_log, { ...newEvent, detail: detail || `${tech.name} uploaded proof.` }],
+      });
+      break;
+
+    default:
+      return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 });
+  }
+
+  return NextResponse.json({ ok: true, task: getTaskById(task_id) });
 }

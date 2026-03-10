@@ -15,8 +15,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.wiom.csp.R
 import com.wiom.csp.ui.theme.WiomCspTheme
 import kotlinx.coroutines.delay
 
@@ -79,18 +81,18 @@ fun LoginScreen(
                     .background(colors.brandPrimary),
                 contentAlignment = Alignment.Center
             ) {
-                Text("W", fontSize = 24.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
+                Text("W", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
             }
 
             Spacer(Modifier.height(16.dp))
 
-            Text("Wiom CSP", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+            Text(stringResource(R.string.login_title), fontSize = 22.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
 
             Spacer(Modifier.height(6.dp))
 
             Text(
-                text = if (isOtpStep) "OTP sent to +91 $mobile" else "Enter your mobile number to login",
-                fontSize = 13.sp,
+                text = if (isOtpStep) stringResource(R.string.login_otp_sent, mobile) else stringResource(R.string.login_subtitle),
+                fontSize = 14.sp,
                 color = colors.textMuted
             )
 
@@ -120,9 +122,9 @@ fun LoginScreen(
             if (!isOtpStep) {
                 // Step 1: Mobile Number
                 Text(
-                    "MOBILE NUMBER",
+                    stringResource(R.string.login_mobile_label),
                     fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.SemiBold,
                     color = colors.textSecondary,
                     letterSpacing = 0.3.sp,
                     modifier = Modifier
@@ -142,7 +144,7 @@ fun LoginScreen(
                             .background(colors.bgSecondary)
                             .padding(horizontal = 12.dp, vertical = 14.dp)
                     ) {
-                        Text("+91", fontSize = 16.sp, color = colors.textSecondary, fontWeight = FontWeight.Medium)
+                        Text(stringResource(R.string.login_country_code), fontSize = 16.sp, color = colors.textSecondary, fontWeight = FontWeight.SemiBold)
                     }
 
                     OutlinedTextField(
@@ -152,7 +154,7 @@ fun LoginScreen(
                             mobile = filtered
                             if (state is LoginState.Error) viewModel.clearError()
                         },
-                        placeholder = { Text("9876543210", color = colors.textMuted) },
+                        placeholder = { Text(stringResource(R.string.login_mobile_placeholder), color = colors.textMuted) },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number,
                             imeAction = ImeAction.Done
@@ -183,11 +185,11 @@ fun LoginScreen(
                     enabled = mobile.length == 10 && state !is LoginState.SendingOtp,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(50.dp),
-                    shape = RoundedCornerShape(12.dp),
+                        .height(48.dp),
+                    shape = RoundedCornerShape(24.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colors.brandPrimary,
-                        disabledContainerColor = colors.bgSecondary
+                        disabledContainerColor = colors.ctaDisabledBg
                     )
                 ) {
                     if (state is LoginState.SendingOtp) {
@@ -198,18 +200,18 @@ fun LoginScreen(
                         )
                     } else {
                         Text(
-                            "Send OTP",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.SemiBold
+                            stringResource(R.string.login_send_otp),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
                         )
                     }
                 }
             } else {
                 // Step 2: OTP Verification
                 Text(
-                    "ENTER OTP",
+                    stringResource(R.string.login_otp_label),
                     fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.SemiBold,
                     color = colors.textSecondary,
                     letterSpacing = 0.3.sp,
                     modifier = Modifier
@@ -259,11 +261,11 @@ fun LoginScreen(
                     enabled = otp.length == 4 && state !is LoginState.Verifying,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(50.dp),
-                    shape = RoundedCornerShape(12.dp),
+                        .height(48.dp),
+                    shape = RoundedCornerShape(24.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colors.brandPrimary,
-                        disabledContainerColor = colors.bgSecondary
+                        disabledContainerColor = colors.ctaDisabledBg
                     )
                 ) {
                     if (state is LoginState.Verifying) {
@@ -274,9 +276,9 @@ fun LoginScreen(
                         )
                     } else {
                         Text(
-                            "Verify OTP",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.SemiBold
+                            stringResource(R.string.login_verify_otp),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
                         )
                     }
                 }
@@ -292,10 +294,10 @@ fun LoginScreen(
                         viewModel.goBackToMobile()
                     }) {
                         Text(
-                            "\u2190 Change Number",
-                            fontSize = 13.sp,
+                            stringResource(R.string.login_change_number),
+                            fontSize = 14.sp,
                             color = colors.textSecondary,
-                            fontWeight = FontWeight.Medium
+                            fontWeight = FontWeight.SemiBold
                         )
                     }
 
@@ -304,8 +306,8 @@ fun LoginScreen(
                         enabled = resendTimer == 0 && state !is LoginState.SendingOtp
                     ) {
                         Text(
-                            text = if (resendTimer > 0) "Resend in ${resendTimer}s" else "Resend OTP",
-                            fontSize = 13.sp,
+                            text = if (resendTimer > 0) stringResource(R.string.login_resend_timer, resendTimer) else stringResource(R.string.login_resend_otp),
+                            fontSize = 14.sp,
                             color = if (resendTimer > 0) colors.textMuted else colors.brandPrimary,
                             fontWeight = FontWeight.SemiBold
                         )
@@ -316,7 +318,7 @@ fun LoginScreen(
             Spacer(Modifier.height(32.dp))
 
             Text(
-                "Wiom CSP Partner Portal",
+                stringResource(R.string.login_footer),
                 fontSize = 12.sp,
                 color = colors.textMuted
             )

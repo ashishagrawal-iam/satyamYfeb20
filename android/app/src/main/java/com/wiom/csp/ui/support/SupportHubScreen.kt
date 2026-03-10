@@ -11,10 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.wiom.csp.R
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wiom.csp.data.remote.dto.SupportCaseCreateRequest
@@ -77,13 +79,13 @@ fun SupportHubScreen(
             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(32.dp)) {
                 Text("\u2705", fontSize = 40.sp)
                 Spacer(Modifier.height(16.dp))
-                Text("Case Submitted", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+                Text(stringResource(R.string.support_receipt_title), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
                 Spacer(Modifier.height(8.dp))
-                Text("Your support case has been submitted. Expect a response within 24 hours.", fontSize = 14.sp, color = colors.textSecondary, lineHeight = 20.sp)
+                Text(stringResource(R.string.support_receipt_desc), fontSize = 14.sp, color = colors.textSecondary, lineHeight = 20.sp)
                 Spacer(Modifier.height(24.dp))
                 Box(
-                    modifier = Modifier.clip(RoundedCornerShape(10.dp)).background(colors.brandPrimary).clickable { showReceipt = false; showCreateForm = false }.padding(horizontal = 24.dp, vertical = 12.dp)
-                ) { Text("Back to Support", fontWeight = FontWeight.SemiBold, color = Color.White) }
+                    modifier = Modifier.clip(RoundedCornerShape(24.dp)).background(colors.brandPrimary).clickable { showReceipt = false; showCreateForm = false }.padding(horizontal = 24.dp, vertical = 12.dp)
+                ) { Text(stringResource(R.string.support_back_to_support), fontWeight = FontWeight.SemiBold, color = Color.White) }
             }
         }
         return
@@ -114,27 +116,27 @@ fun SupportHubScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        "\u2190 Back",
+                        stringResource(R.string.general_back),
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium,
+                        fontWeight = FontWeight.SemiBold,
                         color = colors.textSecondary,
                         modifier = Modifier.clickable { onBack() }.padding(vertical = 4.dp)
                     )
-                    IconButton(onClick = { showCreateForm = true }) { Icon(Icons.Default.Add, "New Case", tint = colors.brandPrimary) }
+                    IconButton(onClick = { showCreateForm = true }) { Icon(Icons.Default.Add, stringResource(R.string.support_new_case), tint = colors.brandPrimary) }
                 }
                 Spacer(Modifier.height(12.dp))
-                Text("Support", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+                Text(stringResource(R.string.support_title), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
             }
 
             if (cases.isEmpty()) {
                 Box(modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp), contentAlignment = Alignment.Center) {
-                    Text("No support cases", fontSize = 14.sp, color = colors.textMuted)
+                    Text(stringResource(R.string.support_no_cases), fontSize = 14.sp, color = colors.textMuted)
                 }
             }
 
             cases.forEach { c ->
                 Row(
-                    modifier = Modifier.fillMaxWidth().clickable { selectedCase = c }.padding(horizontal = 16.dp, vertical = 10.dp),
+                    modifier = Modifier.fillMaxWidth().clickable { selectedCase = c }.padding(horizontal = 16.dp, vertical = 12.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -148,7 +150,7 @@ fun SupportHubScreen(
                         SupportCaseStatus.RESOLVED -> colors.positive
                         SupportCaseStatus.CLOSED -> colors.textMuted
                     }
-                    Text(c.status.name.replace("_", " "), fontSize = 11.sp, fontWeight = FontWeight.SemiBold, color = statusColor)
+                    Text(c.status.name.replace("_", " "), fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = statusColor)
                 }
             }
         }
@@ -164,26 +166,26 @@ private fun CreateCaseForm(onSubmit: (String, String) -> Unit, onCancel: () -> U
     Box(modifier = Modifier.fillMaxSize().background(colors.bgPrimary)) {
         Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             Text(
-                "\u2190 Back",
+                stringResource(R.string.general_back),
                 fontSize = 14.sp,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.SemiBold,
                 color = colors.textSecondary,
                 modifier = Modifier.clickable { onCancel() }.padding(vertical = 4.dp)
             )
             Spacer(Modifier.height(12.dp))
-            Text("New Support Case", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+            Text(stringResource(R.string.support_new_case), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
             Spacer(Modifier.height(16.dp))
-            OutlinedTextField(value = subject, onValueChange = { subject = it }, label = { Text("Subject") }, modifier = Modifier.fillMaxWidth(), singleLine = true, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = colors.brandPrimary, unfocusedBorderColor = colors.borderSubtle, focusedTextColor = colors.textPrimary, unfocusedTextColor = colors.textPrimary, cursorColor = colors.brandPrimary, focusedLabelColor = colors.brandPrimary, unfocusedLabelColor = colors.textMuted))
+            OutlinedTextField(value = subject, onValueChange = { subject = it }, label = { Text(stringResource(R.string.support_subject)) }, modifier = Modifier.fillMaxWidth(), singleLine = true, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = colors.brandPrimary, unfocusedBorderColor = colors.borderSubtle, focusedTextColor = colors.textPrimary, unfocusedTextColor = colors.textPrimary, cursorColor = colors.brandPrimary, focusedLabelColor = colors.brandPrimary, unfocusedLabelColor = colors.textMuted))
             Spacer(Modifier.height(12.dp))
-            OutlinedTextField(value = message, onValueChange = { message = it }, label = { Text("Message") }, modifier = Modifier.fillMaxWidth().height(120.dp), maxLines = 5, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = colors.brandPrimary, unfocusedBorderColor = colors.borderSubtle, focusedTextColor = colors.textPrimary, unfocusedTextColor = colors.textPrimary, cursorColor = colors.brandPrimary, focusedLabelColor = colors.brandPrimary, unfocusedLabelColor = colors.textMuted))
+            OutlinedTextField(value = message, onValueChange = { message = it }, label = { Text(stringResource(R.string.support_message)) }, modifier = Modifier.fillMaxWidth().height(120.dp), maxLines = 5, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = colors.brandPrimary, unfocusedBorderColor = colors.borderSubtle, focusedTextColor = colors.textPrimary, unfocusedTextColor = colors.textPrimary, cursorColor = colors.brandPrimary, focusedLabelColor = colors.brandPrimary, unfocusedLabelColor = colors.textMuted))
             Spacer(Modifier.weight(1f))
             Box(
-                modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp))
-                    .background(if (subject.isNotBlank() && message.isNotBlank()) colors.brandPrimary else colors.bgCardHover)
+                modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp))
+                    .background(if (subject.isNotBlank() && message.isNotBlank()) colors.brandPrimary else colors.ctaDisabledBg)
                     .clickable(enabled = subject.isNotBlank() && message.isNotBlank()) { onSubmit(subject.trim(), message.trim()) }
                     .padding(vertical = 14.dp),
                 contentAlignment = Alignment.Center
-            ) { Text("Submit Case", fontWeight = FontWeight.SemiBold, color = if (subject.isNotBlank() && message.isNotBlank()) Color.White else colors.textMuted) }
+            ) { Text(stringResource(R.string.support_submit), fontWeight = FontWeight.SemiBold, color = if (subject.isNotBlank() && message.isNotBlank()) Color.White else colors.textMuted) }
         }
     }
 }
@@ -195,22 +197,22 @@ private fun CaseDetailScreen(supportCase: SupportCase, onBack: () -> Unit) {
         Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
             Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
                 Text(
-                    "\u2190 Back",
+                    stringResource(R.string.general_back),
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.SemiBold,
                     color = colors.textSecondary,
                     modifier = Modifier.clickable { onBack() }.padding(vertical = 4.dp)
                 )
                 Spacer(Modifier.height(12.dp))
-                Text(supportCase.caseId, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+                Text(supportCase.caseId, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
             }
             Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(RoundedCornerShape(12.dp)).background(colors.bgCard).padding(16.dp)) {
                 Text(supportCase.subject, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
                 Spacer(Modifier.height(4.dp))
-                Text("Status: ${supportCase.status.name}", fontSize = 13.sp, color = colors.textSecondary)
+                Text(stringResource(R.string.support_status, supportCase.status.name), fontSize = 14.sp, color = colors.textSecondary)
             }
             Spacer(Modifier.height(16.dp))
-            Text("Messages", modifier = Modifier.padding(horizontal = 16.dp), fontSize = 14.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+            Text(stringResource(R.string.support_messages), modifier = Modifier.padding(horizontal = 16.dp), fontSize = 14.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
             Spacer(Modifier.height(8.dp))
             supportCase.messages.forEach { msg ->
                 val isCSP = msg.sender.startsWith("CSP")
@@ -225,7 +227,7 @@ private fun CaseDetailScreen(supportCase: SupportCase, onBack: () -> Unit) {
                         Text(formatTimeAgo(msg.timestamp), fontSize = 11.sp, color = colors.textMuted)
                     }
                     Spacer(Modifier.height(4.dp))
-                    Text(msg.text, fontSize = 13.sp, color = colors.textPrimary, lineHeight = 18.sp)
+                    Text(msg.text, fontSize = 14.sp, color = colors.textPrimary, lineHeight = 18.sp)
                 }
             }
             Spacer(Modifier.height(80.dp))

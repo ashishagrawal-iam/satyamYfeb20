@@ -15,6 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.wiom.csp.R
 import com.wiom.csp.domain.model.Technician
 import com.wiom.csp.domain.model.TechnicianBand
 import com.wiom.csp.ui.theme.WiomCspTheme
@@ -62,18 +64,18 @@ fun TeamHubScreen(onBack: () -> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        "\u2190 Back",
+                        stringResource(R.string.general_back),
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium,
+                        fontWeight = FontWeight.SemiBold,
                         color = colors.textSecondary,
                         modifier = Modifier.clickable { onBack() }.padding(vertical = 4.dp)
                     )
                     IconButton(onClick = { showAddForm = true }) {
-                        Icon(Icons.Default.Add, "Add", tint = colors.brandPrimary)
+                        Icon(Icons.Default.Add, stringResource(R.string.team_add_technician), tint = colors.brandPrimary)
                     }
                 }
                 Spacer(Modifier.height(12.dp))
-                Text("Team", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+                Text(stringResource(R.string.team_title), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
             }
 
             technicians.forEach { tech ->
@@ -81,7 +83,7 @@ fun TeamHubScreen(onBack: () -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { selectedTech = tech }
-                        .padding(horizontal = 16.dp, vertical = 10.dp),
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
@@ -102,8 +104,8 @@ fun TeamHubScreen(onBack: () -> Unit) {
                             .padding(horizontal = 8.dp, vertical = 2.dp)
                     ) {
                         Text(
-                            if (tech.available) "Available" else "Unavailable",
-                            fontSize = 11.sp,
+                            if (tech.available) stringResource(R.string.team_available) else stringResource(R.string.team_unavailable),
+                            fontSize = 12.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = if (tech.available) colors.positive else colors.negative
                         )
@@ -124,31 +126,31 @@ private fun AddTechnicianForm(onAdd: (Technician) -> Unit, onCancel: () -> Unit)
     Box(modifier = Modifier.fillMaxSize().background(colors.bgPrimary)) {
         Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             Text(
-                "\u2190 Back",
+                stringResource(R.string.general_back),
                 fontSize = 14.sp,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.SemiBold,
                 color = colors.textSecondary,
                 modifier = Modifier.clickable { onCancel() }.padding(vertical = 4.dp)
             )
             Spacer(Modifier.height(12.dp))
-            Text("Add Technician", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+            Text(stringResource(R.string.team_add_technician), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
             Spacer(Modifier.height(16.dp))
 
             OutlinedTextField(
                 value = name, onValueChange = { name = it },
-                label = { Text("Name") }, modifier = Modifier.fillMaxWidth(), singleLine = true,
+                label = { Text(stringResource(R.string.team_name)) }, modifier = Modifier.fillMaxWidth(), singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = colors.brandPrimary, unfocusedBorderColor = colors.borderSubtle, focusedTextColor = colors.textPrimary, unfocusedTextColor = colors.textPrimary, cursorColor = colors.brandPrimary, focusedLabelColor = colors.brandPrimary, unfocusedLabelColor = colors.textMuted)
             )
             Spacer(Modifier.height(12.dp))
             OutlinedTextField(
                 value = phone, onValueChange = { phone = it },
-                label = { Text("Phone") }, modifier = Modifier.fillMaxWidth(), singleLine = true,
+                label = { Text(stringResource(R.string.team_phone)) }, modifier = Modifier.fillMaxWidth(), singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = colors.brandPrimary, unfocusedBorderColor = colors.borderSubtle, focusedTextColor = colors.textPrimary, unfocusedTextColor = colors.textPrimary, cursorColor = colors.brandPrimary, focusedLabelColor = colors.brandPrimary, unfocusedLabelColor = colors.textMuted)
             )
             Spacer(Modifier.weight(1f))
 
             Box(
-                modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp))
+                modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp))
                     .background(if (name.isNotBlank()) colors.brandPrimary else colors.bgCardHover)
                     .clickable(enabled = name.isNotBlank()) {
                         onAdd(Technician(
@@ -165,7 +167,7 @@ private fun AddTechnicianForm(onAdd: (Technician) -> Unit, onCancel: () -> Unit)
                     .padding(vertical = 14.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Add Member", fontWeight = FontWeight.SemiBold, color = if (name.isNotBlank()) Color.White else colors.textMuted)
+                Text(stringResource(R.string.team_add_member), fontWeight = FontWeight.SemiBold, color = if (name.isNotBlank()) Color.White else colors.textMuted)
             }
         }
     }
@@ -177,9 +179,9 @@ private fun TechnicianDetailScreen(technician: Technician, onBack: () -> Unit) {
     Box(modifier = Modifier.fillMaxSize().background(colors.bgPrimary)) {
         Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
             Text(
-                "\u2190 Back",
+                stringResource(R.string.general_back),
                 fontSize = 14.sp,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.SemiBold,
                 color = colors.textSecondary,
                 modifier = Modifier.clickable { onBack() }.padding(vertical = 4.dp)
             )
@@ -192,14 +194,14 @@ private fun TechnicianDetailScreen(technician: Technician, onBack: () -> Unit) {
             }
             Spacer(Modifier.height(12.dp))
             Text(technician.name, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary, modifier = Modifier.align(Alignment.CenterHorizontally))
-            Text(if (technician.available) "Available" else "Unavailable", fontSize = 14.sp, color = if (technician.available) colors.positive else colors.textSecondary, modifier = Modifier.align(Alignment.CenterHorizontally))
+            Text(if (technician.available) stringResource(R.string.team_available) else stringResource(R.string.team_unavailable), fontSize = 14.sp, color = if (technician.available) colors.positive else colors.textSecondary, modifier = Modifier.align(Alignment.CenterHorizontally))
             Spacer(Modifier.height(20.dp))
 
             Column(modifier = Modifier.clip(RoundedCornerShape(12.dp)).background(colors.bgCard).padding(16.dp).fillMaxWidth()) {
-                DetailRow("ID", technician.id)
-                DetailRow("Phone", technician.phone)
-                DetailRow("Join Date", technician.joinDate)
-                DetailRow("Status", if (technician.available) "Available" else "Unavailable")
+                DetailRow(stringResource(R.string.team_id), technician.id)
+                DetailRow(stringResource(R.string.team_phone), technician.phone)
+                DetailRow(stringResource(R.string.team_join_date), technician.joinDate)
+                DetailRow(stringResource(R.string.team_status), if (technician.available) stringResource(R.string.team_available) else stringResource(R.string.team_unavailable))
             }
         }
     }
@@ -209,7 +211,7 @@ private fun TechnicianDetailScreen(technician: Technician, onBack: () -> Unit) {
 private fun DetailRow(label: String, value: String) {
     val colors = WiomCspTheme.colors
     Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(label, fontSize = 13.sp, color = colors.textMuted)
-        Text(value, fontSize = 13.sp, fontWeight = FontWeight.Medium, color = colors.textPrimary)
+        Text(label, fontSize = 14.sp, color = colors.textMuted)
+        Text(value, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
     }
 }

@@ -17,7 +17,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
+import com.wiom.csp.R
 import com.wiom.csp.domain.model.AssuranceState
 import com.wiom.csp.domain.model.ExposureState
 import com.wiom.csp.domain.model.SlaStanding
@@ -56,9 +58,9 @@ fun AssuranceStrip(
         modifier = modifier
             .fillMaxWidth()
             .background(colors.stripBg)
-            .padding(horizontal = 20.dp, vertical = 16.dp)
+            .padding(horizontal = 16.dp, vertical = 16.dp)
             .height(IntrinsicSize.Max),
-        horizontalArrangement = Arrangement.spacedBy(10.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         // Column 1: Active Base card
         Column(
@@ -72,9 +74,9 @@ fun AssuranceStrip(
                 .padding(horizontal = 16.dp, vertical = 14.dp)
         ) {
             Text(
-                text = "ACTIVE BASE",
-                fontSize = 11.sp,
-                fontWeight = FontWeight.Medium,
+                text = stringResource(R.string.assurance_active_base),
+                fontSize = 12.sp,
+                fontWeight = FontWeight.SemiBold,
                 color = colors.textMuted,
                 letterSpacing = 0.3.sp
             )
@@ -100,9 +102,9 @@ fun AssuranceStrip(
                 .padding(horizontal = 16.dp, vertical = 14.dp)
         ) {
             Text(
-                text = "EARNINGS",
-                fontSize = 11.sp,
-                fontWeight = FontWeight.Medium,
+                text = stringResource(R.string.assurance_cycle_earnings),
+                fontSize = 12.sp,
+                fontWeight = FontWeight.SemiBold,
                 color = colors.textMuted,
                 letterSpacing = 0.3.sp
             )
@@ -143,8 +145,8 @@ fun AssuranceStrip(
                         .background(slaColor)
                 )
                 Text(
-                    text = "SLA",
-                    fontSize = 11.sp,
+                    text = stringResource(R.string.assurance_sla_standing),
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.textSecondary,
                     modifier = Modifier.weight(1f),
@@ -175,8 +177,8 @@ fun AssuranceStrip(
                         .background(exposureColor)
                 )
                 Text(
-                    text = "Exposure",
-                    fontSize = 11.sp,
+                    text = stringResource(R.string.assurance_exposure),
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.textSecondary,
                     modifier = Modifier.weight(1f),
@@ -228,13 +230,13 @@ fun AssuranceDrillDowns(
         visible = activeDrillDown == "activeBase",
         onDismiss = onDismiss
     ) {
-        Text("Active Base", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = colors.textPrimary)
+        Text(stringResource(R.string.assurance_active_base), fontWeight = FontWeight.Bold, fontSize = 16.sp, color = colors.textPrimary)
         Spacer(Modifier.height(8.dp))
-        Text("Current Count", fontSize = 12.sp, color = colors.textSecondary)
+        Text(stringResource(R.string.assurance_current_count), fontSize = 12.sp, color = colors.textSecondary)
         Spacer(Modifier.height(4.dp))
-        Text("${assuranceState.activeBase} connections", fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
+        Text("${assuranceState.activeBase} ${stringResource(R.string.assurance_connections)}", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
         Spacer(Modifier.height(16.dp))
-        Text("RECENT CHANGES", fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = colors.textSecondary, letterSpacing = 0.5.sp)
+        Text(stringResource(R.string.assurance_recent_changes), fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = colors.textSecondary, letterSpacing = 0.5.sp)
         Spacer(Modifier.height(8.dp))
         assuranceState.activeBaseEvents.take(5).forEach { evt ->
             Row(
@@ -243,23 +245,23 @@ fun AssuranceDrillDowns(
                     .drawBehind {
                         drawLine(colors.borderSubtle, Offset(0f, size.height), Offset(size.width, size.height), 1f)
                     }
-                    .padding(vertical = 10.dp),
+                    .padding(vertical = 12.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column {
-                    Text(evt.connectionId, fontSize = 13.sp, fontWeight = FontWeight.Medium, color = colors.textPrimary)
+                    Text(evt.connectionId, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
                     Spacer(Modifier.height(2.dp))
                     Text(evt.reason, fontSize = 12.sp, color = colors.textMuted)
                 }
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         if (evt.change > 0) "+1" else "-1",
-                        fontSize = 13.sp, fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
                         color = if (evt.change > 0) colors.positive else colors.negative
                     )
                     Spacer(Modifier.height(2.dp))
-                    Text(evt.date, fontSize = 11.sp, color = colors.textMuted)
+                    Text(evt.date, fontSize = 12.sp, color = colors.textMuted)
                 }
             }
         }
@@ -270,27 +272,27 @@ fun AssuranceDrillDowns(
         visible = activeDrillDown == "earnings",
         onDismiss = onDismiss
     ) {
-        Text("Cycle Earnings", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = colors.textPrimary)
+        Text(stringResource(R.string.assurance_cycle_earnings), fontWeight = FontWeight.Bold, fontSize = 16.sp, color = colors.textPrimary)
         Spacer(Modifier.height(8.dp))
-        Text("Cycle Earned", fontSize = 12.sp, color = colors.textSecondary)
+        Text(stringResource(R.string.assurance_cycle_earned), fontSize = 12.sp, color = colors.textSecondary)
         Spacer(Modifier.height(4.dp))
         Text(formatCurrency(assuranceState.cycleEarned), fontSize = 28.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
-        Spacer(Modifier.height(20.dp))
-        Text("Active Base", fontSize = 12.sp, color = colors.textSecondary)
-        Spacer(Modifier.height(4.dp))
-        Text("${assuranceState.activeBase} connections", fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
         Spacer(Modifier.height(16.dp))
-        Text("Next Settlement", fontSize = 12.sp, color = colors.textSecondary)
+        Text(stringResource(R.string.assurance_active_base), fontSize = 12.sp, color = colors.textSecondary)
+        Spacer(Modifier.height(4.dp))
+        Text("${assuranceState.activeBase} ${stringResource(R.string.assurance_connections)}", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
+        Spacer(Modifier.height(16.dp))
+        Text(stringResource(R.string.assurance_next_settlement), fontSize = 12.sp, color = colors.textSecondary)
         Spacer(Modifier.height(4.dp))
         Text(
             "${formatCurrency(assuranceState.nextSettlementAmount)} on ${assuranceState.nextSettlementDate}",
-            fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary
+            fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary
         )
         if (lifetimeEarnings != null) {
             Spacer(Modifier.height(8.dp))
             Box(Modifier.fillMaxWidth().height(1.dp).background(colors.borderSubtle))
             Spacer(Modifier.height(12.dp))
-            Text("Lifetime Earned", fontSize = 12.sp, color = colors.textSecondary)
+            Text(stringResource(R.string.assurance_lifetime_earned), fontSize = 12.sp, color = colors.textSecondary)
             Spacer(Modifier.height(4.dp))
             Text(formatCurrency(lifetimeEarnings), fontSize = 22.sp, fontWeight = FontWeight.Bold, color = colors.money)
             Spacer(Modifier.height(16.dp))
@@ -300,8 +302,8 @@ fun AssuranceDrillDowns(
             modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)).background(colors.bgPrimary).padding(14.dp)
         ) {
             Text(
-                "This shows current cycle earnings only. For full financial details visit Wallet from the menu.",
-                fontSize = 13.sp, color = colors.textSecondary, lineHeight = 20.sp
+                "${stringResource(R.string.assurance_cycle_note)} ${stringResource(R.string.assurance_wallet)} ${stringResource(R.string.assurance_from_menu)}",
+                fontSize = 14.sp, color = colors.textSecondary, lineHeight = 20.sp
             )
         }
     }
@@ -311,33 +313,33 @@ fun AssuranceDrillDowns(
         visible = activeDrillDown == "sla",
         onDismiss = onDismiss
     ) {
-        Text("SLA Standing", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = colors.textPrimary)
+        Text(stringResource(R.string.assurance_sla_standing), fontWeight = FontWeight.Bold, fontSize = 16.sp, color = colors.textPrimary)
         Spacer(Modifier.height(8.dp))
-        Text("Current Status", fontSize = 12.sp, color = colors.textSecondary)
+        Text(stringResource(R.string.assurance_current_status), fontSize = 12.sp, color = colors.textSecondary)
         Spacer(Modifier.height(4.dp))
         Text(
             when (assuranceState.slaStanding) {
-                SlaStanding.COMPLIANT -> "Compliant"
-                SlaStanding.AT_RISK -> "At Risk"
-                SlaStanding.NON_COMPLIANT -> "Non-Compliant"
+                SlaStanding.COMPLIANT -> stringResource(R.string.sla_compliant)
+                SlaStanding.AT_RISK -> stringResource(R.string.sla_at_risk)
+                SlaStanding.NON_COMPLIANT -> stringResource(R.string.sla_non_compliant)
             },
-            fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = slaColor
+            fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = slaColor
         )
         Spacer(Modifier.height(16.dp))
-        Text("Active Restores", fontSize = 12.sp, color = colors.textSecondary)
+        Text(stringResource(R.string.assurance_active_restores), fontSize = 12.sp, color = colors.textSecondary)
         Spacer(Modifier.height(4.dp))
-        Text("${assuranceState.activeRestores}", fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
+        Text("${assuranceState.activeRestores}", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
         Spacer(Modifier.height(16.dp))
-        Text("Unresolved Count", fontSize = 12.sp, color = colors.textSecondary)
+        Text(stringResource(R.string.assurance_unresolved_count), fontSize = 12.sp, color = colors.textSecondary)
         Spacer(Modifier.height(4.dp))
-        Text("${assuranceState.unresolvedCount}", fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
+        Text("${assuranceState.unresolvedCount}", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
         Spacer(Modifier.height(16.dp))
         Box(
             modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)).background(colors.bgPrimary).padding(14.dp)
         ) {
             Text(
-                "SLA compliance is determined by the ratio of restores resolved within the SLA deadline versus total restore tasks in the current settlement cycle.",
-                fontSize = 13.sp, color = colors.textSecondary, lineHeight = 20.sp
+                stringResource(R.string.assurance_sla_note),
+                fontSize = 14.sp, color = colors.textSecondary, lineHeight = 20.sp
             )
         }
     }
@@ -347,24 +349,24 @@ fun AssuranceDrillDowns(
         visible = activeDrillDown == "exposure",
         onDismiss = onDismiss
     ) {
-        Text("Exposure", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = colors.textPrimary)
+        Text(stringResource(R.string.assurance_exposure), fontWeight = FontWeight.Bold, fontSize = 16.sp, color = colors.textPrimary)
         Spacer(Modifier.height(8.dp))
-        Text("Current Status", fontSize = 12.sp, color = colors.textSecondary)
+        Text(stringResource(R.string.assurance_current_status), fontSize = 12.sp, color = colors.textSecondary)
         Spacer(Modifier.height(4.dp))
         Text(
             when (assuranceState.exposureState) {
-                ExposureState.ELIGIBLE -> "ELIGIBLE"
-                ExposureState.LIMITED -> "LIMITED"
-                ExposureState.INELIGIBLE -> "INELIGIBLE"
+                ExposureState.ELIGIBLE -> stringResource(R.string.exposure_eligible)
+                ExposureState.LIMITED -> stringResource(R.string.exposure_limited)
+                ExposureState.INELIGIBLE -> stringResource(R.string.exposure_ineligible)
             },
-            fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = exposureColor
+            fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = exposureColor
         )
         Spacer(Modifier.height(16.dp))
         Text("Direction", fontSize = 12.sp, color = colors.textSecondary)
         Spacer(Modifier.height(4.dp))
         Text(
             text = assuranceState.exposureDirection.replaceFirstChar { it.uppercase() },
-            fontSize = 15.sp, fontWeight = FontWeight.SemiBold,
+            fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
             color = when (assuranceState.exposureDirection) {
                 "improving" -> colors.positive
                 "declining" -> colors.negative
@@ -372,27 +374,27 @@ fun AssuranceDrillDowns(
             }
         )
         Spacer(Modifier.height(16.dp))
-        Text("Reason Code", fontSize = 12.sp, color = colors.textSecondary)
+        Text(stringResource(R.string.assurance_reason_code), fontSize = 12.sp, color = colors.textSecondary)
         Spacer(Modifier.height(4.dp))
-        Text(assuranceState.exposureReason, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
+        Text(assuranceState.exposureReason, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
         Spacer(Modifier.height(16.dp))
-        Text("Effective Since", fontSize = 12.sp, color = colors.textSecondary)
+        Text(stringResource(R.string.assurance_effective_since), fontSize = 12.sp, color = colors.textSecondary)
         Spacer(Modifier.height(4.dp))
-        Text(assuranceState.exposureSince, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
+        Text(assuranceState.exposureSince, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
         Spacer(Modifier.height(16.dp))
         Box(
             modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)).background(colors.bgPrimary).padding(14.dp)
         ) {
             Column {
-                Text("Quality Signal", fontSize = 13.sp, color = colors.textSecondary)
+                Text(stringResource(R.string.assurance_qual_signal), fontSize = 14.sp, color = colors.textSecondary)
                 Spacer(Modifier.height(8.dp))
                 Text(
                     when (assuranceState.exposureState) {
-                        ExposureState.ELIGIBLE -> "All metrics are within acceptable thresholds. Continue maintaining current standards."
-                        ExposureState.LIMITED -> "Some metrics are approaching threshold limits. Review active tasks and prioritize SLA compliance."
-                        ExposureState.INELIGIBLE -> "Critical metrics have breached thresholds. Immediate corrective action required to restore eligibility."
+                        ExposureState.ELIGIBLE -> stringResource(R.string.assurance_exposure_ok)
+                        ExposureState.LIMITED -> stringResource(R.string.assurance_exposure_limited)
+                        ExposureState.INELIGIBLE -> stringResource(R.string.assurance_exposure_critical)
                     },
-                    fontSize = 13.sp, color = colors.textPrimary, lineHeight = 20.sp
+                    fontSize = 14.sp, color = colors.textPrimary, lineHeight = 20.sp
                 )
             }
         }

@@ -20,7 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
+import com.wiom.csp.R
 import com.wiom.csp.domain.model.Task
 import com.wiom.csp.domain.model.TaskType
 import com.wiom.csp.ui.common.FilterChipRow
@@ -42,7 +44,11 @@ fun TaskFeed(
     modifier: Modifier = Modifier
 ) {
     val colors = WiomCspTheme.colors
-    var filter by remember { mutableStateOf("All") }
+    val labelAll = stringResource(R.string.feed_all)
+    val labelInstall = stringResource(R.string.feed_install)
+    val labelRestore = stringResource(R.string.feed_restore)
+    val labelNetbox = stringResource(R.string.feed_netbox)
+    var filter by remember { mutableStateOf(labelAll) }
 
     // Filter out terminal-state tasks
     val activeTasks = remember(tasks) {
@@ -51,9 +57,9 @@ fun TaskFeed(
 
     val filteredTasks = remember(activeTasks, filter) {
         when (filter) {
-            "Install" -> activeTasks.filter { it.taskType == TaskType.INSTALL }
-            "Restore" -> activeTasks.filter { it.taskType == TaskType.RESTORE }
-            "NetBox" -> activeTasks.filter { it.taskType == TaskType.NETBOX }
+            labelInstall -> activeTasks.filter { it.taskType == TaskType.INSTALL }
+            labelRestore -> activeTasks.filter { it.taskType == TaskType.RESTORE }
+            labelNetbox -> activeTasks.filter { it.taskType == TaskType.NETBOX }
             else -> activeTasks
         }
     }
@@ -72,13 +78,13 @@ fun TaskFeed(
 
     // Safety check: if filter hides bucket 0/1 tasks, show warning
     val hiddenCriticalCount = remember(activeTasks, filter) {
-        if (filter == "All") 0
+        if (filter == labelAll) 0
         else activeTasks.count { task ->
             val bucket = getBucket(task)
             val filterType = when (filter) {
-                "Install" -> TaskType.INSTALL
-                "Restore" -> TaskType.RESTORE
-                "NetBox" -> TaskType.NETBOX
+                labelInstall -> TaskType.INSTALL
+                labelRestore -> TaskType.RESTORE
+                labelNetbox -> TaskType.NETBOX
                 else -> null
             }
             (bucket == 0 || bucket == 1) && task.taskType != filterType
@@ -102,7 +108,7 @@ fun TaskFeed(
         // Filter chips
         item {
             FilterChipRow(
-                options = listOf("All", "Install", "Restore", "NetBox"),
+                options = listOf(labelAll, labelInstall, labelRestore, labelNetbox),
                 selected = filter,
                 onSelect = { filter = it },
                 modifier = Modifier.padding(vertical = 12.dp)
@@ -125,9 +131,9 @@ fun TaskFeed(
                         .padding(horizontal = 14.dp, vertical = 10.dp)
                 ) {
                     Text(
-                        text = "$hiddenCriticalCount critical task(s) hidden by current filter",
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Medium,
+                        text = stringResource(R.string.feed_hidden_critical, hiddenCriticalCount),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.SemiBold,
                         color = colors.negative
                     )
                 }
@@ -142,7 +148,7 @@ fun TaskFeed(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "YOUR TASKS",
+                    text = stringResource(R.string.feed_your_tasks),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.textMuted,
@@ -168,8 +174,8 @@ fun TaskFeed(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "No active tasks right now",
-                        fontSize = 13.sp,
+                        text = stringResource(R.string.feed_no_active),
+                        fontSize = 14.sp,
                         color = colors.textMuted
                     )
                 }
@@ -211,7 +217,7 @@ fun TaskFeed(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "AVAILABLE",
+                        text = stringResource(R.string.feed_available),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.textMuted,
@@ -238,8 +244,8 @@ fun TaskFeed(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "No new connections available right now",
-                        fontSize = 13.sp,
+                        text = stringResource(R.string.feed_no_available),
+                        fontSize = 14.sp,
                         color = colors.textMuted
                     )
                 }
@@ -300,14 +306,14 @@ private fun FadingResolvedCard(task: Task) {
             ) {
                 Text(
                     text = task.taskType.name,
-                    fontSize = 11.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.positive
                 )
                 Text(
                     text = contextId,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold,
                     color = colors.textPrimary
                 )
             }
@@ -334,7 +340,7 @@ private fun FadingResolvedCard(task: Task) {
                     .padding(horizontal = 20.dp, vertical = 6.dp)
             ) {
                 Text(
-                    text = "\u2713 Resolved",
+                    text = stringResource(R.string.feed_resolved),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,

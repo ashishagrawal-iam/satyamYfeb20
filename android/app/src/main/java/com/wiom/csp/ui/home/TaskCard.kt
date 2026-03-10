@@ -23,8 +23,10 @@ import com.wiom.csp.domain.model.*
 import com.wiom.csp.ui.common.formatCountdown
 import com.wiom.csp.ui.common.isOverdue
 import com.wiom.csp.ui.theme.WiomCspTheme
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import com.wiom.csp.R
 
 @Composable
 fun TaskCard(
@@ -68,7 +70,7 @@ fun TaskCard(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(bottom = 14.dp)
-                .clip(RoundedCornerShape(14.dp))
+                .clip(RoundedCornerShape(16.dp))
                 .background(colors.bgCard)
                 .drawBehind {
                     // Left border accent (urgency-based)
@@ -101,8 +103,8 @@ fun TaskCard(
                     // Identity: TYPE · CN-2847 · Sector 12
                     Text(
                         text = "${task.taskType.name} \u00B7 $contextId \u00B7 $area",
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Medium,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.SemiBold,
                         color = colors.textSecondary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -134,7 +136,7 @@ fun TaskCard(
                         Text(
                             text = "\u23F1 ${deadline.text}",
                             fontSize = 12.sp,
-                            fontWeight = FontWeight.Medium,
+                            fontWeight = FontWeight.SemiBold,
                             color = if (deadline.overdue) colors.negative else colors.textMuted
                         )
                     }
@@ -146,8 +148,8 @@ fun TaskCard(
                     val hasWiomReply = task.eventLog.any { it.eventType == "WIOM_RESPONSE" }
                     if (noteCount > 0 || hasWiomReply) {
                         Text(
-                            text = if (hasWiomReply) "Wiom replied" else "$noteCount note${if (noteCount > 1) "s" else ""}",
-                            fontSize = 11.sp,
+                            text = if (hasWiomReply) stringResource(R.string.card_wiom_replied) else if (noteCount > 1) stringResource(R.string.card_notes_count, noteCount) else stringResource(R.string.card_note_count, noteCount),
+                            fontSize = 12.sp,
                             color = if (hasWiomReply) colors.brandPrimary else colors.textMuted
                         )
                     }
@@ -168,13 +170,13 @@ fun TaskCard(
                         }
                         val ctaModifier = if (cta.isSecondary) {
                             Modifier
-                                .clip(RoundedCornerShape(8.dp))
-                                .border(1.dp, colors.borderSubtle, RoundedCornerShape(8.dp))
+                                .clip(RoundedCornerShape(24.dp))
+                                .border(1.dp, colors.borderSubtle, RoundedCornerShape(24.dp))
                                 .clickable { onAction(task.taskId, cta.action) }
                                 .padding(horizontal = 14.dp, vertical = 6.dp)
                         } else {
                             Modifier
-                                .clip(RoundedCornerShape(8.dp))
+                                .clip(RoundedCornerShape(24.dp))
                                 .background(ctaBg)
                                 .clickable { onAction(task.taskId, cta.action) }
                                 .padding(horizontal = 14.dp, vertical = 6.dp)
@@ -182,8 +184,8 @@ fun TaskCard(
                         Box(modifier = ctaModifier) {
                             Text(
                                 text = cta.label,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
                                 color = ctaTextColor
                             )
                         }
@@ -198,81 +200,88 @@ fun TaskCard(
 }
 
 /** Generate the single reason label for a task card (design spec: one reason only, no badge stacking) */
+@Composable
 fun getReasonLabel(task: Task, deadline: DeadlineInfo? = null): String {
     val flag = task.queueEscalationFlag
 
     // Escalation flags take priority
     if (flag == EscalationFlag.BLOCKED_STALE) {
-        val reason = task.blockedReason ?: "action needed"
-        return "Blocked \u2014 $reason"
+        val reason = task.blockedReason
+        return if (reason != null) {
+            stringResource(R.string.card_blocked_reason, reason)
+        } else {
+            stringResource(R.string.card_blocked_action)
+        }
     }
     if (flag == EscalationFlag.OFFER_TTL_EXPIRING) {
-        return "Offer expires \u2014 ${deadline?.text ?: "soon"}"
+        val time = deadline?.text ?: stringResource(R.string.card_soon)
+        return "${stringResource(R.string.card_offer_expires)} \u2014 $time"
     }
     if (flag == EscalationFlag.CLAIM_TTL_EXPIRING) {
-        return "Claim expiring \u2014 ${deadline?.text ?: "soon"}"
+        val time = deadline?.text ?: stringResource(R.string.card_soon)
+        return "${stringResource(R.string.card_claim_expiring)} \u2014 $time"
     }
     if (flag == EscalationFlag.RETURN_OVERDUE) {
-        return "Return overdue${if (deadline != null) " \u2014 ${deadline.text}" else ""}"
+        return "${stringResource(R.string.card_return_overdue)}${if (deadline != null) " \u2014 ${deadline.text}" else ""}"
     }
     if (flag == EscalationFlag.VERIFICATION_PENDING) {
-        return "Verification pending"
+        return stringResource(R.string.card_verification_pending)
     }
     if (flag == EscalationFlag.INSTALL_OVERDUE) {
-        return "Install overdue${if (deadline != null) " \u2014 ${deadline.text}" else ""}"
+        return "${stringResource(R.string.card_install_overdue)}${if (deadline != null) " \u2014 ${deadline.text}" else ""}"
     }
     if (flag == EscalationFlag.PICKUP_OVERDUE) {
-        return "Pickup overdue${if (deadline != null) " \u2014 ${deadline.text}" else ""}"
+        return "${stringResource(R.string.card_pickup_overdue)}${if (deadline != null) " \u2014 ${deadline.text}" else ""}"
     }
     if (flag == EscalationFlag.ASSIGNMENT_UNACCEPTED) {
-        return "Assignment unaccepted"
+        return stringResource(R.string.card_assignment_unaccepted)
     }
     if (flag == EscalationFlag.CHAIN_ESCALATION_PENDING) {
-        return "Chain escalation pending"
+        return stringResource(R.string.card_chain_escalation)
     }
     if (flag == EscalationFlag.RESTORE_RETRY) {
-        return "Restore retry \u2014 attempt ${task.retryCount}"
+        return "${stringResource(R.string.card_restore_retry)} \u2014 ${stringResource(R.string.card_attempt)} ${task.retryCount}"
     }
     if (flag == EscalationFlag.MANUAL_EXCEPTION) {
-        return "Manual exception"
+        return stringResource(R.string.card_manual_exception)
     }
 
     // High priority restore with deadline
     if (task.taskType == TaskType.RESTORE && task.priority == TaskPriority.HIGH && deadline != null) {
-        return "Customer outage \u2014 ${deadline.text}"
+        return "${stringResource(R.string.card_customer_outage)} \u2014 ${deadline.text}"
     }
 
     // State-based defaults
     if (deadline?.overdue == true) {
         return when (task.taskType) {
-            TaskType.INSTALL -> "Install overdue \u2014 ${deadline.text}"
-            TaskType.RESTORE -> "Restore overdue \u2014 ${deadline.text}"
-            TaskType.NETBOX -> "Return overdue \u2014 ${deadline.text}"
+            TaskType.INSTALL -> "${stringResource(R.string.card_install_overdue)} \u2014 ${deadline.text}"
+            TaskType.RESTORE -> "${stringResource(R.string.card_restore_overdue)} \u2014 ${deadline.text}"
+            TaskType.NETBOX -> "${stringResource(R.string.card_return_overdue)} \u2014 ${deadline.text}"
         }
     }
 
     // Approaching deadline
     if (deadline != null && task.state !in Task.TERMINAL_STATES) {
         return when (task.taskType) {
-            TaskType.INSTALL -> "Install deadline \u2014 ${deadline.text}"
-            TaskType.RESTORE -> "Restore deadline \u2014 ${deadline.text}"
-            TaskType.NETBOX -> "Return due \u2014 ${deadline.text}"
+            TaskType.INSTALL -> "${stringResource(R.string.card_install_deadline)} \u2014 ${deadline.text}"
+            TaskType.RESTORE -> "${stringResource(R.string.card_restore_deadline)} \u2014 ${deadline.text}"
+            TaskType.NETBOX -> "${stringResource(R.string.card_return_due)} \u2014 ${deadline.text}"
         }
     }
 
     // Default state labels
     return when (task.state) {
-        "OFFERED" -> "New connection available"
-        "CLAIMED" -> "Claimed \u2014 awaiting acceptance"
-        "ACCEPTED" -> "Accepted \u2014 assign technician"
-        "SCHEDULED" -> "Scheduled"
-        "INSTALLED" -> "Installed \u2014 pending verification"
-        "ALERTED" -> "Service alert \u2014 assign technician"
-        "ASSIGNED" -> "Assigned \u2014 in progress"
-        "IN_PROGRESS" -> "In progress"
-        "RESOLVED" -> "Resolved"
-        "COLLECTED" -> "Collected \u2014 confirm return"
-        "PICKUP_REQUIRED" -> "Pickup required"
+        "OFFERED" -> stringResource(R.string.card_new_connection)
+        "CLAIMED" -> stringResource(R.string.card_claimed_awaiting)
+        "ACCEPTED" -> stringResource(R.string.card_accepted_assign)
+        "SCHEDULED" -> stringResource(R.string.card_scheduled)
+        "INSTALLED" -> stringResource(R.string.card_installed_pending)
+        "ALERTED" -> stringResource(R.string.card_service_alert)
+        "ASSIGNED" -> stringResource(R.string.card_assigned_progress)
+        "IN_PROGRESS" -> stringResource(R.string.card_in_progress)
+        "RESOLVED" -> stringResource(R.string.card_resolved)
+        "COLLECTED" -> stringResource(R.string.card_collected_confirm)
+        "PICKUP_REQUIRED" -> stringResource(R.string.card_pickup_required)
         else -> task.state.replace("_", " ").lowercase()
             .replaceFirstChar { it.uppercase() }
     }
@@ -300,6 +309,7 @@ fun isSelfAssigned(task: Task): Boolean {
 }
 
 /** Get CTA matching web getCTA logic exactly */
+@Composable
 fun getCTA(task: Task): CTAInfo? {
     val state = task.state
 
@@ -307,33 +317,33 @@ fun getCTA(task: Task): CTAInfo? {
     if (isSelfAssigned(task)) {
         when (task.taskType) {
             TaskType.INSTALL -> {
-                if (state == "SCHEDULED" || state == "ASSIGNED") return CTAInfo("Start Work", "START_WORK")
-                if (state == "IN_PROGRESS") return CTAInfo("Mark Installed", "INSTALL")
+                if (state == "SCHEDULED" || state == "ASSIGNED") return CTAInfo(stringResource(R.string.cta_start_work), "START_WORK")
+                if (state == "IN_PROGRESS") return CTAInfo(stringResource(R.string.cta_mark_installed), "INSTALL")
             }
             TaskType.RESTORE -> {
-                if (state == "ASSIGNED") return CTAInfo("Start Work", "START_WORK")
-                if (state == "IN_PROGRESS") return CTAInfo("Resolve", "RESOLVE")
+                if (state == "ASSIGNED") return CTAInfo(stringResource(R.string.cta_start_work), "START_WORK")
+                if (state == "IN_PROGRESS") return CTAInfo(stringResource(R.string.cta_resolve), "RESOLVE")
             }
             TaskType.NETBOX -> {
-                if (state == "ASSIGNED") return CTAInfo("Mark Collected", "COLLECTED")
+                if (state == "ASSIGNED") return CTAInfo(stringResource(R.string.cta_collected), "COLLECTED")
             }
         }
     }
 
     // Technician assigned (not self) — CSP can only reassign
     if (isInTechnicianHands(task)) {
-        return CTAInfo("Reassign", "ASSIGN", isSecondary = true)
+        return CTAInfo(stringResource(R.string.cta_reassign), "ASSIGN", isSecondary = true)
     }
 
     val flag = task.queueEscalationFlag
 
-    if (state == "OFFERED") return CTAInfo("View", "VIEW")
-    if (state == "CLAIMED") return CTAInfo("Accept", "ACCEPT")
-    if (state == "ACCEPTED" || state == "PICKUP_REQUIRED") return CTAInfo("Assign", "SCHEDULE")
-    if (state == "ALERTED") return CTAInfo("Assign", "ASSIGN", urgent = task.priority == TaskPriority.HIGH)
-    if (flag == EscalationFlag.BLOCKED_STALE) return CTAInfo("Unblock", "RESOLVE_BLOCKED", urgent = true)
-    if (state == "COLLECTED") return CTAInfo("Confirm Return", "CONFIRM_RETURN")
-    if (state == "INSTALLED" && flag == EscalationFlag.VERIFICATION_PENDING) return CTAInfo("Verify", "VERIFY")
+    if (state == "OFFERED") return CTAInfo(stringResource(R.string.cta_view), "VIEW")
+    if (state == "CLAIMED") return CTAInfo(stringResource(R.string.cta_accept), "ACCEPT")
+    if (state == "ACCEPTED" || state == "PICKUP_REQUIRED") return CTAInfo(stringResource(R.string.cta_assign), "SCHEDULE")
+    if (state == "ALERTED") return CTAInfo(stringResource(R.string.cta_assign), "ASSIGN", urgent = task.priority == TaskPriority.HIGH)
+    if (flag == EscalationFlag.BLOCKED_STALE) return CTAInfo(stringResource(R.string.cta_unblock), "RESOLVE_BLOCKED", urgent = true)
+    if (state == "COLLECTED") return CTAInfo(stringResource(R.string.cta_confirm_return), "CONFIRM_RETURN")
+    if (state == "INSTALLED" && flag == EscalationFlag.VERIFICATION_PENDING) return CTAInfo(stringResource(R.string.cta_verify_manually), "VERIFY")
 
     return null
 }

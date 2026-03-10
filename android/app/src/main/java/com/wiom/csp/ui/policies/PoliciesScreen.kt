@@ -8,9 +8,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.wiom.csp.R
 import com.wiom.csp.ui.theme.WiomCspTheme
 
 private data class Policy(
@@ -51,14 +53,14 @@ fun PoliciesScreen(onBack: () -> Unit) {
         Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
             Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
                 Text(
-                    "\u2190 Back",
+                    stringResource(R.string.general_back),
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.SemiBold,
                     color = colors.textSecondary,
                     modifier = Modifier.clickable { onBack() }.padding(vertical = 4.dp)
                 )
                 Spacer(Modifier.height(12.dp))
-                Text("Policies & Updates", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+                Text(stringResource(R.string.policies_title), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
             }
 
             samplePolicies.forEach { policy ->
@@ -69,16 +71,16 @@ fun PoliciesScreen(onBack: () -> Unit) {
                         .clip(RoundedCornerShape(12.dp))
                         .background(colors.bgCard)
                         .clickable { selectedPolicy = policy }
-                        .padding(14.dp)
+                        .padding(16.dp)
                 ) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         Text(policy.title, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary, modifier = Modifier.weight(1f))
-                        Text(policy.version, fontSize = 11.sp, color = colors.textMuted)
+                        Text(policy.version, fontSize = 12.sp, color = colors.textMuted)
                     }
                     Spacer(Modifier.height(4.dp))
                     Text(policy.summary, fontSize = 12.sp, color = colors.textSecondary, maxLines = 2, lineHeight = 16.sp)
                     Spacer(Modifier.height(4.dp))
-                    Text("Updated: ${policy.updatedAt}", fontSize = 11.sp, color = colors.textMuted)
+                    Text(stringResource(R.string.policies_updated, policy.updatedAt), fontSize = 12.sp, color = colors.textMuted)
                 }
             }
 
@@ -94,32 +96,32 @@ private fun PolicyDetailScreen(policy: Policy, onBack: () -> Unit) {
         Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
             Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
                 Text(
-                    "\u2190 Back",
+                    stringResource(R.string.general_back),
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.SemiBold,
                     color = colors.textSecondary,
                     modifier = Modifier.clickable { onBack() }.padding(vertical = 4.dp)
                 )
                 Spacer(Modifier.height(12.dp))
-                Text(policy.id, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+                Text(policy.id, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
             }
 
             Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(RoundedCornerShape(12.dp)).background(colors.bgCard).padding(16.dp)) {
                 Text(policy.title, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
                 Spacer(Modifier.height(4.dp))
-                Text("${policy.version} \u2022 Updated ${policy.updatedAt}", fontSize = 12.sp, color = colors.textMuted)
+                Text("${policy.version} \u2022 ${stringResource(R.string.policies_updated, policy.updatedAt)}", fontSize = 12.sp, color = colors.textMuted)
                 Spacer(Modifier.height(12.dp))
                 Text(policy.summary, fontSize = 14.sp, color = colors.textSecondary, lineHeight = 20.sp)
             }
 
             Spacer(Modifier.height(16.dp))
-            Text("Changelog", modifier = Modifier.padding(horizontal = 16.dp), fontSize = 14.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+            Text(stringResource(R.string.policies_changelog), modifier = Modifier.padding(horizontal = 16.dp), fontSize = 14.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
             Spacer(Modifier.height(8.dp))
 
             policy.changeLog.forEach { entry ->
                 Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text("\u2022", color = colors.textMuted)
-                    Text(entry, fontSize = 13.sp, color = colors.textSecondary, lineHeight = 18.sp)
+                    Text(entry, fontSize = 14.sp, color = colors.textSecondary, lineHeight = 20.sp)
                 }
             }
 

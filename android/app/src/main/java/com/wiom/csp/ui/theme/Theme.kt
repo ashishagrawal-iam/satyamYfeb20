@@ -51,6 +51,13 @@ data class WiomColors(
     val cardGradientStart: Color,
     val cardGradientEnd: Color,
     val overlayBg: Color,
+    val info: Color,
+    val infoBg: Color,
+    val infoSubtle: Color,
+    val caution: Color,
+    val cautionBg: Color,
+    val cautionSubtle: Color,
+    val ctaDisabledBg: Color,
     val isDark: Boolean,
 )
 
@@ -99,6 +106,13 @@ private val DarkWiomColors = WiomColors(
     cardGradientStart = DarkColors.cardGradientStart,
     cardGradientEnd = DarkColors.cardGradientEnd,
     overlayBg = DarkColors.overlayBg,
+    info = DarkColors.info,
+    infoBg = DarkColors.infoBg,
+    infoSubtle = DarkColors.infoSubtle,
+    caution = DarkColors.caution,
+    cautionBg = DarkColors.cautionBg,
+    cautionSubtle = DarkColors.cautionSubtle,
+    ctaDisabledBg = DarkColors.ctaDisabledBg,
     isDark = true,
 )
 
@@ -147,6 +161,13 @@ private val LightWiomColors = WiomColors(
     cardGradientStart = LightColors.cardGradientStart,
     cardGradientEnd = LightColors.cardGradientEnd,
     overlayBg = LightColors.overlayBg,
+    info = LightColors.info,
+    infoBg = LightColors.infoBg,
+    infoSubtle = LightColors.infoSubtle,
+    caution = LightColors.caution,
+    cautionBg = LightColors.cautionBg,
+    cautionSubtle = LightColors.cautionSubtle,
+    ctaDisabledBg = LightColors.ctaDisabledBg,
     isDark = false,
 )
 

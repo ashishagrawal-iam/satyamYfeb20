@@ -13,8 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.wiom.csp.R
 import com.wiom.csp.ui.common.WiomToggle
 import com.wiom.csp.ui.theme.WiomCspTheme
 
@@ -36,14 +38,14 @@ fun ProfileScreen(
             // Header
             Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
                 Text(
-                    text = "\u2190 Back",
+                    text = stringResource(R.string.general_back),
                     modifier = Modifier.clickable { onBack() }.padding(vertical = 4.dp),
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.SemiBold,
                     color = colors.textSecondary
                 )
                 Spacer(Modifier.height(12.dp))
-                Text("Profile", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+                Text(stringResource(R.string.profile_title), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
             }
 
             // Avatar + CSP info
@@ -59,18 +61,18 @@ fun ProfileScreen(
                 }
                 Spacer(Modifier.height(8.dp))
                 Text("CSP-MH-1001", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
-                Text("Band A Partner", fontSize = 14.sp, color = colors.brandPrimary)
+                Text(stringResource(R.string.profile_band_partner), fontSize = 14.sp, color = colors.brandPrimary)
             }
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(24.dp))
 
             // Language section
-            SectionTitle("Language")
+            SectionTitle(stringResource(R.string.profile_language))
             Row(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                listOf("EN" to "English", "HI" to "Hindi").forEach { (code, label) ->
+                listOf("EN" to stringResource(R.string.profile_english), "HI" to stringResource(R.string.profile_hindi)).forEach { (code, label) ->
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -93,21 +95,21 @@ fun ProfileScreen(
             Spacer(Modifier.height(16.dp))
 
             // Notification Settings
-            SectionTitle("Notification Settings")
-            ToggleRow("Task Alerts", taskAlerts) { taskAlerts = it }
-            ToggleRow("SLA Warnings", slaWarnings) { slaWarnings = it }
-            ToggleRow("Settlement Updates", settlementUpdates) { settlementUpdates = it }
+            SectionTitle(stringResource(R.string.profile_notifications))
+            ToggleRow(stringResource(R.string.profile_task_alerts), taskAlerts) { taskAlerts = it }
+            ToggleRow(stringResource(R.string.profile_sla_warnings), slaWarnings) { slaWarnings = it }
+            ToggleRow(stringResource(R.string.profile_settlement_updates), settlementUpdates) { settlementUpdates = it }
 
             Spacer(Modifier.height(16.dp))
 
             // Offer Notifications (with confirmation)
-            SectionTitle("Offer Notifications")
+            SectionTitle(stringResource(R.string.profile_offer_notifications))
             Row(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Offer Notifications", fontSize = 14.sp, color = colors.textPrimary)
+                Text(stringResource(R.string.profile_offer_notifications), fontSize = 14.sp, color = colors.textPrimary)
                 WiomToggle(
                     checked = offersEnabled,
                     onCheckedChange = { newValue ->
@@ -118,7 +120,7 @@ fun ProfileScreen(
             }
             if (!offersEnabled) {
                 Text(
-                    "You will not receive new connection offers. Your active base will not grow until you turn this back on.",
+                    stringResource(R.string.profile_offer_toggle_consequence),
                     modifier = Modifier.padding(horizontal = 16.dp),
                     fontSize = 12.sp,
                     color = colors.warning,
@@ -129,7 +131,7 @@ fun ProfileScreen(
             Spacer(Modifier.height(16.dp))
 
             // Account Info
-            SectionTitle("Account Information")
+            SectionTitle(stringResource(R.string.profile_account_info))
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -138,11 +140,11 @@ fun ProfileScreen(
                     .background(colors.bgCard)
                     .padding(16.dp)
             ) {
-                InfoRow("CSP ID", "CSP-MH-1001")
-                InfoRow("Zone", "Mumbai West")
-                InfoRow("Partner Since", "2025-01-15")
-                InfoRow("Email", "csp.mh1001@wiom.in")
-                InfoRow("Phone", "+91 98765 00001")
+                InfoRow(stringResource(R.string.profile_csp_id), "CSP-MH-1001")
+                InfoRow(stringResource(R.string.profile_zone), "Mumbai West")
+                InfoRow(stringResource(R.string.profile_partner_since), "2025-01-15")
+                InfoRow(stringResource(R.string.profile_email), "csp.mh1001@wiom.in")
+                InfoRow(stringResource(R.string.profile_phone), "+91 98765 00001")
             }
 
             // Logout
@@ -152,15 +154,15 @@ fun ProfileScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                    .height(50.dp),
-                shape = RoundedCornerShape(12.dp),
+                    .height(48.dp),
+                shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colors.negative.copy(alpha = 0.1f)
                 )
             ) {
                 Text(
-                    "Logout",
-                    fontSize = 15.sp,
+                    stringResource(R.string.profile_logout),
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.negative
                 )
@@ -173,10 +175,10 @@ fun ProfileScreen(
         if (showOfferWarning) {
             AlertDialog(
                 onDismissRequest = { showOfferWarning = false },
-                title = { Text("Turn off offer notifications?", color = colors.textPrimary) },
+                title = { Text(stringResource(R.string.profile_offer_toggle_title), color = colors.textPrimary) },
                 text = {
                     Text(
-                        "You will not receive new connection offers. Your active base will not grow until you turn this back on.",
+                        stringResource(R.string.profile_offer_toggle_consequence),
                         color = colors.textSecondary
                     )
                 },
@@ -184,11 +186,11 @@ fun ProfileScreen(
                     TextButton(onClick = {
                         onOffersToggle(false)
                         showOfferWarning = false
-                    }) { Text("Turn Off", color = colors.negative) }
+                    }) { Text(stringResource(R.string.profile_turn_off), color = colors.negative) }
                 },
                 dismissButton = {
                     TextButton(onClick = { showOfferWarning = false }) {
-                        Text("Cancel", color = colors.textSecondary)
+                        Text(stringResource(R.string.profile_cancel), color = colors.textSecondary)
                     }
                 },
                 containerColor = colors.bgCard
@@ -203,7 +205,7 @@ private fun SectionTitle(title: String) {
     Text(
         title.uppercase(),
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-        fontSize = 13.sp,
+        fontSize = 12.sp,
         fontWeight = FontWeight.SemiBold,
         color = colors.textSecondary,
         letterSpacing = 0.5.sp
@@ -230,7 +232,7 @@ private fun InfoRow(label: String, value: String) {
         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(label, fontSize = 13.sp, color = colors.textMuted)
-        Text(value, fontSize = 13.sp, fontWeight = FontWeight.Medium, color = colors.textPrimary)
+        Text(label, fontSize = 12.sp, color = colors.textMuted)
+        Text(value, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
     }
 }

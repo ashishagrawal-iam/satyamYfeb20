@@ -17,8 +17,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.wiom.csp.R
 import com.wiom.csp.ui.common.ConfirmationToast
 import com.wiom.csp.ui.menu.SecondaryMenuDrawer
 import com.wiom.csp.ui.notification.EventModal
@@ -83,19 +85,20 @@ fun HomeScreen(
                         }
                         Text(
                             "CSP-MH-1001",
-                            fontSize = 15.sp,
+                            fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = colors.textPrimary
                         )
                     }
 
                     // Menu button
+                    val menuDesc = stringResource(R.string.home_open_menu)
                     Box(
                         modifier = Modifier
                             .size(40.dp)
                             .clip(RoundedCornerShape(8.dp))
                             .clickable { viewModel.openMenu() }
-                            .semantics { contentDescription = "Open navigation menu" },
+                            .semantics { contentDescription = menuDesc },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -123,7 +126,7 @@ fun HomeScreen(
                             .height(80.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("Loading...", color = colors.textMuted, fontSize = 13.sp)
+                        Text(stringResource(R.string.home_loading), color = colors.textMuted, fontSize = 12.sp)
                     }
                 } else {
                     // Error / no backend
@@ -138,14 +141,14 @@ fun HomeScreen(
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                "Cannot reach server",
-                                fontSize = 15.sp,
+                                stringResource(R.string.home_error_title),
+                                fontSize = 16.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = colors.textPrimary
                             )
                             Spacer(Modifier.height(6.dp))
                             Text(
-                                "Make sure the backend is running and your device is on the same network.",
+                                stringResource(R.string.home_error_desc),
                                 fontSize = 12.sp,
                                 color = colors.textMuted,
                                 lineHeight = 16.sp
@@ -158,7 +161,7 @@ fun HomeScreen(
                                     .clickable { viewModel.retryLoad() }
                                     .padding(horizontal = 24.dp, vertical = 10.dp)
                             ) {
-                                Text("Retry", color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                                Text(stringResource(R.string.home_retry), color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
                             }
                         }
                     }
@@ -179,7 +182,7 @@ fun HomeScreen(
                     Text("\u26A0", fontSize = 18.sp)
                     Column {
                         Text(
-                            "Capability Reset Active",
+                            stringResource(R.string.capability_reset_title),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             color = colors.warning
@@ -187,7 +190,7 @@ fun HomeScreen(
                         Spacer(Modifier.height(4.dp))
                         Text(
                             assurance?.capabilityResetReason
-                                ?: "Task assignments may be paused. Complete retraining to restore full partner status.",
+                                ?: stringResource(R.string.capability_reset_desc),
                             fontSize = 12.sp,
                             color = colors.textSecondary,
                             lineHeight = 16.sp
@@ -206,9 +209,9 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        "Offline -- showing cached data",
+                        stringResource(R.string.home_offline),
                         fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
+                        fontWeight = FontWeight.SemiBold,
                         color = colors.warning
                     )
                 }

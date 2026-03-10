@@ -13,10 +13,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.wiom.csp.R
 import com.wiom.csp.data.repository.WalletRepository
 import com.wiom.csp.domain.model.WalletState
 import com.wiom.csp.domain.model.WalletTransaction
@@ -124,14 +126,14 @@ fun WalletHubScreen(
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "\u2190 Back",
+                    text = stringResource(R.string.general_back),
                     modifier = Modifier.clickable { onBack() }.padding(vertical = 4.dp),
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.SemiBold,
                     color = colors.textSecondary
                 )
                 Spacer(Modifier.height(12.dp))
-                Text("Wallet", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+                Text(stringResource(R.string.wallet_title), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
             }
 
             // Frozen banner
@@ -145,10 +147,10 @@ fun WalletHubScreen(
                         .padding(14.dp)
                 ) {
                     Column {
-                        Text("Wallet Frozen", fontWeight = FontWeight.Bold, color = colors.negative, fontSize = 14.sp)
+                        Text(stringResource(R.string.wallet_frozen_title), fontWeight = FontWeight.Bold, color = colors.negative, fontSize = 14.sp)
                         Spacer(Modifier.height(4.dp))
                         Text(
-                            data.frozenReason ?: "Withdrawals are disabled until the investigation is resolved.",
+                            data.frozenReason ?: stringResource(R.string.wallet_frozen_desc),
                             fontSize = 12.sp, color = colors.textSecondary, lineHeight = 16.sp
                         )
                     }
@@ -163,10 +165,10 @@ fun WalletHubScreen(
                     .padding(horizontal = 16.dp)
                     .clip(RoundedCornerShape(12.dp))
                     .background(colors.bgCard)
-                    .padding(20.dp),
+                    .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Available Balance", fontSize = 12.sp, color = colors.textMuted)
+                Text(stringResource(R.string.wallet_available_balance), fontSize = 12.sp, color = colors.textMuted)
                 Spacer(Modifier.height(4.dp))
                 Text(
                     formatCurrency(data.balance),
@@ -177,7 +179,7 @@ fun WalletHubScreen(
                 if (data.pendingSettlement > 0) {
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        "Pending: ${formatCurrency(data.pendingSettlement)}",
+                        stringResource(R.string.wallet_pending, formatCurrency(data.pendingSettlement)),
                         fontSize = 12.sp,
                         color = colors.textSecondary
                     )
@@ -189,19 +191,19 @@ fun WalletHubScreen(
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         Box(
                             modifier = Modifier
-                                .clip(RoundedCornerShape(10.dp))
+                                .clip(RoundedCornerShape(24.dp))
                                 .background(if (canWithdraw) colors.brandPrimary else colors.bgSecondary)
                                 .clickable(enabled = canWithdraw) { showWithdraw = true }
                                 .padding(horizontal = 20.dp, vertical = 10.dp)
                         ) {
-                            Text("Withdraw", fontWeight = FontWeight.SemiBold, fontSize = 13.sp,
+                            Text(stringResource(R.string.wallet_withdraw), fontWeight = FontWeight.SemiBold, fontSize = 14.sp,
                                 color = if (canWithdraw) Color.White else colors.textMuted)
                         }
                     }
                     if (withdrawalCooldown) {
                         Spacer(Modifier.height(6.dp))
                         Text(
-                            "Next withdrawal in ${7 - daysSinceLastWithdrawal} day${if (7 - daysSinceLastWithdrawal != 1) "s" else ""}",
+                            stringResource(R.string.wallet_next_withdrawal, 7 - daysSinceLastWithdrawal),
                             fontSize = 12.sp, color = colors.warning
                         )
                     }
@@ -210,8 +212,8 @@ fun WalletHubScreen(
 
             // === EARNINGS CREDIT LEDGER (Design Spec — separate from deposit) ===
             if (earningsCredits.isNotEmpty()) {
-                Spacer(Modifier.height(20.dp))
-                SectionHeader("EARNINGS CREDITS")
+                Spacer(Modifier.height(24.dp))
+                SectionHeader(stringResource(R.string.wallet_earnings_credits))
                 Spacer(Modifier.height(8.dp))
 
                 earningsCredits.forEach { txn ->
@@ -221,8 +223,8 @@ fun WalletHubScreen(
 
             // === DEPOSIT POOL LEDGER (Design Spec — separate from earnings) ===
             if (depositEntries.isNotEmpty()) {
-                Spacer(Modifier.height(20.dp))
-                SectionHeader("DEPOSIT & FEES")
+                Spacer(Modifier.height(24.dp))
+                SectionHeader(stringResource(R.string.wallet_deposit_fees))
                 Spacer(Modifier.height(8.dp))
 
                 depositEntries.forEach { txn ->
@@ -232,8 +234,8 @@ fun WalletHubScreen(
 
             // === OTHER TRANSACTIONS (withdrawals, top-ups) ===
             if (otherTransactions.isNotEmpty()) {
-                Spacer(Modifier.height(20.dp))
-                SectionHeader("TRANSACTIONS")
+                Spacer(Modifier.height(24.dp))
+                SectionHeader(stringResource(R.string.wallet_transactions))
                 Spacer(Modifier.height(8.dp))
 
                 otherTransactions.forEach { txn ->
@@ -243,8 +245,8 @@ fun WalletHubScreen(
 
             // Fallback: show all if no categorized entries
             if (earningsCredits.isEmpty() && depositEntries.isEmpty() && otherTransactions.isEmpty() && data.transactions.isNotEmpty()) {
-                Spacer(Modifier.height(20.dp))
-                SectionHeader("TRANSACTIONS")
+                Spacer(Modifier.height(24.dp))
+                SectionHeader(stringResource(R.string.wallet_transactions))
                 Spacer(Modifier.height(8.dp))
 
                 data.transactions.forEach { txn ->
@@ -288,10 +290,10 @@ private fun EarningsCreditRow(txn: WalletTransaction) {
     val colors = WiomCspTheme.colors
 
     val creditTypeLabel = when (txn.type) {
-        WalletTransactionType.SETTLEMENT -> "Settlement"
-        WalletTransactionType.BONUS -> "Bonus"
-        WalletTransactionType.INSTALL_HANDLING -> "Install"
-        WalletTransactionType.COLLECTION_HANDLING -> "Collection"
+        WalletTransactionType.SETTLEMENT -> stringResource(R.string.wallet_settlement)
+        WalletTransactionType.BONUS -> stringResource(R.string.wallet_bonus)
+        WalletTransactionType.INSTALL_HANDLING -> stringResource(R.string.wallet_install)
+        WalletTransactionType.COLLECTION_HANDLING -> stringResource(R.string.wallet_collection)
         else -> txn.type.name
     }
 
@@ -316,9 +318,9 @@ private fun EarningsCreditRow(txn: WalletTransaction) {
                 ) {
                     Text(creditTypeLabel, fontSize = 10.sp, fontWeight = FontWeight.SemiBold, color = colors.positive)
                 }
-                Text(txn.description, fontSize = 13.sp, color = colors.textPrimary, maxLines = 1)
+                Text(txn.description, fontSize = 14.sp, color = colors.textPrimary, maxLines = 1)
             }
-            Text(formatTimeAgo(txn.date), fontSize = 11.sp, color = colors.textMuted)
+            Text(formatTimeAgo(txn.date), fontSize = 12.sp, color = colors.textMuted)
         }
         Text(
             text = "+${formatCurrency(kotlin.math.abs(txn.amount))}",
@@ -336,9 +338,9 @@ private fun DepositEntryRow(txn: WalletTransaction) {
     val isDeduction = txn.amount < 0
 
     val entryTypeLabel = when (txn.type) {
-        WalletTransactionType.CARRY_FEE -> "Carry Fee"
-        WalletTransactionType.LOSS_RECOVERY -> "Loss Recovery"
-        WalletTransactionType.DEDUCTION -> "Deduction"
+        WalletTransactionType.CARRY_FEE -> stringResource(R.string.wallet_carry_fee)
+        WalletTransactionType.LOSS_RECOVERY -> stringResource(R.string.wallet_loss_recovery)
+        WalletTransactionType.DEDUCTION -> stringResource(R.string.wallet_deduction)
         else -> txn.type.name
     }
 
@@ -365,9 +367,9 @@ private fun DepositEntryRow(txn: WalletTransaction) {
                         color = if (isDeduction) colors.negative else colors.warning
                     )
                 }
-                Text(txn.description, fontSize = 13.sp, color = colors.textPrimary, maxLines = 1)
+                Text(txn.description, fontSize = 14.sp, color = colors.textPrimary, maxLines = 1)
             }
-            Text(formatTimeAgo(txn.date), fontSize = 11.sp, color = colors.textMuted)
+            Text(formatTimeAgo(txn.date), fontSize = 12.sp, color = colors.textMuted)
         }
         Text(
             text = "${if (isDeduction) "" else "+"}${formatCurrency(txn.amount)}",
@@ -391,10 +393,10 @@ private fun TransactionRow(txn: WalletTransaction) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(txn.description, fontSize = 13.sp, color = colors.textPrimary, maxLines = 1)
+            Text(txn.description, fontSize = 14.sp, color = colors.textPrimary, maxLines = 1)
             Text(
                 "${txn.type.name} \u2022 ${formatTimeAgo(txn.date)}",
-                fontSize = 11.sp,
+                fontSize = 12.sp,
                 color = colors.textMuted
             )
         }
@@ -423,17 +425,17 @@ private fun WithdrawFlow(
             modifier = Modifier.fillMaxSize().padding(16.dp)
         ) {
             IconButton(onClick = onCancel) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = colors.textPrimary)
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.general_back), tint = colors.textPrimary)
             }
-            Text("Withdraw Funds", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+            Text(stringResource(R.string.wallet_withdraw_funds), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
             Spacer(Modifier.height(4.dp))
-            Text("Max: ${formatCurrency(maxAmount)}", fontSize = 13.sp, color = colors.textSecondary)
-            Spacer(Modifier.height(20.dp))
+            Text(stringResource(R.string.wallet_max, formatCurrency(maxAmount)), fontSize = 14.sp, color = colors.textSecondary)
+            Spacer(Modifier.height(24.dp))
 
             OutlinedTextField(
                 value = amountText,
                 onValueChange = { amountText = it.filter { c -> c.isDigit() } },
-                label = { Text("Amount (\u20B9)") },
+                label = { Text(stringResource(R.string.wallet_amount_label)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 colors = OutlinedTextFieldDefaults.colors(
@@ -453,14 +455,14 @@ private fun WithdrawFlow(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(24.dp))
                     .background(if (amount in 1..maxAmount) colors.brandPrimary else colors.bgCardHover)
                     .clickable(enabled = amount in 1..maxAmount) { onConfirm(amount) }
                     .padding(vertical = 14.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    "Confirm Withdrawal",
+                    stringResource(R.string.wallet_confirm_withdrawal),
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 14.sp,
                     color = if (amount in 1..maxAmount) Color.White else colors.textMuted

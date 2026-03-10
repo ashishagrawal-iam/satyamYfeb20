@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CSP New</string>
+    <string name="app_name">Wiom CSP</string>
+
+    <!-- Login -->
+    <string name="login_title">Wiom CSP</string>
+    <string name="login_subtitle">Enter your mobile number to login</string>
+    <string name="login_otp_sent">OTP sent to +91 %1$s</string>
+    <string name="login_mobile_label">MOBILE NUMBER</string>
+    <string name="login_country_code">+91</string>
+    <string name="login_mobile_placeholder">9876543210</string>
+    <string name="login_send_otp">Send OTP</string>
+    <string name="login_otp_label">ENTER OTP</string>
+    <string name="login_otp_placeholder">----</string>
+    <string name="login_verify_otp">Verify OTP</string>
+    <string name="login_change_number">\u2190 Change Number</string>
+    <string name="login_resend_timer">Resend in %1$ds</string>
+    <string name="login_resend_otp">Resend OTP</string>
+    <string name="login_footer">Wiom CSP Partner Portal</string>
+
+    <!-- Home -->
+    <string name="home_loading">Loading\u2026</string>
+    <string name="home_error_title">Cannot reach server</string>
+    <string name="home_error_desc">Make sure the backend is running and your device is on the same network.</string>
+    <string name="home_retry">Retry</string>
+    <string name="home_offline">Offline \u2014 showing cached data</string>
+    <string name="home_open_menu">Open navigation menu</string>
+    <string name="home_offer_notifications">Offer notifications:</string>
+    <string name="home_on">ON</string>
+    <string name="home_off">OFF</string>
 
     <!-- Assurance Strip -->
     <string name="assurance_active_base">Active Base</string>
@@ -62,6 +89,7 @@
     <string name="cta_reassign">Reassign</string>
     <string name="cta_resolve">Resolve</string>
     <string name="cta_start_work">Start Work</string>
+    <string name="cta_unblock">Unblock</string>
 
     <!-- Task Card -->
     <string name="card_high">HIGH</string>
@@ -73,14 +101,36 @@
     <string name="card_left">left</string>
     <string name="card_restore_retry">Restore retry</string>
     <string name="card_attempt">attempt</string>
-    <string name="card_blocked_action">Blocked -- action needed</string>
+    <string name="card_blocked_action">Blocked \u2014 action needed</string>
     <string name="card_return_overdue">Return overdue</string>
-    <string name="card_verification_pending">Verification pending -- confirm</string>
+    <string name="card_verification_pending">Verification pending \u2014 confirm</string>
     <string name="card_install_overdue">Install overdue</string>
     <string name="card_pickup_overdue">Pickup overdue</string>
     <string name="card_assignment_unaccepted">Assignment unaccepted</string>
     <string name="card_chain_escalation">Chain escalation pending</string>
     <string name="card_manual_exception">Manual exception</string>
+    <string name="card_customer_outage">Customer outage</string>
+    <string name="card_new_connection">New connection available</string>
+    <string name="card_claimed_awaiting">Claimed \u2014 awaiting acceptance</string>
+    <string name="card_accepted_assign">Accepted \u2014 assign technician</string>
+    <string name="card_scheduled">Scheduled</string>
+    <string name="card_installed_pending">Installed \u2014 pending verification</string>
+    <string name="card_service_alert">Service alert \u2014 assign technician</string>
+    <string name="card_assigned_progress">Assigned \u2014 in progress</string>
+    <string name="card_in_progress">In progress</string>
+    <string name="card_resolved">Resolved</string>
+    <string name="card_collected_confirm">Collected \u2014 confirm return</string>
+    <string name="card_pickup_required">Pickup required</string>
+    <string name="card_install_deadline">Install deadline</string>
+    <string name="card_restore_deadline">Restore deadline</string>
+    <string name="card_restore_overdue">Restore overdue</string>
+    <string name="card_return_due">Return due</string>
+    <string name="card_blocked_reason">Blocked \u2014 %1$s</string>
+    <string name="card_wiom_replied">Wiom replied</string>
+    <string name="card_note_count">%1$d note</string>
+    <string name="card_notes_count">%1$d notes</string>
+    <string name="card_soon">soon</string>
+    <string name="card_task_description">%1$s task %2$s, %3$s</string>
 
     <!-- Menu -->
     <string name="menu_title">Menu</string>
@@ -96,6 +146,8 @@
     <string name="menu_policies_desc">Documents &amp; changelog</string>
     <string name="menu_profile">Profile &amp; Settings</string>
     <string name="menu_profile_desc">Account &amp; preferences</string>
+    <string name="menu_technician">Technician App</string>
+    <string name="menu_technician_desc">Switch to tech view</string>
 
     <!-- Profile -->
     <string name="profile_title">Profile</string>
@@ -114,6 +166,12 @@
     <string name="profile_back">Back</string>
     <string name="profile_offer_notifications">Offer Notifications</string>
     <string name="profile_offer_toggle_consequence">You will not receive new connection offers. Your active base will not grow until you turn this back on.</string>
+    <string name="profile_offer_toggle_title">Turn off offer notifications?</string>
+    <string name="profile_turn_off">Turn Off</string>
+    <string name="profile_cancel">Cancel</string>
+    <string name="profile_logout">Logout</string>
+    <string name="profile_english">English</string>
+    <string name="profile_hindi">Hindi</string>
 
     <!-- Capability Reset -->
     <string name="capability_reset_title">Capability Reset Active</string>
@@ -123,16 +181,199 @@
     <string name="wallet_frozen_title">Wallet Frozen</string>
     <string name="wallet_frozen_desc">Withdrawals are disabled. Settlements will accumulate but cannot be withdrawn until the investigation is resolved.</string>
 
+    <!-- Wallet -->
+    <string name="wallet_title">Wallet</string>
+    <string name="wallet_back">Back</string>
+    <string name="wallet_available_balance">Available Balance</string>
+    <string name="wallet_pending">Pending: %1$s</string>
+    <string name="wallet_withdraw">Withdraw</string>
+    <string name="wallet_next_withdrawal">Next withdrawal in %1$d day(s)</string>
+    <string name="wallet_earnings_credits">EARNINGS CREDITS</string>
+    <string name="wallet_deposit_fees">DEPOSIT &amp; FEES</string>
+    <string name="wallet_transactions">TRANSACTIONS</string>
+    <string name="wallet_settlement">Settlement</string>
+    <string name="wallet_bonus">Bonus</string>
+    <string name="wallet_install">Install</string>
+    <string name="wallet_collection">Collection</string>
+    <string name="wallet_carry_fee">Carry Fee</string>
+    <string name="wallet_loss_recovery">Loss Recovery</string>
+    <string name="wallet_deduction">Deduction</string>
+    <string name="wallet_withdraw_funds">Withdraw Funds</string>
+    <string name="wallet_max">Max: %1$s</string>
+    <string name="wallet_amount_label">Amount (\u20B9)</string>
+    <string name="wallet_confirm_withdrawal">Confirm Withdrawal</string>
+
+    <!-- Team -->
+    <string name="team_title">Team</string>
+    <string name="team_add_technician">Add Technician</string>
+    <string name="team_name">Name</string>
+    <string name="team_phone">Phone</string>
+    <string name="team_add_member">Add Member</string>
+    <string name="team_id">ID</string>
+    <string name="team_join_date">Join Date</string>
+    <string name="team_status">Status</string>
+    <string name="team_available">Available</string>
+    <string name="team_unavailable">Unavailable</string>
+
     <!-- Support -->
+    <string name="support_title">Support</string>
     <string name="support_receipt_title">Case Submitted</string>
     <string name="support_receipt_desc">Your support case has been submitted. Expect a response within 24 hours.</string>
     <string name="support_back_to_support">Back to Support</string>
+    <string name="support_no_cases">No support cases</string>
+    <string name="support_new_case">New Support Case</string>
+    <string name="support_subject">Subject</string>
+    <string name="support_message">Message</string>
+    <string name="support_submit">Submit Case</string>
+    <string name="support_status">Status: %1$s</string>
+    <string name="support_messages">Messages</string>
+
+    <!-- SLA -->
+    <string name="sla_title">SLA</string>
+    <string name="sla_needs_attention">needs attention</string>
+    <string name="sla_next_eval">Next eval</string>
+    <string name="sla_routing_full">Full</string>
+    <string name="sla_routing_tapered">Tapered</string>
+    <string name="sla_routing">Routing</string>
+    <string name="sla_bonus_active">Active</string>
+    <string name="sla_bonus_paused">Paused</string>
+    <string name="sla_bonus">Bonus</string>
+    <string name="sla_fix_to_recover">Fix to recover</string>
+    <string name="sla_threshold_min">Min: </string>
+    <string name="sla_threshold_severe">Severe: </string>
+    <string name="sla_needs_above">Needs to be above %1$d%2$s. Currently %3$s below.</string>
+    <string name="sla_needs_below">Needs to be below %1$d%2$s. Currently %3$s above.</string>
+    <string name="sla_clean_windows">%1$d clean eval window%2$s needed to recover (%3$d/%1$d done)</string>
+
+    <!-- Event Modal -->
+    <string name="event_dismiss">Dismiss</string>
+    <string name="event_view">View</string>
+    <string name="event_what_means">WHAT THIS MEANS:</string>
+    <string name="event_payment_received">Payment of \u20B9%1$s received</string>
+    <string name="event_payment_simple">Payment received</string>
+    <string name="event_settlement_credited">Settlement of \u20B9%1$s credited</string>
+    <string name="event_settlement_simple">Settlement credited</string>
+    <string name="event_new_offer">New install offer available</string>
+    <string name="event_high_restore">HIGH priority restore alert</string>
+    <string name="event_sla_warning">SLA Warning</string>
+    <string name="event_capability_reset">Capability Reset Program</string>
+    <string name="event_deduction">Deduction of \u20B9%1$s</string>
+    <string name="event_netbox_recovery">NetBox Recovery Deduction</string>
+    <string name="event_wallet_frozen">Wallet Frozen</string>
+    <string name="event_consequence_capability_reset">New task assignments may be paused. Your earning potential is reduced until retraining is completed and compliance is restored.</string>
+    <string name="event_consequence_wallet_frozen">You cannot withdraw any funds. Settlements will continue to accumulate but remain locked until the investigation is resolved.</string>
+    <string name="event_consequence_netbox_deduction">\u20B9%1$s has been deducted from your available balance. You have 7 days to raise a support ticket to dispute this deduction.</string>
+
+    <!-- Task Detail -->
+    <string name="detail_back">Back to tasks</string>
+    <string name="detail_customer_details">CUSTOMER DETAILS</string>
+    <string name="detail_connection_id">Connection ID</string>
+    <string name="detail_area">Area</string>
+    <string name="detail_task_type">Task Type</string>
+    <string name="detail_priority">Priority</string>
+    <string name="detail_offer_expires">Offer Expires</string>
+    <string name="detail_object_id">Object ID</string>
+    <string name="detail_customer_area">Customer Area</string>
+    <string name="detail_created">Created</string>
+    <string name="detail_deadline">Deadline</string>
+    <string name="detail_retries">Retries</string>
+    <string name="detail_escalation">Escalation</string>
+    <string name="detail_blocked">Blocked</string>
+    <string name="detail_proof">PROOF</string>
+    <string name="detail_capture_photo">Capture Photo</string>
+    <string name="detail_retake_photo">Retake Photo</string>
+    <string name="detail_timeline">TIMELINE</string>
+    <string name="detail_decline">Decline</string>
+    <string name="detail_you">You</string>
+    <string name="detail_call_tech">\u260E Tech</string>
+    <string name="detail_call_cust">\u260E Cust</string>
+    <string name="detail_need_help">Need help from Wiom?</string>
+    <string name="detail_ask">Ask</string>
+    <string name="detail_help_active">Wiom help active \u00B7 Awaiting response</string>
+    <string name="detail_select_reason">Select a reason:</string>
+    <string name="detail_cancel">Cancel</string>
+    <string name="detail_quick_notes">QUICK NOTES</string>
+    <string name="detail_close">Close</string>
+    <string name="detail_add">+ Add</string>
+    <string name="detail_choose_slot">Choose Preferred Slot</string>
+    <string name="detail_schedule_desc">When would you like to schedule the installation?</string>
+    <string name="detail_today">Today</string>
+    <string name="detail_tomorrow">Tomorrow</string>
+    <string name="detail_day_after">Day After</string>
+    <string name="detail_decline_offer">Decline Offer</string>
+    <string name="detail_decline_desc">Please select a reason for declining this offer:</string>
+    <string name="detail_expired">Expired</string>
+    <string name="detail_min">min</string>
+    <string name="detail_system">SYSTEM</string>
+    <string name="detail_csp">CSP</string>
+    <string name="detail_admin">ADMIN</string>
+    <string name="detail_tech">TECH</string>
+
+    <!-- Decline Reasons -->
+    <string name="decline_too_far">Too far from my area</string>
+    <string name="decline_bandwidth">Insufficient bandwidth / too busy</string>
+    <string name="decline_not_serviceable">Customer area not serviceable</string>
+    <string name="decline_no_techs">Not enough technicians available</string>
+    <string name="decline_sla_tight">SLA timeline too tight</string>
+
+    <!-- Quick Notes -->
+    <string name="note_customer_unavailable">Customer not available</string>
+    <string name="note_wrong_address">Wrong address</string>
+    <string name="note_need_material">Need material</string>
+    <string name="note_rescheduled">Rescheduled</string>
+    <string name="note_waiting_access">Waiting for access</string>
+
+    <!-- Help Reasons -->
+    <string name="help_wrong_address">Wrong address / Cannot locate</string>
+    <string name="help_material_needed">Material / equipment needed</string>
+    <string name="help_customer_unreachable">Customer unreachable</string>
+    <string name="help_sla_dispute">SLA dispute / timeline issue</string>
+    <string name="help_tech_issue">Technical issue beyond scope</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_title">Partner Registration</string>
+    <string name="onboarding_subtitle">Complete your registration to access the CSP dashboard.</string>
+    <string name="onboarding_section_business">Business Information</string>
+    <string name="onboarding_business_name">BUSINESS / ENTITY NAME</string>
+    <string name="onboarding_business_hint">Registered business name</string>
+    <string name="onboarding_entity_type">ENTITY TYPE</string>
+    <string name="onboarding_individual">INDIVIDUAL</string>
+    <string name="onboarding_firm">FIRM</string>
+    <string name="onboarding_company">COMPANY</string>
+    <string name="onboarding_section_location">Service Location</string>
+    <string name="onboarding_state">STATE</string>
+    <string name="onboarding_state_hint">State</string>
+    <string name="onboarding_city">CITY</string>
+    <string name="onboarding_city_hint">City</string>
+    <string name="onboarding_area">AREA / ZONE</string>
+    <string name="onboarding_area_hint">Area or service zone</string>
+    <string name="onboarding_pincode">PINCODE</string>
+    <string name="onboarding_pincode_hint">6-digit pincode</string>
+    <string name="onboarding_section_identity">Identity Verification</string>
+    <string name="onboarding_aadhaar">AADHAAR NUMBER</string>
+    <string name="onboarding_aadhaar_hint">12-digit Aadhaar number</string>
+    <string name="onboarding_pan">PAN NUMBER</string>
+    <string name="onboarding_pan_hint">ABCDE1234F</string>
+    <string name="onboarding_section_bank">Bank Details</string>
+    <string name="onboarding_holder_name">ACCOUNT HOLDER NAME</string>
+    <string name="onboarding_holder_hint">Name as on bank account</string>
+    <string name="onboarding_account_number">ACCOUNT NUMBER</string>
+    <string name="onboarding_account_hint">Bank account number</string>
+    <string name="onboarding_ifsc">IFSC CODE</string>
+    <string name="onboarding_ifsc_hint">SBIN0001234</string>
+    <string name="onboarding_bank_name">BANK NAME</string>
+    <string name="onboarding_bank_hint">Bank name</string>
+    <string name="onboarding_terms">I accept the terms of partnership</string>
+    <string name="onboarding_submit">Submit Registration</string>
+
+    <!-- Policies -->
+    <string name="policies_title">Policies &amp; Updates</string>
+    <string name="policies_updated">Updated: %1$s</string>
+    <string name="policies_changelog">Changelog</string>
 
     <!-- General -->
+    <string name="general_back">\u2190 Back</string>
     <string name="consequence_label">What this means:</string>
-    <string name="home_offer_notifications">Offer notifications:</string>
-    <string name="home_on">ON</string>
-    <string name="home_off">OFF</string>
 
     <!-- Technician App -->
     <string name="tech_app_title">Wiom Technician</string>
@@ -156,8 +397,4 @@
     <string name="tech_stats">Stats</string>
     <string name="tech_logout">Logout</string>
     <string name="tech_timeline">Timeline</string>
-
-    <!-- Menu: Technician -->
-    <string name="menu_technician">Technician App</string>
-    <string name="menu_technician_desc">Switch to tech view</string>
 </resources>

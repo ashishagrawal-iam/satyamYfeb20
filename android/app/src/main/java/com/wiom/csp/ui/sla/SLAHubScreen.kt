@@ -12,12 +12,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.wiom.csp.R
 import com.wiom.csp.data.repository.SLARepository
 import com.wiom.csp.domain.model.*
 import com.wiom.csp.ui.theme.WiomCspTheme
@@ -79,11 +81,11 @@ private fun standingBg(s: SlaStanding): Color {
     }
 }
 
-private fun standingLabel(s: SlaStanding): String {
+private fun standingLabelRes(s: SlaStanding): Int {
     return when (s) {
-        SlaStanding.COMPLIANT -> "Compliant"
-        SlaStanding.AT_RISK -> "At Risk"
-        SlaStanding.NON_COMPLIANT -> "Non-Compliant"
+        SlaStanding.COMPLIANT -> R.string.sla_compliant
+        SlaStanding.AT_RISK -> R.string.sla_at_risk
+        SlaStanding.NON_COMPLIANT -> R.string.sla_non_compliant
     }
 }
 
@@ -186,14 +188,14 @@ private fun HubView(
                 .padding(16.dp)
         ) {
             Text(
-                "\u2190 Back",
+                stringResource(R.string.general_back),
                 fontSize = 14.sp,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.SemiBold,
                 color = colors.textSecondary,
                 modifier = Modifier.clickable { onBack() }.padding(vertical = 4.dp)
             )
             Spacer(Modifier.height(12.dp))
-            Text("SLA", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+            Text(stringResource(R.string.sla_title), fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
         }
 
         Column(
@@ -206,10 +208,10 @@ private fun HubView(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(14.dp))
+                    .clip(RoundedCornerShape(16.dp))
                     .background(colors.bgCard)
-                    .border(1.dp, sc.copy(alpha = 0.25f), RoundedCornerShape(14.dp))
-                    .padding(20.dp),
+                    .border(1.dp, sc.copy(alpha = 0.25f), RoundedCornerShape(16.dp))
+                    .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(
@@ -219,7 +221,7 @@ private fun HubView(
                         .padding(horizontal = 24.dp, vertical = 8.dp)
                 ) {
                     Text(
-                        standingLabel(sla.overallStanding),
+                        stringResource(standingLabelRes(sla.overallStanding)),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = sc
@@ -229,7 +231,7 @@ private fun HubView(
                 if (sla.overallStanding != SlaStanding.COMPLIANT && breached.isNotEmpty()) {
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        breached.joinToString(", ") { it.name } + " needs attention",
+                        breached.joinToString(", ") { it.name } + " " + stringResource(R.string.sla_needs_attention),
                         fontSize = 12.sp,
                         color = colors.textSecondary
                     )
@@ -249,25 +251,25 @@ private fun HubView(
                             fontWeight = FontWeight.Bold,
                             color = colors.textPrimary
                         )
-                        Text("Next eval", fontSize = 10.sp, color = colors.textMuted)
+                        Text(stringResource(R.string.sla_next_eval), fontSize = 12.sp, color = colors.textMuted)
                     }
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            if (sla.consequence.routing == "Full") "Full" else "Tapered",
+                            if (sla.consequence.routing == "Full") stringResource(R.string.sla_routing_full) else stringResource(R.string.sla_routing_tapered),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = if (sla.consequence.routing == "Full") colors.positive else colors.warning
                         )
-                        Text("Routing", fontSize = 10.sp, color = colors.textMuted)
+                        Text(stringResource(R.string.sla_routing), fontSize = 12.sp, color = colors.textMuted)
                     }
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            if (sla.consequence.bonusEligibility == "Eligible") "Active" else "Paused",
+                            if (sla.consequence.bonusEligibility == "Eligible") stringResource(R.string.sla_bonus_active) else stringResource(R.string.sla_bonus_paused),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = if (sla.consequence.bonusEligibility == "Eligible") colors.positive else colors.warning
                         )
-                        Text("Bonus", fontSize = 10.sp, color = colors.textMuted)
+                        Text(stringResource(R.string.sla_bonus), fontSize = 12.sp, color = colors.textMuted)
                     }
                 }
             }
@@ -278,14 +280,14 @@ private fun HubView(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(RoundedCornerShape(12.dp))
                         .background(Color(0x0FFF8000))
-                        .border(1.dp, Color(0x40FF8000), RoundedCornerShape(10.dp))
-                        .padding(12.dp, 14.dp)
+                        .border(1.dp, Color(0x40FF8000), RoundedCornerShape(12.dp))
+                        .padding(12.dp, 16.dp)
                 ) {
                     Text(
-                        "Fix to recover",
-                        fontSize = 13.sp,
+                        stringResource(R.string.sla_fix_to_recover),
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.warning
                     )
@@ -300,7 +302,7 @@ private fun HubView(
                                 .clip(RoundedCornerShape(8.dp))
                                 .background(standingBg(d.state))
                                 .clickable { onDomainClick(d) }
-                                .padding(10.dp, 12.dp)
+                                .padding(12.dp, 12.dp)
                         ) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -310,14 +312,14 @@ private fun HubView(
                                 Column {
                                     Text(
                                         "${domainIcon(d.id)} ${d.name}",
-                                        fontSize = 13.sp,
+                                        fontSize = 14.sp,
                                         fontWeight = FontWeight.SemiBold,
                                         color = dc
                                     )
                                     if (failingMetrics.isNotEmpty()) {
                                         Text(
                                             failingMetrics.joinToString(", ") { it.name.split("(")[0].trim() },
-                                            fontSize = 11.sp,
+                                            fontSize = 12.sp,
                                             color = colors.textSecondary
                                         )
                                     }
@@ -329,8 +331,13 @@ private fun HubView(
                     if (sla.hysteresis.requiredCleanWindows > 0) {
                         Spacer(Modifier.height(8.dp))
                         Text(
-                            "${sla.hysteresis.requiredCleanWindows} clean eval window${if (sla.hysteresis.requiredCleanWindows > 1) "s" else ""} needed to recover (${sla.hysteresis.currentCleanWindows}/${sla.hysteresis.requiredCleanWindows} done)",
-                            fontSize = 11.sp,
+                            stringResource(
+                                R.string.sla_clean_windows,
+                                sla.hysteresis.requiredCleanWindows,
+                                if (sla.hysteresis.requiredCleanWindows > 1) "s" else "",
+                                sla.hysteresis.currentCleanWindows
+                            ),
+                            fontSize = 12.sp,
                             color = colors.textMuted
                         )
                     }
@@ -345,13 +352,13 @@ private fun HubView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp)
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(RoundedCornerShape(12.dp))
                         .background(colors.bgCard)
                         .drawBehind {
                             drawLine(dc, Offset(0f, 0f), Offset(0f, size.height), 4.dp.toPx())
                         }
                         .clickable { onDomainClick(domain) }
-                        .padding(horizontal = 16.dp, vertical = 14.dp)
+                        .padding(horizontal = 16.dp, vertical = 16.dp)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -366,7 +373,7 @@ private fun HubView(
                                 color = colors.textPrimary
                             )
                             Spacer(Modifier.height(4.dp))
-                            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                                 domain.subMetrics.forEach { m ->
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
@@ -380,7 +387,7 @@ private fun HubView(
                                         )
                                         Text(
                                             "${m.value}${if (m.unit == "%") "%" else ""}",
-                                            fontSize = 11.sp,
+                                            fontSize = 12.sp,
                                             color = colors.textSecondary
                                         )
                                     }
@@ -395,11 +402,11 @@ private fun HubView(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(5.dp))
                                     .background(standingBg(domain.state))
-                                    .padding(horizontal = 10.dp, vertical = 3.dp)
+                                    .padding(horizontal = 12.dp, vertical = 3.dp)
                             ) {
                                 Text(
-                                    standingLabel(domain.state),
-                                    fontSize = 11.sp,
+                                    stringResource(standingLabelRes(domain.state)),
+                                    fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = dc
                                 )
@@ -434,9 +441,9 @@ private fun DomainDetail(
                 .padding(16.dp)
         ) {
             Text(
-                "\u2190 Back",
+                stringResource(R.string.general_back),
                 fontSize = 14.sp,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.SemiBold,
                 color = colors.textSecondary,
                 modifier = Modifier.clickable { onBack() }.padding(vertical = 4.dp)
             )
@@ -448,7 +455,7 @@ private fun DomainDetail(
             ) {
                 Text(
                     "${domainIcon(domain.id)} ${domain.name}",
-                    fontSize = 17.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = colors.textPrimary
                 )
@@ -459,7 +466,7 @@ private fun DomainDetail(
                         .padding(horizontal = 12.dp, vertical = 5.dp)
                 ) {
                     Text(
-                        standingLabel(domain.state),
+                        stringResource(standingLabelRes(domain.state)),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         color = dc
@@ -513,7 +520,7 @@ private fun DomainDetail(
                     ) {
                         Text(
                             m.name,
-                            fontSize = 13.sp,
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = colors.textPrimary,
                             modifier = Modifier.weight(1f)
@@ -526,7 +533,7 @@ private fun DomainDetail(
                         )
                     }
 
-                    Spacer(Modifier.height(10.dp))
+                    Spacer(Modifier.height(12.dp))
 
                     // Visual bar
                     Box(
@@ -571,31 +578,33 @@ private fun DomainDetail(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
+                        val pctSuffix = if (m.unit == "%") "%" else ""
                         Text(
                             buildString {
-                                append("Min: ")
+                                append(stringResource(R.string.sla_threshold_min))
                                 append(if (isAbove) "\u2265" else "\u2264")
                                 append(m.threshold.toInt())
-                                append(if (m.unit == "%") "%" else "")
-                                append(" \u00B7 Severe: ")
+                                append(pctSuffix)
+                                append(" \u00B7 ")
+                                append(stringResource(R.string.sla_threshold_severe))
                                 append(if (isAbove) "<" else ">")
                                 append(m.severeThreshold.toInt())
-                                append(if (m.unit == "%") "%" else "")
+                                append(pctSuffix)
                             },
-                            fontSize = 11.sp,
+                            fontSize = 12.sp,
                             color = colors.textMuted
                         )
                         Text(
                             "${trendIcon(m.trend)} ${m.trend.name.lowercase().replaceFirstChar { it.uppercase() }}",
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.Medium,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.SemiBold,
                             color = trendColor(m.trend, colors)
                         )
                     }
 
                     // Action needed
                     if (breached) {
-                        Spacer(Modifier.height(10.dp))
+                        Spacer(Modifier.height(12.dp))
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -611,11 +620,11 @@ private fun DomainDetail(
                             val pctSuffix = if (m.unit == "%") "%" else ""
                             Text(
                                 if (isAbove)
-                                    "Needs to be above ${m.threshold.toInt()}$pctSuffix. Currently $diff below."
+                                    stringResource(R.string.sla_needs_above, m.threshold.toInt(), pctSuffix, diff)
                                 else
-                                    "Needs to be below ${m.threshold.toInt()}$pctSuffix. Currently $diff above.",
+                                    stringResource(R.string.sla_needs_below, m.threshold.toInt(), pctSuffix, diff),
                                 fontSize = 12.sp,
-                                fontWeight = FontWeight.Medium,
+                                fontWeight = FontWeight.SemiBold,
                                 color = colors.warning
                             )
                         }

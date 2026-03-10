@@ -20,24 +20,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
+import com.wiom.csp.R
 import com.wiom.csp.ui.theme.WiomCspTheme
 
-data class MenuItem(
+private data class MenuItemDef(
     val key: String,
-    val label: String,
-    val description: String,
+    val labelRes: Int,
+    val descRes: Int,
     val icon: ImageVector
 )
 
-private val menuItems = listOf(
-    MenuItem("wallet", "Wallet", "Balance & transactions", Icons.Default.AccountBalanceWallet),
-    MenuItem("team", "Team", "Manage technicians", Icons.Default.Groups),
-    MenuItem("netbox", "NetBox", "Orders & inventory", Icons.Default.Inventory2),
-    MenuItem("support", "Support", "Cases & escalation", Icons.Default.SupportAgent),
-    MenuItem("policies", "Policies & Updates", "Documents & changelog", Icons.Default.Description),
-    MenuItem("profile", "Profile & Settings", "Account & preferences", Icons.Default.Person),
-    MenuItem("technician", "Technician App", "Switch to tech view", Icons.Default.Engineering),
+private val menuItemDefs = listOf(
+    MenuItemDef("wallet", R.string.menu_wallet, R.string.menu_wallet_desc, Icons.Default.AccountBalanceWallet),
+    MenuItemDef("team", R.string.menu_team, R.string.menu_team_desc, Icons.Default.Groups),
+    MenuItemDef("netbox", R.string.menu_netbox, R.string.menu_netbox_desc, Icons.Default.Inventory2),
+    MenuItemDef("support", R.string.menu_support, R.string.menu_support_desc, Icons.Default.SupportAgent),
+    MenuItemDef("policies", R.string.menu_policies, R.string.menu_policies_desc, Icons.Default.Description),
+    MenuItemDef("profile", R.string.menu_profile, R.string.menu_profile_desc, Icons.Default.Person),
+    MenuItemDef("technician", R.string.menu_technician, R.string.menu_technician_desc, Icons.Default.Engineering),
 )
 
 @Composable
@@ -83,12 +85,12 @@ fun SecondaryMenuDrawer(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 16.dp),
+                            .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            "Menu",
+                            stringResource(R.string.menu_title),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = colors.textPrimary
@@ -106,15 +108,17 @@ fun SecondaryMenuDrawer(
                     // Menu items
                     Spacer(Modifier.height(8.dp))
 
-                    menuItems.forEach { item ->
+                    menuItemDefs.forEach { item ->
+                        val label = stringResource(item.labelRes)
+                        val desc = stringResource(item.descRes)
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable { onNavigate(item.key) }
-                                .semantics { contentDescription = "${item.label}: ${item.description}" }
-                                .padding(horizontal = 20.dp, vertical = 14.dp),
+                                .semantics { contentDescription = "$label: $desc" }
+                                .padding(horizontal = 24.dp, vertical = 16.dp),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(14.dp)
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
                             // Icon in a 40x40 box with bgCard background
                             Box(
@@ -126,7 +130,7 @@ fun SecondaryMenuDrawer(
                             ) {
                                 Icon(
                                     item.icon,
-                                    contentDescription = item.label,
+                                    contentDescription = label,
                                     tint = colors.textSecondary,
                                     modifier = Modifier.size(20.dp)
                                 )
@@ -134,13 +138,13 @@ fun SecondaryMenuDrawer(
 
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    item.label,
+                                    label,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     color = colors.textPrimary
                                 )
                                 Text(
-                                    item.description,
+                                    desc,
                                     fontSize = 12.sp,
                                     color = colors.textMuted
                                 )

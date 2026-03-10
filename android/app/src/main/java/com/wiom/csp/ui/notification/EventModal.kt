@@ -14,10 +14,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.wiom.csp.R
 import com.wiom.csp.domain.model.AppNotification
 import com.wiom.csp.domain.model.NotificationType
 import com.wiom.csp.ui.theme.WiomCspTheme
@@ -81,9 +83,9 @@ fun EventModal(
 
                     // Body
                     Column(
-                        modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 20.dp)
+                        modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 24.dp)
                     ) {
-                        // Icon area (48x48 rounded square, not emoji)
+                        // Icon area (48x48 rounded square)
                         Box(
                             modifier = Modifier
                                 .size(48.dp)
@@ -104,7 +106,7 @@ fun EventModal(
                         // Headline
                         Text(
                             text = headline,
-                            fontSize = 17.sp,
+                            fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = colors.textPrimary,
                             lineHeight = 22.sp
@@ -118,7 +120,7 @@ fun EventModal(
                             Text(
                                 text = "\u20B9${amountFormatted}",
                                 fontSize = 28.sp,
-                                fontWeight = FontWeight.ExtraBold,
+                                fontWeight = FontWeight.Bold,
                                 color = accentColor
                             )
                         }
@@ -130,7 +132,7 @@ fun EventModal(
                             Text(
                                 text = "-\u20B9${amountFormatted}",
                                 fontSize = 28.sp,
-                                fontWeight = FontWeight.ExtraBold,
+                                fontWeight = FontWeight.Bold,
                                 color = colors.negative
                             )
                         }
@@ -139,17 +141,17 @@ fun EventModal(
                         if (notification.type == NotificationType.CAPABILITY_RESET ||
                             notification.type == NotificationType.WALLET_FROZEN ||
                             notification.type == NotificationType.NETBOX_RECOVERY_DEDUCTION) {
-                            Spacer(Modifier.height(14.dp))
+                            Spacer(Modifier.height(16.dp))
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clip(RoundedCornerShape(10.dp))
+                                    .clip(RoundedCornerShape(12.dp))
                                     .background(accentAlpha15)
-                                    .border(1.dp, accentAlpha35, RoundedCornerShape(10.dp))
-                                    .padding(horizontal = 14.dp, vertical = 12.dp)
+                                    .border(1.dp, accentAlpha35, RoundedCornerShape(12.dp))
+                                    .padding(horizontal = 16.dp, vertical = 12.dp)
                             ) {
                                 Text(
-                                    text = "WHAT THIS MEANS:",
+                                    text = stringResource(R.string.event_what_means),
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = accentColor,
@@ -158,7 +160,7 @@ fun EventModal(
                                 Spacer(Modifier.height(6.dp))
                                 Text(
                                     text = getConsequenceText(notification),
-                                    fontSize = 13.sp,
+                                    fontSize = 14.sp,
                                     color = colors.textPrimary,
                                     lineHeight = 20.sp
                                 )
@@ -166,10 +168,10 @@ fun EventModal(
                         }
 
                         // Subtext
-                        Spacer(Modifier.height(10.dp))
+                        Spacer(Modifier.height(12.dp))
                         Text(
                             text = notification.message,
-                            fontSize = 13.sp,
+                            fontSize = 14.sp,
                             color = colors.textSecondary,
                             lineHeight = 20.sp
                         )
@@ -179,20 +181,20 @@ fun EventModal(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         // Dismiss button (outline)
                         Box(
                             modifier = Modifier
                                 .weight(1f)
-                                .clip(RoundedCornerShape(10.dp))
-                                .border(1.dp, colors.borderSubtle, RoundedCornerShape(10.dp))
+                                .clip(RoundedCornerShape(12.dp))
+                                .border(1.dp, colors.borderSubtle, RoundedCornerShape(12.dp))
                                 .clickable { onDismiss() }
                                 .padding(vertical = 12.dp),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("Dismiss", fontWeight = FontWeight.SemiBold, fontSize = 14.sp, color = colors.textSecondary)
+                            Text(stringResource(R.string.event_dismiss), fontWeight = FontWeight.SemiBold, fontSize = 14.sp, color = colors.textSecondary)
                         }
 
                         // View button
@@ -200,7 +202,7 @@ fun EventModal(
                             Box(
                                 modifier = Modifier
                                     .weight(1f)
-                                    .clip(RoundedCornerShape(10.dp))
+                                    .clip(RoundedCornerShape(12.dp))
                                     .background(accentColor)
                                     .clickable {
                                         val taskId = notification.taskId
@@ -210,7 +212,7 @@ fun EventModal(
                                     .padding(vertical = 12.dp),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text("View", fontWeight = FontWeight.SemiBold, fontSize = 14.sp, color = Color.White)
+                                Text(stringResource(R.string.event_view), fontWeight = FontWeight.SemiBold, fontSize = 14.sp, color = Color.White)
                             }
                         }
                     }
@@ -245,35 +247,37 @@ private fun getIconSymbol(type: NotificationType): String {
     }
 }
 
+@Composable
 private fun getHeadline(notification: AppNotification, amountFormatted: String?): String {
     return when (notification.type) {
         NotificationType.PAYMENT_RECEIVED ->
-            if (amountFormatted != null) "Payment of \u20B9$amountFormatted received"
-            else "Payment received"
+            if (amountFormatted != null) stringResource(R.string.event_payment_received, amountFormatted)
+            else stringResource(R.string.event_payment_simple)
         NotificationType.SETTLEMENT_CREDIT ->
-            if (amountFormatted != null) "Settlement of \u20B9$amountFormatted credited"
-            else "Settlement credited"
-        NotificationType.NEW_OFFER -> "New install offer available"
-        NotificationType.HIGH_RESTORE_ALERT -> "HIGH priority restore alert"
-        NotificationType.SLA_WARNING -> notification.title.ifEmpty { "SLA Warning" }
-        NotificationType.CAPABILITY_RESET -> "Capability Reset Program"
-        NotificationType.WALLET_FROZEN -> "Wallet Frozen"
+            if (amountFormatted != null) stringResource(R.string.event_settlement_credited, amountFormatted)
+            else stringResource(R.string.event_settlement_simple)
+        NotificationType.NEW_OFFER -> stringResource(R.string.event_new_offer)
+        NotificationType.HIGH_RESTORE_ALERT -> stringResource(R.string.event_high_restore)
+        NotificationType.SLA_WARNING -> notification.title.ifEmpty { stringResource(R.string.event_sla_warning) }
+        NotificationType.CAPABILITY_RESET -> stringResource(R.string.event_capability_reset)
+        NotificationType.WALLET_FROZEN -> stringResource(R.string.event_wallet_frozen)
         NotificationType.NETBOX_RECOVERY_DEDUCTION ->
-            if (amountFormatted != null) "Deduction of \u20B9$amountFormatted"
-            else "NetBox Recovery Deduction"
+            if (amountFormatted != null) stringResource(R.string.event_deduction, amountFormatted)
+            else stringResource(R.string.event_netbox_recovery)
         NotificationType.GENERAL -> notification.title
     }
 }
 
+@Composable
 private fun getConsequenceText(notification: AppNotification): String {
     return when (notification.type) {
         NotificationType.CAPABILITY_RESET ->
-            "New task assignments may be paused. Your earning potential is reduced until retraining is completed and compliance is restored."
+            stringResource(R.string.event_consequence_capability_reset)
         NotificationType.WALLET_FROZEN ->
-            "You cannot withdraw any funds. Settlements will continue to accumulate but remain locked until the investigation is resolved."
+            stringResource(R.string.event_consequence_wallet_frozen)
         NotificationType.NETBOX_RECOVERY_DEDUCTION -> {
             val amt = notification.amount?.let { formatIndian(it) } ?: "0"
-            "\u20B9$amt has been deducted from your available balance. You have 7 days to raise a support ticket to dispute this deduction."
+            stringResource(R.string.event_consequence_netbox_deduction, amt)
         }
         else -> ""
     }
