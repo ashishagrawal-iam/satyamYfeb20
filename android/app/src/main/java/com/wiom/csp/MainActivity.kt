@@ -3,6 +3,7 @@ package com.wiom.csp
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,6 +19,9 @@ import com.wiom.csp.data.preferences.UserPreferences
 import com.wiom.csp.ui.navigation.WiomNavGraph
 import com.wiom.csp.ui.theme.WiomCspTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -33,6 +37,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+
+        // Apply saved language before UI renders
+        val savedLang = runBlocking { userPreferences.language.first() }
+        applyLocale(savedLang)
+
         enableEdgeToEdge()
         requestNotificationPermissionIfNeeded()
 
@@ -54,6 +63,15 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+    }
+
+    private fun applyLocale(lang: String) {
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+        val config = Configuration(resources.configuration)
+        config.setLocale(locale)
+        @Suppress("DEPRECATION")
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 
     private fun requestNotificationPermissionIfNeeded() {

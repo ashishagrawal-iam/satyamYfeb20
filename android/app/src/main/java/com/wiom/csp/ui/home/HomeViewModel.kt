@@ -281,6 +281,13 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch { prefs.setOffersEnabled(enabled) }
     }
 
+    val currentLanguage: StateFlow<String> = prefs.language
+        .stateIn(viewModelScope, SharingStarted.Eagerly, "en")
+
+    fun setLanguage(lang: String) {
+        viewModelScope.launch { prefs.setLanguage(lang) }
+    }
+
     fun logout() {
         viewModelScope.launch { prefs.clearAuth() }
     }

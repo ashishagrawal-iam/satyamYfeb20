@@ -27,6 +27,10 @@ import com.wiom.csp.ui.notification.EventModal
 import com.wiom.csp.ui.taskdetail.TaskDetailScreen
 import com.wiom.csp.ui.technician.TechnicianPickerSheet
 import com.wiom.csp.ui.theme.WiomCspTheme
+import android.app.Activity
+import android.content.res.Configuration
+import androidx.compose.ui.platform.LocalContext
+import java.util.Locale
 import com.wiom.csp.ui.wallet.WalletHubScreen
 import com.wiom.csp.ui.team.TeamHubScreen
 import com.wiom.csp.ui.support.SupportHubScreen
@@ -292,12 +296,27 @@ fun HomeScreen(
             "support" -> SupportHubScreen(onBack = { viewModel.backToHome() })
             "netbox" -> NetBoxHubScreen(onBack = { viewModel.backToHome() })
             "sla" -> SLAHubScreen(onBack = { viewModel.backToHome() })
-            "profile" -> ProfileScreen(
-                onBack = { viewModel.backToHome() },
-                offersEnabled = state.offersEnabled,
-                onOffersToggle = { viewModel.setOffersEnabled(it) },
-                onLogout = { viewModel.logout() }
-            )
+            "profile" -> {
+                val currentLang by viewModel.currentLanguage.collectAsState()
+                val context = LocalContext.current
+                ProfileScreen(
+                    onBack = { viewModel.backToHome() },
+                    offersEnabled = state.offersEnabled,
+                    onOffersToggle = { viewModel.setOffersEnabled(it) },
+                    currentLanguage = currentLang,
+                    onLanguageChange = { lang ->
+                        viewModel.setLanguage(lang)
+                        val locale = Locale(lang)
+                        Locale.setDefault(locale)
+                        val config = Configuration(context.resources.configuration)
+                        config.setLocale(locale)
+                        @Suppress("DEPRECATION")
+                        context.resources.updateConfiguration(config, context.resources.displayMetrics)
+                        (context as? Activity)?.recreate()
+                    },
+                    onLogout = { viewModel.logout() }
+                )
+            }
             "policies" -> PoliciesScreen(onBack = { viewModel.backToHome() })
             "technician" -> TechnicianAppScreen(onBack = { viewModel.backToHome() })
         }

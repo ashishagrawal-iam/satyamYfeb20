@@ -25,6 +25,8 @@ fun ProfileScreen(
     onBack: () -> Unit,
     offersEnabled: Boolean,
     onOffersToggle: (Boolean) -> Unit,
+    currentLanguage: String = "en",
+    onLanguageChange: (String) -> Unit = {},
     onLogout: () -> Unit = {}
 ) {
     val colors = WiomCspTheme.colors
@@ -72,18 +74,19 @@ fun ProfileScreen(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                listOf("EN" to stringResource(R.string.profile_english), "HI" to stringResource(R.string.profile_hindi)).forEach { (code, label) ->
+                listOf("en" to stringResource(R.string.profile_english), "hi" to stringResource(R.string.profile_hindi)).forEach { (code, label) ->
+                    val isSelected = code == currentLanguage
                     Box(
                         modifier = Modifier
                             .weight(1f)
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(if (code == "EN") colors.brandSubtle else colors.bgCard)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(if (isSelected) colors.brandSubtle else colors.bgCard)
                             .border(
                                 1.dp,
-                                if (code == "EN") colors.brandPrimary else Color.Transparent,
-                                RoundedCornerShape(10.dp)
+                                if (isSelected) colors.brandPrimary else Color.Transparent,
+                                RoundedCornerShape(12.dp)
                             )
-                            .clickable { /* TODO: language switch */ }
+                            .clickable { onLanguageChange(code) }
                             .padding(12.dp),
                         contentAlignment = Alignment.Center
                     ) {
