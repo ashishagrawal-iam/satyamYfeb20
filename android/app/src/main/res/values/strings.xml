@@ -6,11 +6,11 @@
     <string name="login_title">Wiom CSP</string>
     <string name="login_subtitle">Enter your mobile number to login</string>
     <string name="login_otp_sent">OTP sent to +91 %1$s</string>
-    <string name="login_mobile_label">MOBILE NUMBER</string>
+    <string name="login_mobile_label">Mobile number</string>
     <string name="login_country_code">+91</string>
     <string name="login_mobile_placeholder">9876543210</string>
     <string name="login_send_otp">Send OTP</string>
-    <string name="login_otp_label">ENTER OTP</string>
+    <string name="login_otp_label">Enter OTP</string>
     <string name="login_otp_placeholder">----</string>
     <string name="login_verify_otp">Verify OTP</string>
     <string name="login_change_number">\u2190 Change Number</string>
