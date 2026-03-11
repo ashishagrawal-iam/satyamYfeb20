@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -77,11 +78,16 @@ fun LoginScreen(
             Box(
                 modifier = Modifier
                     .size(56.dp)
-                    .clip(RoundedCornerShape(16.dp))
+                    .clip(RoundedCornerShape(14.dp))
                     .background(colors.brandPrimary),
                 contentAlignment = Alignment.Center
             ) {
-                Text("W", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Icon(
+                    painter = painterResource(R.drawable.ic_wiom_logo),
+                    contentDescription = "Wiom",
+                    modifier = Modifier.size(32.dp),
+                    tint = Color.White
+                )
             }
 
             Spacer(Modifier.height(16.dp))
