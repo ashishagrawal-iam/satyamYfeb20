@@ -82,7 +82,7 @@ fun LoginScreen(
             Box(
                 modifier = Modifier
                     .size(56.dp)
-                    .clip(RoundedCornerShape(14.dp))
+                    .clip(RoundedCornerShape(16.dp))
                     .background(colors.brandPrimary),
                 contentAlignment = Alignment.Center
             ) {
@@ -98,7 +98,7 @@ fun LoginScreen(
 
             Text(stringResource(R.string.login_title), fontSize = 22.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
 
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(8.dp))
 
             Text(
                 text = if (isOtpStep) stringResource(R.string.login_otp_sent, mobile) else stringResource(R.string.login_subtitle),
@@ -108,20 +108,20 @@ fun LoginScreen(
 
             Spacer(Modifier.height(40.dp))
 
-            // Error message
+            // Error message — Wiom: warning amber, not alarming red
             if (state is LoginState.Error) {
                 val errorMsg = (state as LoginState.Error).message
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(colors.negative.copy(alpha = 0.1f))
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(colors.warning.copy(alpha = 0.12f))
                         .padding(12.dp)
                 ) {
                     Text(
                         text = errorMsg,
-                        fontSize = 13.sp,
-                        color = colors.negative,
+                        fontSize = 14.sp,
+                        color = colors.textPrimary,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -327,6 +327,17 @@ fun LoginScreen(
 
             Spacer(Modifier.height(32.dp))
 
+            // Help link — Wiom: "हमसे बात करें" always accessible
+            Text(
+                stringResource(R.string.login_help),
+                fontSize = 14.sp,
+                color = colors.brandPrimary,
+                fontWeight = FontWeight.SemiBold
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            // Trust footer — company name as trust signal
             Text(
                 stringResource(R.string.login_footer),
                 fontSize = 12.sp,
