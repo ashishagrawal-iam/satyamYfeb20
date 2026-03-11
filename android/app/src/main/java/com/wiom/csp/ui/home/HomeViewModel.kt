@@ -144,17 +144,6 @@ class HomeViewModel @Inject constructor(
             }
         }
 
-        // Theme polling -- 2s
-        viewModelScope.launch {
-            while (true) {
-                delay(2000)
-                themeRepo.getTheme().onSuccess { theme ->
-                    _state.update { it.copy(currentTheme = theme) }
-                    prefs.setTheme(theme)
-                }
-            }
-        }
-
         // Wallet polling -- 5s
         viewModelScope.launch {
             while (true) {

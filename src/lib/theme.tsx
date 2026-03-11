@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, useEffect, useRef, type ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 
 export type ThemeName = 'dark' | 'state-color-check';
 
@@ -22,19 +22,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     return 'dark';
   });
 
-  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
   const setTheme = useCallback((newTheme: ThemeName) => {
     setThemeState(newTheme);
     if (typeof window !== 'undefined') {
       localStorage.setItem('wiom_theme', newTheme);
     }
-    // Also push to server so other devices pick it up
-    fetch('/api/theme', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ theme: newTheme }),
-    }).catch(() => {});
   }, []);
 
   // Apply data-theme attribute on <html>
@@ -45,26 +37,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     } else {
       root.removeAttribute('data-theme');
     }
-  }, [theme]);
-
-  // Poll server for theme changes (cross-device sync)
-  useEffect(() => {
-    pollRef.current = setInterval(async () => {
-      try {
-        const res = await fetch('/api/theme');
-        const data = await res.json();
-        if (data.theme && data.theme !== theme) {
-          setThemeState(data.theme as ThemeName);
-          localStorage.setItem('wiom_theme', data.theme);
-        }
-      } catch {
-        // API not available, skip
-      }
-    }, 2000);
-
-    return () => {
-      if (pollRef.current) clearInterval(pollRef.current);
-    };
   }, [theme]);
 
   // Also listen for localStorage changes from other tabs
