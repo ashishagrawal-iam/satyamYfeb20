@@ -8,13 +8,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import com.wiom.csp.R
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,11 +56,11 @@ fun TechLoginScreen(
                     .background(colors.brandPrimary),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    "W",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = Color.White
+                Icon(
+                    painter = painterResource(R.drawable.ic_wiom_logo),
+                    contentDescription = "Wiom",
+                    modifier = Modifier.size(32.dp),
+                    tint = Color.White
                 )
             }
 
