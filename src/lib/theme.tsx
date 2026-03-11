@@ -27,6 +27,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (typeof window !== 'undefined') {
       localStorage.setItem('wiom_theme', newTheme);
     }
+    // Persist to server so the Android app picks it up
+    fetch('/api/theme', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ theme: newTheme }),
+    }).catch(() => {});
   }, []);
 
   // Apply data-theme attribute on <html>
