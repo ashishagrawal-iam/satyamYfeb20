@@ -4,7 +4,7 @@
 
     <!-- Login -->
     <string name="login_title">Wiom CSP</string>
-    <string name="login_subtitle">वापस आने पर ख़ुशी हुई! अपना मोबाइल नंबर डालें</string>
+    <string name="login_subtitle">अपना मोबाइल नंबर डालें</string>
     <string name="login_otp_sent">+91 %1$s पर OTP भेज दिया है — ज़रा चेक करें</string>
     <string name="login_mobile_label">मोबाइल नंबर</string>
     <string name="login_country_code">+91</string>

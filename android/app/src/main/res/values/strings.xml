@@ -4,7 +4,7 @@
 
     <!-- Login -->
     <string name="login_title">Wiom CSP</string>
-    <string name="login_subtitle">Welcome back! Enter your mobile number to continue.</string>
+    <string name="login_subtitle">Enter your mobile number to continue.</string>
     <string name="login_otp_sent">OTP sent to +91 %1$s</string>
     <string name="login_mobile_label">Mobile number</string>
     <string name="login_country_code">+91</string>
