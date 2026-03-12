@@ -29,7 +29,7 @@ val NotoSansFamily = FontFamily(
  * Sizes: 12, 14, 16, 20, 24, 32, 48 only.
  */
 val WiomTypography = Typography(
-    // D1_48_Bold equivalent (display hero)
+    // T1_32_Bold equivalent (display hero)
     displayLarge = TextStyle(
         fontFamily = NotoSansFamily,
         fontWeight = FontWeight.Bold,
@@ -46,14 +46,14 @@ val WiomTypography = Typography(
     // T3_20_Bold equivalent
     headlineMedium = TextStyle(
         fontFamily = NotoSansFamily,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
         lineHeight = 28.sp,
     ),
     // T4_16_Bold equivalent
     titleLarge = TextStyle(
         fontFamily = NotoSansFamily,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 24.sp,
     ),

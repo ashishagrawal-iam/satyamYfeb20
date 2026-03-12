@@ -112,7 +112,7 @@ private fun formatFullTimestamp(iso: String): String {
     return try {
         val instant = Instant.parse(iso)
         val zdt = instant.atZone(ZoneId.systemDefault())
-        val formatter = DateTimeFormatter.ofPattern("d MMM yyyy, hh:mm:ss a", Locale.ENGLISH)
+        val formatter = DateTimeFormatter.ofPattern("d MMM yyyy, hh:mm:ss a", Locale.getDefault())
         zdt.format(formatter)
     } catch (_: Exception) { iso }
 }
@@ -121,7 +121,7 @@ private fun formatShortTime(iso: String): String {
     return try {
         val instant = Instant.parse(iso)
         val zdt = instant.atZone(ZoneId.systemDefault())
-        val formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH)
+        val formatter = DateTimeFormatter.ofPattern("HH:mm", Locale.getDefault())
         zdt.format(formatter)
     } catch (_: Exception) { iso }
 }
@@ -303,13 +303,13 @@ fun TaskDetailScreen(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clip(RoundedCornerShape(12.dp))
+                                .clip(RoundedCornerShape(16.dp))
                                 .background(
                                     Brush.linearGradient(
                                         colors = listOf(colors.cardGradientStart, colors.bgSecondary)
                                     )
                                 )
-                                .border(1.dp, colors.bgCardHover, RoundedCornerShape(12.dp))
+                                .border(1.dp, colors.bgCardHover, RoundedCornerShape(16.dp))
                                 .padding(24.dp)
                         ) {
                             Text(
@@ -439,7 +439,7 @@ fun TaskDetailScreen(
                     }
                 }
 
-                Spacer(Modifier.height(80.dp))
+                Spacer(Modifier.height(84.dp))
             }
 
             // === F. ACTION FOOTER ===
@@ -481,7 +481,7 @@ fun TaskDetailScreen(
                             .clickable { offerStep = "slot_pick" },
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(stringResource(R.string.cta_claim), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                        Text(stringResource(R.string.cta_claim), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = colors.bgPrimary)
                     }
                 }
             } else if (cta != null) {
@@ -521,7 +521,7 @@ fun TaskDetailScreen(
                                     .clickable { onAction(task.taskId, cta.action, emptyMap()) },
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text(stringResource(cta.labelResId), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                                Text(stringResource(cta.labelResId), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = colors.bgPrimary)
                             }
                         }
                     } else {
@@ -534,7 +534,7 @@ fun TaskDetailScreen(
                                 .clickable { onAction(task.taskId, cta.action, emptyMap()) },
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(stringResource(cta.labelResId), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                            Text(stringResource(cta.labelResId), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = colors.bgPrimary)
                         }
                     }
                 }
@@ -662,9 +662,9 @@ private fun NeedHelpSection(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(16.dp))
                     .background(colors.bgCard)
-                    .border(1.dp, colors.borderSubtle, RoundedCornerShape(12.dp))
+                    .border(1.dp, colors.borderSubtle, RoundedCornerShape(16.dp))
                     .clickable { onShowPicker() }
                     .padding(horizontal = 16.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -681,7 +681,7 @@ private fun NeedHelpSection(
                         .background(colors.brandPrimary)
                         .padding(horizontal = 12.dp, vertical = 4.dp)
                 ) {
-                    Text(stringResource(R.string.detail_ask), fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
+                    Text(stringResource(R.string.detail_ask), fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = colors.bgPrimary)
                 }
             }
         } else {
@@ -689,9 +689,9 @@ private fun NeedHelpSection(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(16.dp))
                     .background(colors.brandSubtle)
-                    .border(1.dp, colors.brandPrimary.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
+                    .border(1.dp, colors.brandPrimary.copy(alpha = 0.3f), RoundedCornerShape(16.dp))
                     .padding(horizontal = 16.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -709,7 +709,7 @@ private fun NeedHelpSection(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(16.dp))
                     .background(colors.bgCard)
                     .padding(12.dp)
             ) {
@@ -790,9 +790,9 @@ private fun QuickNotesSection(
                     val chip = stringResource(resId)
                     Box(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(16.dp))
+                            .clip(RoundedCornerShape(8.dp))
                             .background(colors.bgCard)
-                            .border(1.dp, colors.borderSubtle, RoundedCornerShape(16.dp))
+                            .border(1.dp, colors.borderSubtle, RoundedCornerShape(8.dp))
                             .clickable { onSelectChip(chip) }
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
@@ -912,7 +912,7 @@ private fun SlotPickerScreen(
     val dayAfterLabel = stringResource(R.string.detail_day_after)
 
     val slots = remember(todayLabel, tomorrowLabel, dayAfterLabel) {
-        val fmt = DateTimeFormatter.ofPattern("EEE, d MMM", Locale.ENGLISH)
+        val fmt = DateTimeFormatter.ofPattern("EEE, d MMM", Locale.getDefault())
         val today = java.time.LocalDate.now()
         listOf(
             todayLabel to today.format(fmt),
@@ -980,9 +980,9 @@ private fun SlotPickerScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 12.dp)
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(16.dp))
                         .background(colors.bgCard)
-                        .border(1.dp, colors.borderSubtle, RoundedCornerShape(12.dp))
+                        .border(1.dp, colors.borderSubtle, RoundedCornerShape(16.dp))
                         .clickable { onSelectSlot(label) }
                         .padding(horizontal = 24.dp, vertical = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -995,7 +995,7 @@ private fun SlotPickerScreen(
                             fontWeight = FontWeight.SemiBold,
                             color = colors.textPrimary
                         )
-                        Spacer(Modifier.height(2.dp))
+                        Spacer(Modifier.height(4.dp))
                         Text(
                             text = sublabel,
                             fontSize = 12.sp,
@@ -1082,9 +1082,9 @@ private fun DeclineReasonScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 12.dp)
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(16.dp))
                         .background(colors.bgCard)
-                        .border(1.dp, colors.borderSubtle, RoundedCornerShape(12.dp))
+                        .border(1.dp, colors.borderSubtle, RoundedCornerShape(16.dp))
                         .clickable { onSelectReason(reason) }
                         .padding(horizontal = 24.dp, vertical = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,

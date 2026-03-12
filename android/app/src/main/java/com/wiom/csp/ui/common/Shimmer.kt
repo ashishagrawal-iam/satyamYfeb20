@@ -48,14 +48,14 @@ fun TaskCardSkeleton(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = 14.dp)
-            .clip(RoundedCornerShape(14.dp))
+            .padding(bottom = 12.dp)
+            .clip(RoundedCornerShape(12.dp))
             .background(WiomCspTheme.colors.bgCard)
-            .padding(start = 20.dp, end = 20.dp, top = 18.dp, bottom = 20.dp)
+            .padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 20.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             ShimmerBox(
                 Modifier
@@ -79,7 +79,7 @@ fun TaskCardSkeleton(modifier: Modifier = Modifier) {
         Spacer(Modifier.height(12.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             ShimmerBox(
                 Modifier

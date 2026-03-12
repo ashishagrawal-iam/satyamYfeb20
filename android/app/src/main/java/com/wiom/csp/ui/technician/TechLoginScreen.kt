@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.wiom.csp.R
 import androidx.compose.ui.text.style.TextAlign
@@ -36,7 +37,7 @@ fun TechLoginScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(colors.bgPrimary),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.TopCenter
     ) {
         Column(
             modifier = Modifier
@@ -44,52 +45,60 @@ fun TechLoginScreen(
                 .widthIn(max = 380.dp)
                 .padding(24.dp)
                 .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.Start
         ) {
-            // Logo / Brand
+            // Logo / Brand — centered
             Spacer(Modifier.height(40.dp))
 
             Box(
-                modifier = Modifier
-                    .size(56.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(colors.brandPrimary),
+                modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_wiom_logo),
-                    contentDescription = "Wiom",
-                    modifier = Modifier.size(32.dp),
-                    tint = Color.White
-                )
+                Box(
+                    modifier = Modifier
+                        .size(56.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(colors.brandPrimary),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_wiom_logo),
+                        contentDescription = "Wiom",
+                        modifier = Modifier.size(32.dp),
+                        tint = colors.bgPrimary
+                    )
+                }
             }
 
             Spacer(Modifier.height(16.dp))
 
+            // Title — left-aligned for F-pattern
             Text(
-                "Wiom Technician",
-                fontSize = 22.sp,
+                stringResource(R.string.tech_app_title),
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = colors.textPrimary
             )
 
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(8.dp))
 
+            // Subtitle — left-aligned for F-pattern
             Text(
-                "Select your profile to continue",
-                fontSize = 13.sp,
+                stringResource(R.string.tech_select_profile),
+                fontSize = 14.sp,
                 color = colors.textMuted
             )
 
             Spacer(Modifier.height(40.dp))
 
-            // Technician list
+            // Technician list — cards are full-width (centered by nature)
             if (isLoading) {
                 Text(
-                    "Loading...",
+                    stringResource(R.string.home_loading),
                     fontSize = 14.sp,
                     color = colors.textMuted,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
                 )
             } else {
                 Column(
@@ -99,27 +108,27 @@ fun TechLoginScreen(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clip(RoundedCornerShape(12.dp))
+                                .clip(RoundedCornerShape(16.dp))
                                 .background(colors.bgCard)
-                                .border(1.dp, colors.borderSubtle, RoundedCornerShape(12.dp))
+                                .border(1.dp, colors.borderSubtle, RoundedCornerShape(16.dp))
                                 .clickable { onLogin(tech.id) }
-                                .padding(horizontal = 18.dp, vertical = 16.dp),
+                                .padding(horizontal = 16.dp, vertical = 16.dp),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(14.dp)
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             // Avatar
                             Box(
                                 modifier = Modifier
-                                    .size(42.dp)
+                                    .size(40.dp)
                                     .clip(CircleShape)
                                     .background(colors.brandPrimary),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
                                     tech.name.first().toString(),
-                                    fontSize = 18.sp,
+                                    fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = Color.White
+                                    color = colors.bgPrimary
                                 )
                             }
 
@@ -127,7 +136,7 @@ fun TechLoginScreen(
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     tech.name,
-                                    fontSize = 15.sp,
+                                    fontSize = 16.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     color = colors.textPrimary
                                 )
@@ -156,10 +165,11 @@ fun TechLoginScreen(
             Spacer(Modifier.height(24.dp))
 
             Text(
-                "Only technicians added by your CSP can log in.",
+                stringResource(R.string.tech_only_csp),
                 fontSize = 12.sp,
                 color = colors.textMuted,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(Modifier.height(40.dp))

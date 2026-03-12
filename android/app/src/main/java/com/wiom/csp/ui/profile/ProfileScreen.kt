@@ -59,10 +59,10 @@ fun ProfileScreen(
                     modifier = Modifier.size(52.dp).clip(CircleShape).background(colors.brandPrimary),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("C", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                    Text("C", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = colors.bgPrimary)
                 }
                 Spacer(Modifier.height(8.dp))
-                Text("CSP-MH-1001", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+                Text("CSP-MH-1001", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
                 Text(stringResource(R.string.profile_band_partner), fontSize = 14.sp, color = colors.brandPrimary)
             }
 
@@ -79,12 +79,12 @@ fun ProfileScreen(
                     Box(
                         modifier = Modifier
                             .weight(1f)
-                            .clip(RoundedCornerShape(12.dp))
+                            .clip(RoundedCornerShape(8.dp))
                             .background(if (isSelected) colors.brandSubtle else colors.bgCard)
                             .border(
                                 1.dp,
                                 if (isSelected) colors.brandPrimary else Color.Transparent,
-                                RoundedCornerShape(12.dp)
+                                RoundedCornerShape(8.dp)
                             )
                             .clickable { onLanguageChange(code) }
                             .padding(12.dp),
@@ -139,7 +139,7 @@ fun ProfileScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(16.dp))
                     .background(colors.bgCard)
                     .padding(16.dp)
             ) {
@@ -158,7 +158,7 @@ fun ProfileScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
                     .height(48.dp),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(24.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colors.negative.copy(alpha = 0.1f)
                 )
@@ -166,12 +166,12 @@ fun ProfileScreen(
                 Text(
                     stringResource(R.string.profile_logout),
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.Bold,
                     color = colors.negative
                 )
             }
 
-            Spacer(Modifier.height(80.dp))
+            Spacer(Modifier.height(84.dp))
         }
 
         // Offer warning dialog
@@ -196,7 +196,8 @@ fun ProfileScreen(
                         Text(stringResource(R.string.profile_cancel), color = colors.textSecondary)
                     }
                 },
-                containerColor = colors.bgCard
+                containerColor = colors.bgCard,
+                shape = RoundedCornerShape(24.dp)
             )
         }
     }

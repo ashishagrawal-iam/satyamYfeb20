@@ -33,14 +33,14 @@ fun FilterChipRow(
     Row(
         modifier = modifier
             .horizontalScroll(rememberScrollState()),
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         options.forEach { option ->
             val isSelected = option == selected
             Box(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(24.dp))
                     .background(
                         if (isSelected) colors.brandPrimary
                         else colors.bgSecondary
@@ -57,7 +57,7 @@ fun FilterChipRow(
                     text = option,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = if (isSelected) Color.White
+                    color = if (isSelected) colors.bgPrimary
                     else colors.textSecondary
                 )
             }

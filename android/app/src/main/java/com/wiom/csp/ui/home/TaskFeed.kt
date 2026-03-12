@@ -103,7 +103,7 @@ fun TaskFeed(
     ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 80.dp)
+        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 84.dp)
     ) {
         // Filter chips
         item {
@@ -125,10 +125,10 @@ fun TaskFeed(
                         .background(colors.negativeSubtle)
                         .border(
                             1.dp,
-                            Color(0x4DE01E00),
+                            colors.negative.copy(alpha = 0.3f),
                             RoundedCornerShape(8.dp)
                         )
-                        .padding(horizontal = 14.dp, vertical = 10.dp)
+                        .padding(horizontal = 12.dp, vertical = 8.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.feed_hidden_critical, hiddenCriticalCount),
@@ -282,13 +282,13 @@ private fun FadingResolvedCard(task: Task) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 10.dp)
+            .padding(bottom = 8.dp)
     ) {
         // Dimmed card underneath
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(10.dp))
+                .clip(RoundedCornerShape(16.dp))
                 .background(colors.bgCard.copy(alpha = 0.7f))
                 .drawBehind {
                     drawLine(
@@ -298,7 +298,7 @@ private fun FadingResolvedCard(task: Task) {
                         strokeWidth = 4.dp.toPx()
                     )
                 }
-                .padding(horizontal = 16.dp, vertical = 14.dp)
+                .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -317,7 +317,7 @@ private fun FadingResolvedCard(task: Task) {
                     color = colors.textPrimary
                 )
             }
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(8.dp))
             Text(
                 text = area,
                 fontSize = 12.sp,
@@ -329,21 +329,21 @@ private fun FadingResolvedCard(task: Task) {
         Box(
             modifier = Modifier
                 .matchParentSize()
-                .clip(RoundedCornerShape(10.dp))
+                .clip(RoundedCornerShape(16.dp))
                 .background(colors.positiveSubtle),
             contentAlignment = Alignment.Center
         ) {
             Box(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(24.dp))
                     .background(colors.positive)
-                    .padding(horizontal = 20.dp, vertical = 6.dp)
+                    .padding(horizontal = 20.dp, vertical = 8.dp)
             ) {
                 Text(
                     text = stringResource(R.string.feed_resolved),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White,
+                    color = colors.bgPrimary,
                     letterSpacing = 0.5.sp
                 )
             }

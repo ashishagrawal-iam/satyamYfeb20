@@ -1,5 +1,6 @@
 package com.wiom.csp.ui.theme
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import com.wiom.csp.domain.model.AppTheme
@@ -184,7 +185,9 @@ fun WiomCspTheme(
     }
 
     CompositionLocalProvider(LocalWiomColors provides colors) {
-        content()
+        MaterialTheme(typography = WiomTypography) {
+            content()
+        }
     }
 }
 

@@ -4,7 +4,7 @@
 
     <!-- Login -->
     <string name="login_title">Wiom CSP</string>
-    <string name="login_subtitle">Enter your mobile number to continue.</string>
+    <string name="login_subtitle">Your mobile number is your key to Wiom</string>
     <string name="login_otp_sent">OTP sent to +91 %1$s</string>
     <string name="login_mobile_label">Mobile number</string>
     <string name="login_country_code">+91</string>
@@ -17,14 +17,14 @@
     <string name="login_resend_timer">Resend in %1$ds</string>
     <string name="login_resend_otp">Resend OTP</string>
     <string name="login_footer">Wiom Technologies Pvt. Ltd.</string>
-    <string name="login_help">Need help?</string>
+    <string name="login_help">Need help? We\u0027re here</string>
 
     <!-- Home -->
     <string name="home_loading">Loading\u2026</string>
-    <string name="home_error_title">Cannot reach server</string>
-    <string name="home_error_desc">Make sure the backend is running and your device is on the same network.</string>
+    <string name="home_error_title">Connecting to server</string>
+    <string name="home_error_desc">We\u0027re working on reconnecting. Your data is safe.</string>
     <string name="home_retry">Retry</string>
-    <string name="home_offline">Offline \u2014 showing cached data</string>
+    <string name="home_offline">You\u0027re offline \u2014 showing your saved data</string>
     <string name="home_open_menu">Open navigation menu</string>
     <string name="home_offer_notifications">Offer notifications:</string>
     <string name="home_on">ON</string>
@@ -52,16 +52,16 @@
     <string name="assurance_qual_signal">Qualitative Signal</string>
     <string name="assurance_exposure_ok">All metrics are within acceptable thresholds. Continue maintaining current standards.</string>
     <string name="assurance_exposure_limited">Some metrics are approaching threshold limits. Review active tasks and prioritize SLA compliance.</string>
-    <string name="assurance_exposure_critical">Critical metrics have breached thresholds. Immediate corrective action required to restore eligibility.</string>
+    <string name="assurance_exposure_critical">Some key metrics need attention. Take action now to stay eligible.</string>
     <string name="assurance_lifetime_earned">Lifetime Earned</string>
 
     <!-- SLA / Exposure -->
     <string name="sla_compliant">Compliant</string>
     <string name="sla_at_risk">At Risk</string>
     <string name="sla_non_compliant">Non-Compliant</string>
-    <string name="exposure_eligible">ELIGIBLE</string>
-    <string name="exposure_limited">LIMITED</string>
-    <string name="exposure_ineligible">INELIGIBLE</string>
+    <string name="exposure_eligible">Eligible</string>
+    <string name="exposure_limited">Limited</string>
+    <string name="exposure_ineligible">Ineligible</string>
 
     <!-- Task Feed -->
     <string name="feed_your_tasks">Your Tasks</string>
@@ -72,7 +72,7 @@
     <string name="feed_install">Install</string>
     <string name="feed_restore">Restore</string>
     <string name="feed_netbox">NetBox</string>
-    <string name="feed_hidden_critical">HIGH RESTORE task(s) hidden by filter</string>
+    <string name="feed_hidden_critical">High restore task(s) hidden by filter</string>
     <string name="feed_resolved">Resolved</string>
 
     <!-- CTAs -->
@@ -93,7 +93,7 @@
     <string name="cta_unblock">Unblock</string>
 
     <!-- Task Card -->
-    <string name="card_high">HIGH</string>
+    <string name="card_high">High</string>
     <string name="card_overdue">Overdue</string>
     <string name="card_remaining">remaining</string>
     <string name="card_offer_expires">Offer expires</string>
@@ -102,12 +102,12 @@
     <string name="card_left">left</string>
     <string name="card_restore_retry">Restore retry</string>
     <string name="card_attempt">attempt</string>
-    <string name="card_blocked_action">Blocked \u2014 action needed</string>
+    <string name="card_blocked_action">Needs your attention</string>
     <string name="card_return_overdue">Return overdue</string>
     <string name="card_verification_pending">Verification pending \u2014 confirm</string>
     <string name="card_install_overdue">Install overdue</string>
     <string name="card_pickup_overdue">Pickup overdue</string>
-    <string name="card_assignment_unaccepted">Assignment unaccepted</string>
+    <string name="card_assignment_unaccepted">Waiting for acceptance</string>
     <string name="card_chain_escalation">Chain escalation pending</string>
     <string name="card_manual_exception">Manual exception</string>
     <string name="card_customer_outage">Customer outage</string>
@@ -126,7 +126,7 @@
     <string name="card_restore_deadline">Restore deadline</string>
     <string name="card_restore_overdue">Restore overdue</string>
     <string name="card_return_due">Return due</string>
-    <string name="card_blocked_reason">Blocked \u2014 %1$s</string>
+    <string name="card_blocked_reason">Paused \u2014 %1$s</string>
     <string name="card_wiom_replied">Wiom replied</string>
     <string name="card_note_count">%1$d note</string>
     <string name="card_notes_count">%1$d notes</string>
@@ -166,7 +166,7 @@
     <string name="profile_band_partner">Band A Partner</string>
     <string name="profile_back">Back</string>
     <string name="profile_offer_notifications">Offer Notifications</string>
-    <string name="profile_offer_toggle_consequence">You will not receive new connection offers. Your active base will not grow until you turn this back on.</string>
+    <string name="profile_offer_toggle_consequence">New connection offers will pause. Turn back on anytime to resume growing your active base.</string>
     <string name="profile_offer_toggle_title">Turn off offer notifications?</string>
     <string name="profile_turn_off">Turn Off</string>
     <string name="profile_cancel">Cancel</string>
@@ -176,11 +176,11 @@
 
     <!-- Capability Reset -->
     <string name="capability_reset_title">Capability Reset Active</string>
-    <string name="capability_reset_desc">Task assignments may be paused. Complete retraining to restore full partner status. Contact your zone manager.</string>
+    <string name="capability_reset_desc">A short retraining will help you get back to full earning potential. Your zone manager is here to help.</string>
 
     <!-- Wallet Frozen -->
     <string name="wallet_frozen_title">Wallet Frozen</string>
-    <string name="wallet_frozen_desc">Withdrawals are disabled. Settlements will accumulate but cannot be withdrawn until the investigation is resolved.</string>
+    <string name="wallet_frozen_desc">Your earnings are safe and continue to grow. Withdrawals will resume once the review is complete.</string>
 
     <!-- Wallet -->
     <string name="wallet_title">Wallet</string>
@@ -189,9 +189,9 @@
     <string name="wallet_pending">Pending: %1$s</string>
     <string name="wallet_withdraw">Withdraw</string>
     <string name="wallet_next_withdrawal">Next withdrawal in %1$d day(s)</string>
-    <string name="wallet_earnings_credits">EARNINGS CREDITS</string>
-    <string name="wallet_deposit_fees">DEPOSIT &amp; FEES</string>
-    <string name="wallet_transactions">TRANSACTIONS</string>
+    <string name="wallet_earnings_credits">Earnings credits</string>
+    <string name="wallet_deposit_fees">Deposit &amp; fees</string>
+    <string name="wallet_transactions">Transactions</string>
     <string name="wallet_settlement">Settlement</string>
     <string name="wallet_bonus">Bonus</string>
     <string name="wallet_install">Install</string>
@@ -219,7 +219,7 @@
     <!-- Support -->
     <string name="support_title">Support</string>
     <string name="support_receipt_title">Case Submitted</string>
-    <string name="support_receipt_desc">Your support case has been submitted. Expect a response within 24 hours.</string>
+    <string name="support_receipt_desc">We\u0027ve received your request. Our team will get back to you within 24 hours.</string>
     <string name="support_back_to_support">Back to Support</string>
     <string name="support_no_cases">No support cases</string>
     <string name="support_new_case">New Support Case</string>
@@ -249,7 +249,7 @@
     <!-- Event Modal -->
     <string name="event_dismiss">Dismiss</string>
     <string name="event_view">View</string>
-    <string name="event_what_means">WHAT THIS MEANS:</string>
+    <string name="event_what_means">What this means:</string>
     <string name="event_payment_received">Payment of \u20B9%1$s received</string>
     <string name="event_payment_simple">Payment received</string>
     <string name="event_settlement_credited">Settlement of \u20B9%1$s credited</string>
@@ -261,13 +261,13 @@
     <string name="event_deduction">Deduction of \u20B9%1$s</string>
     <string name="event_netbox_recovery">NetBox Recovery Deduction</string>
     <string name="event_wallet_frozen">Wallet Frozen</string>
-    <string name="event_consequence_capability_reset">New task assignments may be paused. Your earning potential is reduced until retraining is completed and compliance is restored.</string>
-    <string name="event_consequence_wallet_frozen">You cannot withdraw any funds. Settlements will continue to accumulate but remain locked until the investigation is resolved.</string>
+    <string name="event_consequence_capability_reset">A quick retraining module will restore your full earning potential. Your existing earnings are safe.</string>
+    <string name="event_consequence_wallet_frozen">Your earnings are growing safely. Withdrawals will resume once the review is complete.</string>
     <string name="event_consequence_netbox_deduction">\u20B9%1$s has been deducted from your available balance. You have 7 days to raise a support ticket to dispute this deduction.</string>
 
     <!-- Task Detail -->
     <string name="detail_back">Back to tasks</string>
-    <string name="detail_customer_details">CUSTOMER DETAILS</string>
+    <string name="detail_customer_details">Customer details</string>
     <string name="detail_connection_id">Connection ID</string>
     <string name="detail_area">Area</string>
     <string name="detail_task_type">Task Type</string>
@@ -279,11 +279,11 @@
     <string name="detail_deadline">Deadline</string>
     <string name="detail_retries">Retries</string>
     <string name="detail_escalation">Escalation</string>
-    <string name="detail_blocked">Blocked</string>
-    <string name="detail_proof">PROOF</string>
+    <string name="detail_blocked">Paused</string>
+    <string name="detail_proof">Proof</string>
     <string name="detail_capture_photo">Capture Photo</string>
     <string name="detail_retake_photo">Retake Photo</string>
-    <string name="detail_timeline">TIMELINE</string>
+    <string name="detail_timeline">Timeline</string>
     <string name="detail_decline">Decline</string>
     <string name="detail_you">You</string>
     <string name="detail_call_tech">\u260E Tech</string>
@@ -293,7 +293,7 @@
     <string name="detail_help_active">Wiom help active \u00B7 Awaiting response</string>
     <string name="detail_select_reason">Select a reason:</string>
     <string name="detail_cancel">Cancel</string>
-    <string name="detail_quick_notes">QUICK NOTES</string>
+    <string name="detail_quick_notes">Quick notes</string>
     <string name="detail_close">Close</string>
     <string name="detail_add">+ Add</string>
     <string name="detail_choose_slot">Choose Preferred Slot</string>
@@ -302,13 +302,13 @@
     <string name="detail_tomorrow">Tomorrow</string>
     <string name="detail_day_after">Day After</string>
     <string name="detail_decline_offer">Decline Offer</string>
-    <string name="detail_decline_desc">Please select a reason for declining this offer:</string>
+    <string name="detail_decline_desc">Help us improve by sharing why this offer doesn\u0027t work for you:</string>
     <string name="detail_expired">Expired</string>
     <string name="detail_min">min</string>
-    <string name="detail_system">SYSTEM</string>
+    <string name="detail_system">System</string>
     <string name="detail_csp">CSP</string>
-    <string name="detail_admin">ADMIN</string>
-    <string name="detail_tech">TECH</string>
+    <string name="detail_admin">Admin</string>
+    <string name="detail_tech">Tech</string>
 
     <!-- Decline Reasons -->
     <string name="decline_too_far">Too far from my area</string>
@@ -333,39 +333,39 @@
 
     <!-- Onboarding -->
     <string name="onboarding_title">Partner Registration</string>
-    <string name="onboarding_subtitle">Complete your registration to access the CSP dashboard.</string>
+    <string name="onboarding_subtitle">One-time setup to start your Wiom journey</string>
     <string name="onboarding_section_business">Business Information</string>
-    <string name="onboarding_business_name">BUSINESS / ENTITY NAME</string>
-    <string name="onboarding_business_hint">Registered business name</string>
-    <string name="onboarding_entity_type">ENTITY TYPE</string>
-    <string name="onboarding_individual">INDIVIDUAL</string>
-    <string name="onboarding_firm">FIRM</string>
-    <string name="onboarding_company">COMPANY</string>
+    <string name="onboarding_business_name">Business / Entity name</string>
+    <string name="onboarding_business_hint">e.g. Ram Telecom</string>
+    <string name="onboarding_entity_type">Entity type</string>
+    <string name="onboarding_individual">Individual</string>
+    <string name="onboarding_firm">Firm</string>
+    <string name="onboarding_company">Company</string>
     <string name="onboarding_section_location">Service Location</string>
-    <string name="onboarding_state">STATE</string>
-    <string name="onboarding_state_hint">State</string>
-    <string name="onboarding_city">CITY</string>
-    <string name="onboarding_city_hint">City</string>
-    <string name="onboarding_area">AREA / ZONE</string>
-    <string name="onboarding_area_hint">Area or service zone</string>
-    <string name="onboarding_pincode">PINCODE</string>
-    <string name="onboarding_pincode_hint">6-digit pincode</string>
+    <string name="onboarding_state">State</string>
+    <string name="onboarding_state_hint">e.g. Maharashtra</string>
+    <string name="onboarding_city">City</string>
+    <string name="onboarding_city_hint">e.g. Mumbai</string>
+    <string name="onboarding_area">Area / Zone</string>
+    <string name="onboarding_area_hint">e.g. Andheri West</string>
+    <string name="onboarding_pincode">Pincode</string>
+    <string name="onboarding_pincode_hint">e.g. 400058</string>
     <string name="onboarding_section_identity">Identity Verification</string>
-    <string name="onboarding_aadhaar">AADHAAR NUMBER</string>
-    <string name="onboarding_aadhaar_hint">12-digit Aadhaar number</string>
-    <string name="onboarding_pan">PAN NUMBER</string>
-    <string name="onboarding_pan_hint">ABCDE1234F</string>
+    <string name="onboarding_aadhaar">Aadhaar number</string>
+    <string name="onboarding_aadhaar_hint">e.g. 1234 5678 9012</string>
+    <string name="onboarding_pan">PAN number</string>
+    <string name="onboarding_pan_hint">e.g. ABCDE1234F</string>
     <string name="onboarding_section_bank">Bank Details</string>
-    <string name="onboarding_holder_name">ACCOUNT HOLDER NAME</string>
-    <string name="onboarding_holder_hint">Name as on bank account</string>
-    <string name="onboarding_account_number">ACCOUNT NUMBER</string>
-    <string name="onboarding_account_hint">Bank account number</string>
-    <string name="onboarding_ifsc">IFSC CODE</string>
-    <string name="onboarding_ifsc_hint">SBIN0001234</string>
-    <string name="onboarding_bank_name">BANK NAME</string>
-    <string name="onboarding_bank_hint">Bank name</string>
+    <string name="onboarding_holder_name">Account holder name</string>
+    <string name="onboarding_holder_hint">e.g. Ram Kumar</string>
+    <string name="onboarding_account_number">Account number</string>
+    <string name="onboarding_account_hint">e.g. 12345678901234</string>
+    <string name="onboarding_ifsc">IFSC code</string>
+    <string name="onboarding_ifsc_hint">e.g. SBIN0001234</string>
+    <string name="onboarding_bank_name">Bank name</string>
+    <string name="onboarding_bank_hint">e.g. State Bank of India</string>
     <string name="onboarding_terms">I accept the terms of partnership</string>
-    <string name="onboarding_submit">Submit Registration</string>
+    <string name="onboarding_submit">Start my Wiom journey</string>
 
     <!-- Policies -->
     <string name="policies_title">Policies &amp; Updates</string>
@@ -376,10 +376,41 @@
     <string name="general_back">\u2190 Back</string>
     <string name="consequence_label">What this means:</string>
 
+    <!-- Task Action Confirmations -->
+    <string name="action_claimed">%1$s secured! Please accept within 15 min.</string>
+    <string name="action_claimed_and_assigned">%1$s secured for %2$s. Now assign a technician to get started.</string>
+    <string name="action_declined">%1$s has been released.</string>
+    <string name="action_accepted">%1$s accepted! Schedule or assign a technician to proceed.</string>
+    <string name="action_work_started">%1$s \u2014 Work is underway.</string>
+    <string name="action_resolved">%1$s marked as resolved. Well done!</string>
+    <string name="action_unblocked">%1$s unblocked and back on track.</string>
+    <string name="action_collected">%1$s \u2014 NetBox marked as collected.</string>
+    <string name="action_return_confirmed">%1$s \u2014 Return confirmed.</string>
+    <string name="action_verified">%1$s \u2014 Activation verified. \u20B9300 earned!</string>
+    <string name="action_install_earning_title">Install Earning Credited</string>
+    <string name="action_install_earning_message">\u20B9300 earned \u2014 Install activation for %1$s</string>
+    <string name="action_installed">%1$s \u2014 Installation completed. Verification pending.</string>
+    <string name="action_assigned">%1$s assigned to %2$s.</string>
+
+    <!-- Task Action Event Details -->
+    <string name="event_detail_claimed">CSP claimed this task. Accept deadline: 15 min.</string>
+    <string name="event_detail_claimed_slot">CSP claimed this task. Preferred slot: %1$s.</string>
+    <string name="event_detail_accepted_slot">CSP accepted. Scheduled for: %1$s.</string>
+    <string name="event_detail_declined">CSP declined this offer. Reason: %1$s</string>
+    <string name="event_detail_accepted">CSP accepted this task. Ready to schedule.</string>
+    <string name="event_detail_work_started">CSP started work on this task (self-assigned).</string>
+    <string name="event_detail_resolved">Task marked as resolved by CSP.</string>
+    <string name="event_detail_unblocked">Block resolved. Task resumed.</string>
+    <string name="event_detail_collected">NetBox collected from customer premises.</string>
+    <string name="event_detail_return_confirmed">NetBox return confirmed and recorded.</string>
+    <string name="event_detail_verified">Activation manually verified by CSP.</string>
+    <string name="event_detail_installed">Hardware installation completed. Pending activation verification.</string>
+    <string name="event_detail_assigned">Task assigned to %1$s (%2$s). Delegation state: ASSIGNED.</string>
+
     <!-- Technician App -->
     <string name="tech_app_title">Wiom Technician</string>
-    <string name="tech_select_profile">Select your profile to continue</string>
-    <string name="tech_only_csp">Only technicians added by your CSP can log in.</string>
+    <string name="tech_select_profile">Choose your profile to get started</string>
+    <string name="tech_only_csp">Your CSP has set up access for you</string>
     <string name="tech_active_tasks">Active Tasks</string>
     <string name="tech_completed">Completed</string>
     <string name="tech_no_active">No active tasks right now</string>
@@ -398,4 +429,20 @@
     <string name="tech_stats">Stats</string>
     <string name="tech_logout">Logout</string>
     <string name="tech_timeline">Timeline</string>
+    <string name="tech_active">Active</string>
+    <string name="tech_band">Band</string>
+    <string name="tech_csp">CSP</string>
+    <string name="tech_phone">Phone</string>
+    <string name="tech_joined">Joined</string>
+    <string name="tech_connection">Connection</string>
+    <string name="tech_area">Area</string>
+    <string name="tech_state">State</string>
+    <string name="tech_priority">Priority</string>
+    <string name="tech_sla_deadline">SLA deadline</string>
+    <string name="tech_due">Due</string>
+    <string name="tech_assign_to">Assign to technician</string>
+    <string name="tech_task_id">Task: %1$s</string>
+    <string name="tech_myself_csp">Myself (CSP)</string>
+    <string name="tech_self_handle">I will handle this task</string>
+    <string name="tech_self">Self</string>
 </resources>

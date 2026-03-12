@@ -62,44 +62,55 @@ fun LoginScreen(
     val isOtpStep = state is LoginState.OtpSent || state is LoginState.Verifying ||
             (state is LoginState.Error && (state as LoginState.Error).step == "otp")
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(colors.bgPrimary)
             .statusBarsPadding()
             .navigationBarsPadding()
             .imePadding(),
-        contentAlignment = Alignment.Center
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Scrollable content area — takes available space above the sticky CTA
         Column(
             modifier = Modifier
+                .weight(1f)
                 .widthIn(max = 380.dp)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.Start
         ) {
-            // Logo
+            Spacer(Modifier.height(48.dp))
+
+            // Logo — centered
             Box(
-                modifier = Modifier
-                    .size(56.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(colors.brandPrimary),
+                modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_wiom_logo),
-                    contentDescription = "Wiom",
-                    modifier = Modifier.size(32.dp),
-                    tint = Color.White
-                )
+                Box(
+                    modifier = Modifier
+                        .size(56.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(colors.brandPrimary),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_wiom_logo),
+                        contentDescription = "Wiom",
+                        modifier = Modifier.size(32.dp),
+                        tint = colors.bgPrimary
+                    )
+                }
             }
 
             Spacer(Modifier.height(16.dp))
 
-            Text(stringResource(R.string.login_title), fontSize = 22.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+            // Title — left-aligned for F-pattern
+            Text(stringResource(R.string.login_title), fontSize = 24.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
 
             Spacer(Modifier.height(8.dp))
 
+            // Subtitle — left-aligned for F-pattern
             Text(
                 text = if (isOtpStep) stringResource(R.string.login_otp_sent, mobile) else stringResource(R.string.login_subtitle),
                 fontSize = 14.sp,
@@ -114,7 +125,7 @@ fun LoginScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(16.dp))
                         .background(colors.warning.copy(alpha = 0.12f))
                         .padding(12.dp)
                 ) {
@@ -152,7 +163,7 @@ fun LoginScreen(
                     Box(
                         modifier = Modifier
                             .background(colors.bgSecondary)
-                            .padding(horizontal = 12.dp, vertical = 14.dp)
+                            .padding(horizontal = 12.dp, vertical = 12.dp)
                     ) {
                         Text(stringResource(R.string.login_country_code), fontSize = 16.sp, color = colors.textSecondary, fontWeight = FontWeight.SemiBold)
                     }
@@ -184,37 +195,9 @@ fun LoginScreen(
                             fontSize = 16.sp,
                             letterSpacing = 1.sp
                         ),
-                        modifier = Modifier.weight(1f)
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.weight(1f).height(56.dp)
                     )
-                }
-
-                Spacer(Modifier.height(20.dp))
-
-                Button(
-                    onClick = { viewModel.sendOtp(mobile) },
-                    enabled = mobile.length == 10 && state !is LoginState.SendingOtp,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp),
-                    shape = RoundedCornerShape(24.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colors.brandPrimary,
-                        disabledContainerColor = colors.ctaDisabledBg
-                    )
-                ) {
-                    if (state is LoginState.SendingOtp) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(20.dp),
-                            color = Color.White,
-                            strokeWidth = 2.dp
-                        )
-                    } else {
-                        Text(
-                            stringResource(R.string.login_send_otp),
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
                 }
             } else {
                 // Step 2: OTP Verification
@@ -261,37 +244,8 @@ fun LoginScreen(
                         letterSpacing = 12.sp
                     ),
                     shape = RoundedCornerShape(12.dp),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().height(56.dp)
                 )
-
-                Spacer(Modifier.height(20.dp))
-
-                Button(
-                    onClick = { viewModel.verifyOtp(otp) },
-                    enabled = otp.length == 4 && state !is LoginState.Verifying,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp),
-                    shape = RoundedCornerShape(24.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colors.brandPrimary,
-                        disabledContainerColor = colors.ctaDisabledBg
-                    )
-                ) {
-                    if (state is LoginState.Verifying) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(20.dp),
-                            color = Color.White,
-                            strokeWidth = 2.dp
-                        )
-                    } else {
-                        Text(
-                            stringResource(R.string.login_verify_otp),
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
 
                 Spacer(Modifier.height(16.dp))
 
@@ -343,6 +297,75 @@ fun LoginScreen(
                 fontSize = 12.sp,
                 color = colors.textMuted
             )
+
+            Spacer(Modifier.height(16.dp))
+        }
+
+        // Sticky CTA button — pinned at bottom, outside scroll
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            if (!isOtpStep) {
+                Button(
+                    onClick = { viewModel.sendOtp(mobile) },
+                    enabled = mobile.length == 10 && state !is LoginState.SendingOtp,
+                    modifier = Modifier
+                        .widthIn(max = 328.dp)
+                        .fillMaxWidth()
+                        .height(48.dp),
+                    shape = RoundedCornerShape(24.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colors.brandPrimary,
+                        disabledContainerColor = colors.ctaDisabledBg
+                    )
+                ) {
+                    if (state is LoginState.SendingOtp) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(20.dp),
+                            color = colors.bgPrimary,
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Text(
+                            stringResource(R.string.login_send_otp),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            } else {
+                Button(
+                    onClick = { viewModel.verifyOtp(otp) },
+                    enabled = otp.length == 4 && state !is LoginState.Verifying,
+                    modifier = Modifier
+                        .widthIn(max = 328.dp)
+                        .fillMaxWidth()
+                        .height(48.dp),
+                    shape = RoundedCornerShape(24.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colors.brandPrimary,
+                        disabledContainerColor = colors.ctaDisabledBg
+                    )
+                ) {
+                    if (state is LoginState.Verifying) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(20.dp),
+                            color = colors.bgPrimary,
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Text(
+                            stringResource(R.string.login_verify_otp),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
         }
     }
 }

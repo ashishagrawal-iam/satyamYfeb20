@@ -73,11 +73,11 @@ private fun standingColor(s: SlaStanding, colors: com.wiom.csp.ui.theme.WiomColo
     }
 }
 
-private fun standingBg(s: SlaStanding): Color {
+private fun standingBg(s: SlaStanding, colors: com.wiom.csp.ui.theme.WiomColors): Color {
     return when (s) {
-        SlaStanding.COMPLIANT -> Color(0x1F008043)
-        SlaStanding.AT_RISK -> Color(0x1FFF8000)
-        SlaStanding.NON_COMPLIANT -> Color(0x1FDC2626)
+        SlaStanding.COMPLIANT -> colors.positive.copy(alpha = 0.12f)
+        SlaStanding.AT_RISK -> colors.warning.copy(alpha = 0.12f)
+        SlaStanding.NON_COMPLIANT -> colors.negative.copy(alpha = 0.12f)
     }
 }
 
@@ -195,7 +195,7 @@ private fun HubView(
                 modifier = Modifier.clickable { onBack() }.padding(vertical = 4.dp)
             )
             Spacer(Modifier.height(12.dp))
-            Text(stringResource(R.string.sla_title), fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+            Text(stringResource(R.string.sla_title), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
         }
 
         Column(
@@ -217,7 +217,7 @@ private fun HubView(
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
-                        .background(standingBg(sla.overallStanding))
+                        .background(standingBg(sla.overallStanding, colors))
                         .padding(horizontal = 24.dp, vertical = 8.dp)
                 ) {
                     Text(
@@ -280,9 +280,9 @@ private fun HubView(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(Color(0x0FFF8000))
-                        .border(1.dp, Color(0x40FF8000), RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(colors.warning.copy(alpha = 0.06f))
+                        .border(1.dp, colors.warning.copy(alpha = 0.25f), RoundedCornerShape(16.dp))
                         .padding(12.dp, 16.dp)
                 ) {
                     Text(
@@ -300,7 +300,7 @@ private fun HubView(
                                 .fillMaxWidth()
                                 .padding(bottom = 4.dp)
                                 .clip(RoundedCornerShape(8.dp))
-                                .background(standingBg(d.state))
+                                .background(standingBg(d.state, colors))
                                 .clickable { onDomainClick(d) }
                                 .padding(12.dp, 12.dp)
                         ) {
@@ -352,7 +352,7 @@ private fun HubView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp)
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(16.dp))
                         .background(colors.bgCard)
                         .drawBehind {
                             drawLine(dc, Offset(0f, 0f), Offset(0f, size.height), 4.dp.toPx())
@@ -377,11 +377,11 @@ private fun HubView(
                                 domain.subMetrics.forEach { m ->
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(3.dp)
+                                        horizontalArrangement = Arrangement.spacedBy(4.dp)
                                     ) {
                                         Box(
                                             modifier = Modifier
-                                                .size(6.dp)
+                                                .size(8.dp)
                                                 .clip(CircleShape)
                                                 .background(metricColor(m, colors))
                                         )
@@ -396,13 +396,13 @@ private fun HubView(
                         }
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Box(
                                 modifier = Modifier
-                                    .clip(RoundedCornerShape(5.dp))
-                                    .background(standingBg(domain.state))
-                                    .padding(horizontal = 12.dp, vertical = 3.dp)
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .background(standingBg(domain.state, colors))
+                                    .padding(horizontal = 12.dp, vertical = 4.dp)
                             ) {
                                 Text(
                                     stringResource(standingLabelRes(domain.state)),
@@ -461,9 +461,9 @@ private fun DomainDetail(
                 )
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(6.dp))
-                        .background(standingBg(domain.state))
-                        .padding(horizontal = 12.dp, vertical = 5.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(standingBg(domain.state, colors))
+                        .padding(horizontal = 12.dp, vertical = 4.dp)
                 ) {
                     Text(
                         stringResource(standingLabelRes(domain.state)),
@@ -505,7 +505,7 @@ private fun DomainDetail(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 12.dp)
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(16.dp))
                         .background(colors.bgCard)
                         .drawBehind {
                             drawLine(mc, Offset(0f, 0f), Offset(0f, size.height), 4.dp.toPx())
@@ -539,8 +539,8 @@ private fun DomainDetail(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(6.dp)
-                            .clip(RoundedCornerShape(3.dp))
+                            .height(8.dp)
+                            .clip(RoundedCornerShape(4.dp))
                             .background(colors.bgSecondary)
                     ) {
                         // Value bar
@@ -548,7 +548,7 @@ private fun DomainDetail(
                             modifier = Modifier
                                 .fillMaxWidth(barPct)
                                 .fillMaxHeight()
-                                .clip(RoundedCornerShape(3.dp))
+                                .clip(RoundedCornerShape(4.dp))
                                 .background(mc)
                         )
                         // Threshold marker
@@ -571,7 +571,7 @@ private fun DomainDetail(
                         )
                     }
 
-                    Spacer(Modifier.height(6.dp))
+                    Spacer(Modifier.height(8.dp))
 
                     // Threshold + Trend
                     Row(
@@ -608,9 +608,9 @@ private fun DomainDetail(
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clip(RoundedCornerShape(6.dp))
-                                .background(Color(0x0FFF8000))
-                                .border(1.dp, Color(0x33FF8000), RoundedCornerShape(6.dp))
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(colors.warning.copy(alpha = 0.06f))
+                                .border(1.dp, colors.warning.copy(alpha = 0.2f), RoundedCornerShape(8.dp))
                                 .padding(8.dp, 12.dp)
                         ) {
                             val diff = if (isAbove)

@@ -18,6 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.wiom.csp.R
 import com.wiom.csp.domain.model.Technician
 import com.wiom.csp.domain.model.TechnicianBand
 import com.wiom.csp.ui.theme.WiomCspTheme
@@ -69,7 +71,7 @@ fun TechnicianPickerSheet(
                     modifier = Modifier
                         .width(36.dp)
                         .height(4.dp)
-                        .clip(RoundedCornerShape(2.dp))
+                        .clip(RoundedCornerShape(4.dp))
                         .background(colors.textMuted)
                 )
             }
@@ -80,11 +82,11 @@ fun TechnicianPickerSheet(
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 8.dp)
             ) {
-                Text("Assign to Technician", fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
-                Text("Task: $taskId", fontSize = 12.sp, color = colors.textSecondary)
+                Text(stringResource(R.string.tech_assign_to), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+                Text(stringResource(R.string.tech_task_id, taskId), fontSize = 12.sp, color = colors.textSecondary)
             }
 
-            Divider(colors.bgCard)
+            Divider(colors.borderSubtle)
 
             Column(
                 modifier = Modifier
@@ -94,9 +96,9 @@ fun TechnicianPickerSheet(
             ) {
                 // Self-assign
                 TechnicianRow(
-                    name = "Myself (CSP)",
-                    subtitle = "I will handle this task",
-                    badge = "Self",
+                    name = stringResource(R.string.tech_myself_csp),
+                    subtitle = stringResource(R.string.tech_self_handle),
+                    badge = stringResource(R.string.tech_self),
                     badgeColor = colors.brandPrimary,
                     avatarChar = 'C',
                     avatarBg = colors.brandPrimary,
@@ -118,8 +120,8 @@ fun TechnicianPickerSheet(
                 seedTechnicians.forEach { tech ->
                     TechnicianRow(
                         name = tech.name,
-                        subtitle = "Band ${tech.band.name}${if (!tech.available) " -- Unavailable" else ""}",
-                        badge = if (tech.available) "Available" else null,
+                        subtitle = "Band ${tech.band.name}${if (!tech.available) " -- ${stringResource(R.string.tech_unavailable)}" else ""}",
+                        badge = if (tech.available) stringResource(R.string.tech_available) else null,
                         badgeColor = colors.positive,
                         avatarChar = tech.name.first(),
                         avatarBg = if (tech.available) colors.bgCard else colors.bgSecondary,
@@ -134,13 +136,13 @@ fun TechnicianPickerSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 12.dp)
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(12.dp))
                     .background(Color.Transparent)
                     .clickable { onDismiss() }
                     .padding(12.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Cancel", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textSecondary)
+                Text(stringResource(R.string.detail_cancel), fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textSecondary)
             }
         }
     }
@@ -168,7 +170,7 @@ private fun TechnicianRow(
             .padding(horizontal = 20.dp, vertical = 12.dp)
             .then(if (!enabled) Modifier else Modifier),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(14.dp)
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Box(
             modifier = Modifier

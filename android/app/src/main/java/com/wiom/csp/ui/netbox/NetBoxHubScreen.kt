@@ -247,7 +247,7 @@ fun NetBoxHubScreen(
                                     }
                                     .padding(horizontal = 16.dp, vertical = 8.dp)
                             ) {
-                                Text("+ Request NetBox", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color.White)
+                                Text("+ Request NetBox", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = colors.bgPrimary)
                             }
                         }
                     }
@@ -286,9 +286,9 @@ fun NetBoxHubScreen(
                                     Column(
                                         modifier = Modifier
                                             .weight(1f)
-                                            .clip(RoundedCornerShape(12.dp))
+                                            .clip(RoundedCornerShape(16.dp))
                                             .background(if (selected) colors.brandPrimary.copy(alpha = 0.12f) else colors.bgCard)
-                                            .then(if (selected) Modifier.border(1.dp, colors.brandPrimary, RoundedCornerShape(12.dp)) else Modifier)
+                                            .then(if (selected) Modifier.border(1.dp, colors.brandPrimary, RoundedCornerShape(16.dp)) else Modifier)
                                             .clickable { unitFilter = if (selected) null else tile.filter }
                                             .padding(horizontal = 12.dp, vertical = 12.dp),
                                         horizontalAlignment = Alignment.CenterHorizontally
@@ -311,7 +311,7 @@ fun NetBoxHubScreen(
                                 Column(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .clip(RoundedCornerShape(12.dp))
+                                        .clip(RoundedCornerShape(16.dp))
                                         .background(colors.bgCard)
                                         .padding(12.dp)
                                 ) {
@@ -336,7 +336,7 @@ fun NetBoxHubScreen(
                                             NetBoxUnitStatus.DAMAGED -> "Damaged"
                                         }
                                         Row(
-                                            modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+                                            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
                                             horizontalArrangement = Arrangement.SpaceBetween,
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
@@ -350,7 +350,7 @@ fun NetBoxHubScreen(
                                             Box(
                                                 modifier = Modifier.clip(RoundedCornerShape(4.dp))
                                                     .background(statusColor.copy(alpha = 0.12f))
-                                                    .padding(horizontal = 8.dp, vertical = 3.dp)
+                                                    .padding(horizontal = 8.dp, vertical = 4.dp)
                                             ) {
                                                 Text(statusLabel, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = statusColor)
                                             }
@@ -368,9 +368,9 @@ fun NetBoxHubScreen(
                                 Column(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .clip(RoundedCornerShape(12.dp))
+                                        .clip(RoundedCornerShape(16.dp))
                                         .background(colors.warningSubtle)
-                                        .border(1.dp, colors.warning.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
+                                        .border(1.dp, colors.warning.copy(alpha = 0.3f), RoundedCornerShape(16.dp))
                                         .padding(16.dp)
                                 ) {
                                     Text("Carry Fee Active", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = colors.warning)
@@ -392,15 +392,15 @@ fun NetBoxHubScreen(
                                             }
                                             Box(
                                                 modifier = Modifier
-                                                    .clip(RoundedCornerShape(6.dp))
+                                                    .clip(RoundedCornerShape(8.dp))
                                                     .background(if (requested) colors.positive.copy(alpha = 0.15f) else colors.brandPrimary)
                                                     .then(if (!requested) Modifier.clickable { viewModel.requestReturn(unit.netboxId, unit.customerArea, unit.connectionId) } else Modifier)
-                                                    .padding(horizontal = 12.dp, vertical = 6.dp)
+                                                    .padding(horizontal = 12.dp, vertical = 8.dp)
                                             ) {
                                                 Text(
                                                     if (requested) "Requested" else "Return",
                                                     fontSize = 12.sp, fontWeight = FontWeight.SemiBold,
-                                                    color = if (requested) colors.positive else Color.White
+                                                    color = if (requested) colors.positive else colors.bgPrimary
                                                 )
                                             }
                                         }
@@ -414,9 +414,9 @@ fun NetBoxHubScreen(
                                 Column(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .clip(RoundedCornerShape(12.dp))
+                                        .clip(RoundedCornerShape(16.dp))
                                         .background(colors.bgCard)
-                                        .border(1.dp, colors.borderSubtle, RoundedCornerShape(12.dp))
+                                        .border(1.dp, colors.borderSubtle, RoundedCornerShape(16.dp))
                                         .padding(16.dp)
                                 ) {
                                     warningUnits.forEach { unit ->
@@ -435,15 +435,15 @@ fun NetBoxHubScreen(
                                             }
                                             Box(
                                                 modifier = Modifier
-                                                    .clip(RoundedCornerShape(6.dp))
+                                                    .clip(RoundedCornerShape(8.dp))
                                                     .background(if (requested) colors.positive.copy(alpha = 0.15f) else colors.brandPrimary)
                                                     .then(if (!requested) Modifier.clickable { viewModel.requestReturn(unit.netboxId, unit.customerArea, unit.connectionId) } else Modifier)
-                                                    .padding(horizontal = 12.dp, vertical = 6.dp)
+                                                    .padding(horizontal = 12.dp, vertical = 8.dp)
                                             ) {
                                                 Text(
                                                     if (requested) "Requested" else "Return",
                                                     fontSize = 12.sp, fontWeight = FontWeight.SemiBold,
-                                                    color = if (requested) colors.positive else Color.White
+                                                    color = if (requested) colors.positive else colors.bgPrimary
                                                 )
                                             }
                                         }
@@ -471,10 +471,10 @@ fun NetBoxHubScreen(
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(bottom = 6.dp)
-                                        .clip(RoundedCornerShape(12.dp))
+                                        .padding(bottom = 8.dp)
+                                        .clip(RoundedCornerShape(16.dp))
                                         .background(colors.bgCard)
-                                        .border(1.dp, colors.borderSubtle, RoundedCornerShape(12.dp))
+                                        .border(1.dp, colors.borderSubtle, RoundedCornerShape(16.dp))
                                         .clickable { selectedOrder = order; step = "order_detail" }
                                         .padding(horizontal = 16.dp, vertical = 12.dp),
                                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -486,8 +486,8 @@ fun NetBoxHubScreen(
                                     }
                                     Box(
                                         modifier = Modifier.clip(RoundedCornerShape(4.dp))
-                                            .background(statusColor.copy(alpha = 0.1f))
-                                            .padding(horizontal = 8.dp, vertical = 3.dp)
+                                            .background(statusColor.copy(alpha = 0.12f))
+                                            .padding(horizontal = 8.dp, vertical = 4.dp)
                                     ) {
                                         Text(order.status, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = statusColor)
                                     }
@@ -506,7 +506,7 @@ fun NetBoxHubScreen(
                                     Row(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(bottom = 6.dp)
+                                            .padding(bottom = 8.dp)
                                             .clip(RoundedCornerShape(8.dp))
                                             .background(colors.bgCard)
                                             .drawBehind { drawLine(stateColor, Offset(0f, 0f), Offset(0f, size.height), 3.dp.toPx()) }
@@ -521,7 +521,7 @@ fun NetBoxHubScreen(
                                         Box(
                                             modifier = Modifier.clip(RoundedCornerShape(4.dp))
                                                 .background(stateColor.copy(alpha = 0.12f))
-                                                .padding(horizontal = 8.dp, vertical = 3.dp)
+                                                .padding(horizontal = 8.dp, vertical = 4.dp)
                                         ) {
                                             Text(state.replace("_", " "), fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = stateColor)
                                         }
@@ -536,7 +536,7 @@ fun NetBoxHubScreen(
                             Text("DEPOSIT", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textSecondary, letterSpacing = 0.5.sp)
                             Spacer(Modifier.height(8.dp))
                             Column(
-                                modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(colors.bgCard)
+                                modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(colors.bgCard)
                                     .padding(horizontal = 16.dp, vertical = 16.dp)
                             ) {
                                 // Balance summary
@@ -563,7 +563,7 @@ fun NetBoxHubScreen(
                                     Box(Modifier.fillMaxWidth().height(1.dp).background(colors.borderSubtle))
                                     Spacer(Modifier.height(12.dp))
                                     Text("TRANSACTIONS", fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = colors.textMuted, letterSpacing = 0.3.sp)
-                                    Spacer(Modifier.height(6.dp))
+                                    Spacer(Modifier.height(8.dp))
                                     dep.ledger.transactions.forEachIndexed { i, txn ->
                                         val isCredit = txn.amount > 0
                                         val txnColor = if (isCredit) colors.positive else colors.negative
@@ -589,7 +589,7 @@ fun NetBoxHubScreen(
                             }
                         }
 
-                        Spacer(Modifier.height(80.dp))
+                        Spacer(Modifier.height(84.dp))
                     }
                 }
             }
@@ -611,7 +611,7 @@ fun NetBoxHubScreen(
                     }
                     Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
                         Text("Quantity", fontSize = 12.sp, color = colors.textSecondary)
-                        Spacer(Modifier.height(6.dp))
+                        Spacer(Modifier.height(8.dp))
                         OutlinedTextField(
                             value = quantity, onValueChange = { quantity = it },
                             placeholder = { Text("Number of units", fontSize = 14.sp) },
@@ -625,7 +625,7 @@ fun NetBoxHubScreen(
                         )
                         Spacer(Modifier.height(16.dp))
                         Text("Delivery Area", fontSize = 12.sp, color = colors.textSecondary)
-                        Spacer(Modifier.height(6.dp))
+                        Spacer(Modifier.height(8.dp))
                         AREAS.chunked(2).forEach { row ->
                             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                 row.forEach { area ->
@@ -650,13 +650,13 @@ fun NetBoxHubScreen(
                         if (canSubmit) {
                             Column(
                                 modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp))
-                                    .background(Color(0x0FFF8000)).border(1.dp, Color(0x26FF8000), RoundedCornerShape(8.dp)).padding(16.dp)
+                                    .background(colors.warning.copy(alpha = 0.06f)).border(1.dp, colors.warning.copy(alpha = 0.15f), RoundedCornerShape(8.dp)).padding(16.dp)
                             ) {
                                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                                     Text("Deposit per unit", fontSize = 14.sp, color = colors.textSecondary)
                                     Text(formatCurrency(DEPOSIT_PER_UNIT), fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
                                 }
-                                Spacer(Modifier.height(6.dp))
+                                Spacer(Modifier.height(8.dp))
                                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                                     Text("Total deposit", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
                                     Text(formatCurrency(depositTotal), fontSize = 16.sp, fontWeight = FontWeight.Bold, color = colors.accentGold)
@@ -672,7 +672,7 @@ fun NetBoxHubScreen(
                                 .clickable(enabled = canSubmit) { step = "pay_deposit" },
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("Continue to Payment", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                            Text("Continue to Payment", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = colors.bgPrimary)
                         }
                     }
                 }
@@ -707,8 +707,8 @@ fun NetBoxHubScreen(
                         Spacer(Modifier.height(24.dp))
                         options.forEach { opt ->
                             Box(
-                                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).clip(RoundedCornerShape(12.dp))
-                                    .background(colors.bgCard).border(1.dp, colors.borderSubtle, RoundedCornerShape(12.dp))
+                                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp).clip(RoundedCornerShape(16.dp))
+                                    .background(colors.bgCard).border(1.dp, colors.borderSubtle, RoundedCornerShape(16.dp))
                                     .clickable(enabled = !opt.disabled) { payMethod = opt.id; step = "confirm_order" }
                                     .padding(16.dp).then(if (opt.disabled) Modifier.background(Color.Transparent) else Modifier),
                             ) {
@@ -744,7 +744,7 @@ fun NetBoxHubScreen(
                     }
                     Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
                         Column(
-                            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(colors.bgCard).padding(24.dp)
+                            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(colors.bgCard).padding(24.dp)
                         ) {
                             listOf("Quantity" to "$qty unit${if (qty > 1) "s" else ""}", "Delivery Area" to deliveryArea, "Payment" to methodLabel).forEach { (label, value) ->
                                 Row(
@@ -783,7 +783,7 @@ fun NetBoxHubScreen(
                         ) {
                             Text(
                                 if (isProcessing) "Processing..." else "Pay ${formatCurrency(depositTotal)} & Place Order",
-                                fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                                fontSize = 16.sp, fontWeight = FontWeight.Bold, color = colors.bgPrimary)
                         }
                     }
                 }
@@ -807,12 +807,12 @@ fun NetBoxHubScreen(
                         verticalArrangement = Arrangement.Center
                     ) {
                         Box(
-                            modifier = Modifier.size(60.dp).clip(CircleShape).background(Color(0x1F008043)),
+                            modifier = Modifier.size(60.dp).clip(CircleShape).background(colors.positive.copy(alpha = 0.12f)),
                             contentAlignment = Alignment.Center
-                        ) { Text("\u2713", fontSize = 28.sp, color = colors.positive) }
+                        ) { Text("\u2713", fontSize = 24.sp, color = colors.positive) }
                         Spacer(Modifier.height(16.dp))
                         Text("Deposit paid", fontSize = 14.sp, color = colors.textSecondary)
-                        Text(formatCurrency(depositTotal), fontSize = 28.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+                        Text(formatCurrency(depositTotal), fontSize = 24.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
                         Text("via $methodLabel", fontSize = 14.sp, color = colors.textMuted)
                         Spacer(Modifier.height(4.dp))
                         Text("$qty unit${if (qty > 1) "s" else ""} \u00B7 $deliveryArea", fontSize = 12.sp, color = colors.textSecondary)
@@ -826,7 +826,7 @@ fun NetBoxHubScreen(
                                     else { step = "hub"; quantity = ""; deliveryArea = AREAS[0] }
                                 },
                             contentAlignment = Alignment.Center
-                        ) { Text("View Order", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White) }
+                        ) { Text("View Order", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = colors.bgPrimary) }
                     }
                 }
             }
@@ -891,7 +891,7 @@ fun NetBoxHubScreen(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clip(RoundedCornerShape(12.dp))
+                                .clip(RoundedCornerShape(16.dp))
                                 .background(colors.bgCard)
                                 .padding(24.dp)
                         ) {
@@ -952,7 +952,7 @@ fun NetBoxHubScreen(
                                         if (i < timelineSteps.size - 1) {
                                             Box(
                                                 modifier = Modifier
-                                                    .offset(x = 5.dp, y = 14.dp)
+                                                    .offset(x = 4.dp, y = 12.dp)
                                                     .width(2.dp)
                                                     .height(34.dp)
                                                     .background(colors.bgSecondary)
@@ -986,7 +986,7 @@ fun NetBoxHubScreen(
                             }
                         }
 
-                        Spacer(Modifier.height(80.dp))
+                        Spacer(Modifier.height(84.dp))
                     }
                 }
             }

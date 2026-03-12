@@ -101,7 +101,7 @@ fun TeamHubScreen(onBack: () -> Unit) {
                         modifier = Modifier
                             .clip(RoundedCornerShape(4.dp))
                             .background(if (tech.available) colors.positiveSubtle else colors.negativeSubtle)
-                            .padding(horizontal = 8.dp, vertical = 2.dp)
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
                     ) {
                         Text(
                             if (tech.available) stringResource(R.string.team_available) else stringResource(R.string.team_unavailable),
@@ -138,20 +138,23 @@ private fun AddTechnicianForm(onAdd: (Technician) -> Unit, onCancel: () -> Unit)
 
             OutlinedTextField(
                 value = name, onValueChange = { name = it },
-                label = { Text(stringResource(R.string.team_name)) }, modifier = Modifier.fillMaxWidth(), singleLine = true,
+                label = { Text(stringResource(R.string.team_name)) }, modifier = Modifier.fillMaxWidth().height(56.dp), singleLine = true,
+                shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = colors.brandPrimary, unfocusedBorderColor = colors.borderSubtle, focusedTextColor = colors.textPrimary, unfocusedTextColor = colors.textPrimary, cursorColor = colors.brandPrimary, focusedLabelColor = colors.brandPrimary, unfocusedLabelColor = colors.textMuted)
             )
             Spacer(Modifier.height(12.dp))
             OutlinedTextField(
                 value = phone, onValueChange = { phone = it },
-                label = { Text(stringResource(R.string.team_phone)) }, modifier = Modifier.fillMaxWidth(), singleLine = true,
+                label = { Text(stringResource(R.string.team_phone)) }, modifier = Modifier.fillMaxWidth().height(56.dp), singleLine = true,
+                shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = colors.brandPrimary, unfocusedBorderColor = colors.borderSubtle, focusedTextColor = colors.textPrimary, unfocusedTextColor = colors.textPrimary, cursorColor = colors.brandPrimary, focusedLabelColor = colors.brandPrimary, unfocusedLabelColor = colors.textMuted)
             )
             Spacer(Modifier.weight(1f))
 
             Box(
                 modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp))
-                    .background(if (name.isNotBlank()) colors.brandPrimary else colors.bgCardHover)
+                    .background(if (name.isNotBlank()) colors.brandPrimary else colors.ctaDisabledBg)
+                    .height(48.dp)
                     .clickable(enabled = name.isNotBlank()) {
                         onAdd(Technician(
                             id = "TECH-${System.currentTimeMillis().toString().takeLast(4)}",
@@ -164,10 +167,10 @@ private fun AddTechnicianForm(onAdd: (Technician) -> Unit, onCancel: () -> Unit)
                             completedCount = 0
                         ))
                     }
-                    .padding(vertical = 14.dp),
+                    .padding(vertical = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(stringResource(R.string.team_add_member), fontWeight = FontWeight.SemiBold, color = if (name.isNotBlank()) Color.White else colors.textMuted)
+                Text(stringResource(R.string.team_add_member), fontWeight = FontWeight.Bold, color = if (name.isNotBlank()) colors.bgPrimary else colors.textMuted)
             }
         }
     }
@@ -197,7 +200,7 @@ private fun TechnicianDetailScreen(technician: Technician, onBack: () -> Unit) {
             Text(if (technician.available) stringResource(R.string.team_available) else stringResource(R.string.team_unavailable), fontSize = 14.sp, color = if (technician.available) colors.positive else colors.textSecondary, modifier = Modifier.align(Alignment.CenterHorizontally))
             Spacer(Modifier.height(20.dp))
 
-            Column(modifier = Modifier.clip(RoundedCornerShape(12.dp)).background(colors.bgCard).padding(16.dp).fillMaxWidth()) {
+            Column(modifier = Modifier.clip(RoundedCornerShape(16.dp)).background(colors.bgCard).padding(16.dp).fillMaxWidth()) {
                 DetailRow(stringResource(R.string.team_id), technician.id)
                 DetailRow(stringResource(R.string.team_phone), technician.phone)
                 DetailRow(stringResource(R.string.team_join_date), technician.joinDate)

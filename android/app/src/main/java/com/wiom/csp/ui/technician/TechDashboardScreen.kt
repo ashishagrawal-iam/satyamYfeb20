@@ -19,6 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.wiom.csp.R
 import com.wiom.csp.domain.model.Task
 import com.wiom.csp.domain.model.TaskType
 import com.wiom.csp.domain.model.Technician
@@ -72,9 +74,9 @@ fun TechDashboardScreen(
                 ) {
                     Text(
                         tech.name.first().toString(),
-                        fontSize = 18.sp,
+                        fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = colors.bgPrimary
                     )
                 }
 
@@ -85,17 +87,17 @@ fun TechDashboardScreen(
                         fontWeight = FontWeight.Bold,
                         color = colors.textPrimary
                     )
-                    Spacer(Modifier.height(2.dp))
+                    Spacer(Modifier.height(4.dp))
                     // Band badge
                     Text(
                         "Band ${tech.band.name}",
-                        fontSize = 11.sp,
+                        fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         color = colors.brandPrimary,
                         modifier = Modifier
                             .clip(RoundedCornerShape(4.dp))
                             .background(colors.brandPrimary.copy(alpha = 0.12f))
-                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                 }
             }
@@ -103,16 +105,16 @@ fun TechDashboardScreen(
             // Availability toggle
             Box(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(24.dp))
                     .background(
                         if (tech.available) colors.positive.copy(alpha = 0.15f)
                         else colors.textMuted.copy(alpha = 0.2f)
                     )
                     .clickable { onToggleAvailability() }
-                    .padding(horizontal = 14.dp, vertical = 8.dp)
+                    .padding(horizontal = 12.dp, vertical = 8.dp)
             ) {
                 Text(
-                    if (tech.available) "Available" else "Unavailable",
+                    if (tech.available) stringResource(R.string.tech_available) else stringResource(R.string.tech_unavailable),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = if (tech.available) colors.positive else colors.textMuted
@@ -137,8 +139,8 @@ fun TechDashboardScreen(
         ) {
             // Active Tasks section
             Text(
-                "ACTIVE TASKS (${activeTasks.size})",
-                fontSize = 13.sp,
+                "${stringResource(R.string.tech_active_tasks).uppercase()} (${activeTasks.size})",
+                fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.textSecondary,
                 letterSpacing = 0.3.sp
@@ -150,13 +152,13 @@ fun TechDashboardScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(16.dp))
                         .background(colors.bgCard)
                         .padding(32.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        "No active tasks right now",
+                        stringResource(R.string.tech_no_active),
                         fontSize = 14.sp,
                         color = colors.textMuted,
                         textAlign = TextAlign.Center
@@ -187,8 +189,8 @@ fun TechDashboardScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        "COMPLETED (${completedTasks.size})",
-                        fontSize = 13.sp,
+                        "${stringResource(R.string.tech_completed).uppercase()} (${completedTasks.size})",
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.textSecondary,
                         letterSpacing = 0.3.sp
@@ -234,11 +236,11 @@ private fun TechTaskCard(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(16.dp))
             .background(colors.bgCard)
-            .border(1.dp, colors.borderSubtle, RoundedCornerShape(12.dp))
+            .border(1.dp, colors.borderSubtle, RoundedCornerShape(16.dp))
             .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 14.dp)
+            .padding(horizontal = 16.dp, vertical = 12.dp)
             .then(if (isCompleted) Modifier else Modifier) // alpha handled via content
     ) {
         // Top row: type badge + connection ID + priority
@@ -254,17 +256,17 @@ private fun TechTaskCard(
                 val typeColor = getTypeColor(task.taskType, colors)
                 Text(
                     task.taskType.name,
-                    fontSize = 10.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     color = typeColor.copy(alpha = alpha),
                     modifier = Modifier
                         .clip(RoundedCornerShape(4.dp))
                         .background(typeColor.copy(alpha = 0.09f))
-                        .padding(horizontal = 7.dp, vertical = 2.dp)
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
                 )
                 Text(
                     task.connectionId ?: task.netboxId ?: "",
-                    fontSize = 13.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.textPrimary.copy(alpha = alpha)
                 )
@@ -273,13 +275,13 @@ private fun TechTaskCard(
             if (task.priority == com.wiom.csp.domain.model.TaskPriority.HIGH && !isCompleted) {
                 Text(
                     "HIGH",
-                    fontSize = 10.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     color = colors.negative,
                     modifier = Modifier
                         .clip(RoundedCornerShape(4.dp))
                         .background(colors.negative.copy(alpha = 0.12f))
-                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
                 )
             }
         }
@@ -306,7 +308,7 @@ private fun TechTaskCard(
                     if (timeLeft != null) {
                         Text(
                             timeLeft,
-                            fontSize = 11.sp,
+                            fontSize = 12.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = if (timeLeft == "Overdue") colors.negative else colors.warning
                         )
@@ -314,7 +316,7 @@ private fun TechTaskCard(
                     if (actionLabel != null) {
                         Text(
                             "$actionLabel \u203A",
-                            fontSize = 11.sp,
+                            fontSize = 12.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = colors.brandPrimary
                         )

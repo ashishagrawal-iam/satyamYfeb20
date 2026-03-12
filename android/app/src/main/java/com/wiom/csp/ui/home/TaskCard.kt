@@ -69,7 +69,7 @@ fun TaskCard(
         Box(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(bottom = 14.dp)
+                .padding(bottom = 12.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .background(colors.bgCard)
                 .drawBehind {
@@ -83,7 +83,7 @@ fun TaskCard(
                 }
                 .clickable { onClick() }
                 .semantics { contentDescription = cardDescription }
-                .padding(start = 20.dp, end = 20.dp, top = 18.dp, bottom = 20.dp)
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp)
         ) {
             Column {
                 // Line 1: Type dot + Type · Context ID · Locality (identity line)
@@ -111,12 +111,12 @@ fun TaskCard(
                     )
                 }
 
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(8.dp))
 
                 // Line 2: Reason label — the largest text element on the card
                 Text(
                     text = reasonLabel,
-                    fontSize = 15.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.textPrimary,
                     maxLines = 1,
@@ -129,7 +129,7 @@ fun TaskCard(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     // Timer (left-aligned)
                     if (deadline != null) {
@@ -160,26 +160,26 @@ fun TaskCard(
                     if (cta != null) {
                         val ctaBg = when {
                             cta.urgent -> colors.negative
-                            cta.isSecondary -> Color.Transparent
+                            cta.isSecondary -> colors.brandLightest
                             else -> colors.brandPrimary
                         }
                         val ctaTextColor = when {
-                            cta.urgent -> Color.White
-                            cta.isSecondary -> colors.textSecondary
-                            else -> Color.White
+                            cta.urgent -> colors.bgPrimary
+                            cta.isSecondary -> colors.brandPrimary
+                            else -> colors.bgPrimary
                         }
                         val ctaModifier = if (cta.isSecondary) {
                             Modifier
                                 .clip(RoundedCornerShape(24.dp))
-                                .border(1.dp, colors.borderSubtle, RoundedCornerShape(24.dp))
+                                .background(ctaBg)
                                 .clickable { onAction(task.taskId, cta.action) }
-                                .padding(horizontal = 14.dp, vertical = 6.dp)
+                                .padding(horizontal = 12.dp, vertical = 8.dp)
                         } else {
                             Modifier
                                 .clip(RoundedCornerShape(24.dp))
                                 .background(ctaBg)
                                 .clickable { onAction(task.taskId, cta.action) }
-                                .padding(horizontal = 14.dp, vertical = 6.dp)
+                                .padding(horizontal = 12.dp, vertical = 8.dp)
                         }
                         Box(modifier = ctaModifier) {
                             Text(

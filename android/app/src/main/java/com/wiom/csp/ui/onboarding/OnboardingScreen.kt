@@ -45,16 +45,19 @@ fun OnboardingScreen(
         }
     }
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(colors.bgPrimary)
             .statusBarsPadding()
             .navigationBarsPadding()
+            .imePadding(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Scrollable content area — takes available space above the sticky CTA
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .weight(1f)
                 .verticalScroll(scrollState)
                 .padding(horizontal = 24.dp, vertical = 24.dp)
                 .widthIn(max = 420.dp),
@@ -62,7 +65,7 @@ fun OnboardingScreen(
             // Header
             Text(
                 stringResource(R.string.onboarding_title),
-                fontSize = 22.sp,
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = colors.textPrimary
             )
@@ -73,7 +76,7 @@ fun OnboardingScreen(
                 color = colors.textMuted,
                 lineHeight = 20.sp
             )
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.height(24.dp))
 
             // Error banner
             if (state is OnboardingState.Error) {
@@ -81,14 +84,14 @@ fun OnboardingScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(colors.negative.copy(alpha = 0.1f))
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(colors.warning.copy(alpha = 0.12f))
                         .padding(12.dp)
                 ) {
                     Text(
                         text = errorMsg,
                         fontSize = 14.sp,
-                        color = colors.negative,
+                        color = colors.textPrimary,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -123,12 +126,12 @@ fun OnboardingScreen(
                     Box(
                         modifier = Modifier
                             .weight(1f)
-                            .clip(RoundedCornerShape(12.dp))
+                            .clip(RoundedCornerShape(8.dp))
                             .background(if (selected) colors.brandPrimary else colors.bgCard)
                             .border(
                                 1.dp,
                                 if (selected) colors.brandPrimary else colors.borderSubtle,
-                                RoundedCornerShape(12.dp)
+                                RoundedCornerShape(8.dp)
                             )
                             .clickable {
                                 viewModel.updateForm { copy(entityType = type) }
@@ -141,7 +144,7 @@ fun OnboardingScreen(
                             label,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = if (selected) Color.White else colors.textSecondary
+                            color = if (selected) colors.bgPrimary else colors.textSecondary
                         )
                     }
                 }
@@ -310,9 +313,9 @@ fun OnboardingScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(16.dp))
                     .background(colors.bgCard)
-                    .border(1.dp, colors.borderSubtle, RoundedCornerShape(12.dp))
+                    .border(1.dp, colors.borderSubtle, RoundedCornerShape(16.dp))
                     .clickable {
                         viewModel.updateForm { copy(termsAccepted = !termsAccepted) }
                         viewModel.clearError()
@@ -330,7 +333,7 @@ fun OnboardingScreen(
                     colors = CheckboxDefaults.colors(
                         checkedColor = colors.brandPrimary,
                         uncheckedColor = colors.borderSubtle,
-                        checkmarkColor = Color.White
+                        checkmarkColor = colors.bgPrimary
                     ),
                     modifier = Modifier.size(20.dp)
                 )
@@ -340,36 +343,6 @@ fun OnboardingScreen(
                     color = colors.textPrimary,
                     lineHeight = 20.sp
                 )
-            }
-
-            Spacer(Modifier.height(32.dp))
-
-            // Submit button
-            Button(
-                onClick = { viewModel.submitRegistration() },
-                enabled = state !is OnboardingState.Submitting,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-                shape = RoundedCornerShape(24.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colors.brandPrimary,
-                    disabledContainerColor = colors.brandPrimary.copy(alpha = 0.5f)
-                )
-            ) {
-                if (state is OnboardingState.Submitting) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
-                        color = Color.White,
-                        strokeWidth = 2.dp
-                    )
-                } else {
-                    Text(
-                        stringResource(R.string.onboarding_submit),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
             }
 
             Spacer(Modifier.height(24.dp))
@@ -384,6 +357,43 @@ fun OnboardingScreen(
 
             Spacer(Modifier.height(16.dp))
         }
+
+        // Sticky Submit button — pinned at bottom, outside scroll
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Button(
+                onClick = { viewModel.submitRegistration() },
+                enabled = state !is OnboardingState.Submitting,
+                modifier = Modifier
+                    .widthIn(max = 328.dp)
+                    .fillMaxWidth()
+                    .height(48.dp),
+                shape = RoundedCornerShape(24.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colors.brandPrimary,
+                    disabledContainerColor = colors.ctaDisabledBg
+                )
+            ) {
+                if (state is OnboardingState.Submitting) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp),
+                        color = colors.bgPrimary,
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text(
+                        stringResource(R.string.onboarding_submit),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -393,7 +403,7 @@ private fun SectionHeader(title: String, colors: com.wiom.csp.ui.theme.WiomColor
         Text(
             title,
             fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Bold,
             color = colors.textPrimary
         )
         Spacer(Modifier.height(8.dp))
@@ -455,7 +465,7 @@ private fun FormField(
             ),
             textStyle = LocalTextStyle.current.copy(fontSize = 14.sp),
             shape = RoundedCornerShape(12.dp),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().height(56.dp)
         )
         Spacer(Modifier.height(12.dp))
     }

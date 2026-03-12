@@ -68,7 +68,7 @@ fun PoliciesScreen(onBack: () -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 4.dp)
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(16.dp))
                         .background(colors.bgCard)
                         .clickable { selectedPolicy = policy }
                         .padding(16.dp)
@@ -84,7 +84,7 @@ fun PoliciesScreen(onBack: () -> Unit) {
                 }
             }
 
-            Spacer(Modifier.height(80.dp))
+            Spacer(Modifier.height(84.dp))
         }
     }
 }
@@ -106,7 +106,7 @@ private fun PolicyDetailScreen(policy: Policy, onBack: () -> Unit) {
                 Text(policy.id, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
             }
 
-            Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(RoundedCornerShape(12.dp)).background(colors.bgCard).padding(16.dp)) {
+            Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(RoundedCornerShape(16.dp)).background(colors.bgCard).padding(16.dp)) {
                 Text(policy.title, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
                 Spacer(Modifier.height(4.dp))
                 Text("${policy.version} \u2022 ${stringResource(R.string.policies_updated, policy.updatedAt)}", fontSize = 12.sp, color = colors.textMuted)
@@ -125,7 +125,7 @@ private fun PolicyDetailScreen(policy: Policy, onBack: () -> Unit) {
                 }
             }
 
-            Spacer(Modifier.height(80.dp))
+            Spacer(Modifier.height(84.dp))
         }
     }
 }

@@ -76,7 +76,7 @@ fun HomeScreen(
                             .clickable { viewModel.navigate("profile") }
                             .semantics { contentDescription = "Profile: CSP-MH-1001. Tap to open profile." },
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Box(
                             modifier = Modifier
@@ -85,7 +85,7 @@ fun HomeScreen(
                                 .background(colors.brandPrimary),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text("C", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                            Text("C", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = colors.bgPrimary)
                         }
                         Text(
                             "CSP-MH-1001",
@@ -127,7 +127,7 @@ fun HomeScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(80.dp),
+                            .height(84.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(stringResource(R.string.home_loading), color = colors.textMuted, fontSize = 12.sp)
@@ -138,7 +138,7 @@ fun HomeScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
-                            .clip(RoundedCornerShape(10.dp))
+                            .clip(RoundedCornerShape(16.dp))
                             .background(colors.bgCard)
                             .padding(20.dp),
                         contentAlignment = Alignment.Center
@@ -150,7 +150,7 @@ fun HomeScreen(
                                 fontWeight = FontWeight.SemiBold,
                                 color = colors.textPrimary
                             )
-                            Spacer(Modifier.height(6.dp))
+                            Spacer(Modifier.height(8.dp))
                             Text(
                                 stringResource(R.string.home_error_desc),
                                 fontSize = 12.sp,
@@ -160,12 +160,12 @@ fun HomeScreen(
                             Spacer(Modifier.height(12.dp))
                             Box(
                                 modifier = Modifier
-                                    .clip(RoundedCornerShape(8.dp))
+                                    .clip(RoundedCornerShape(24.dp))
                                     .background(colors.brandPrimary)
                                     .clickable { viewModel.retryLoad() }
-                                    .padding(horizontal = 24.dp, vertical = 10.dp)
+                                    .padding(horizontal = 24.dp, vertical = 8.dp)
                             ) {
-                                Text(stringResource(R.string.home_retry), color = Color.White, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                                Text(stringResource(R.string.home_retry), color = colors.bgPrimary, fontSize = 14.sp, fontWeight = FontWeight.Bold)
                             }
                         }
                     }
@@ -178,12 +178,12 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 12.dp, vertical = 8.dp)
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(RoundedCornerShape(12.dp))
                         .background(colors.warningSubtle)
-                        .padding(14.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        .padding(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("\u26A0", fontSize = 18.sp)
+                    Text("\u26A0", fontSize = 20.sp)
                     Column {
                         Text(
                             stringResource(R.string.capability_reset_title),

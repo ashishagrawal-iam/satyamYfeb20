@@ -84,8 +84,8 @@ fun SupportHubScreen(
                 Text(stringResource(R.string.support_receipt_desc), fontSize = 14.sp, color = colors.textSecondary, lineHeight = 20.sp)
                 Spacer(Modifier.height(24.dp))
                 Box(
-                    modifier = Modifier.clip(RoundedCornerShape(24.dp)).background(colors.brandPrimary).clickable { showReceipt = false; showCreateForm = false }.padding(horizontal = 24.dp, vertical = 12.dp)
-                ) { Text(stringResource(R.string.support_back_to_support), fontWeight = FontWeight.SemiBold, color = Color.White) }
+                    modifier = Modifier.clip(RoundedCornerShape(24.dp)).background(colors.brandPrimary).clickable { showReceipt = false; showCreateForm = false }.height(48.dp).padding(horizontal = 24.dp, vertical = 12.dp)
+                ) { Text(stringResource(R.string.support_back_to_support), fontWeight = FontWeight.Bold, color = colors.bgPrimary) }
             }
         }
         return
@@ -175,17 +175,18 @@ private fun CreateCaseForm(onSubmit: (String, String) -> Unit, onCancel: () -> U
             Spacer(Modifier.height(12.dp))
             Text(stringResource(R.string.support_new_case), fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
             Spacer(Modifier.height(16.dp))
-            OutlinedTextField(value = subject, onValueChange = { subject = it }, label = { Text(stringResource(R.string.support_subject)) }, modifier = Modifier.fillMaxWidth(), singleLine = true, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = colors.brandPrimary, unfocusedBorderColor = colors.borderSubtle, focusedTextColor = colors.textPrimary, unfocusedTextColor = colors.textPrimary, cursorColor = colors.brandPrimary, focusedLabelColor = colors.brandPrimary, unfocusedLabelColor = colors.textMuted))
+            OutlinedTextField(value = subject, onValueChange = { subject = it }, label = { Text(stringResource(R.string.support_subject)) }, modifier = Modifier.fillMaxWidth().height(56.dp), singleLine = true, shape = RoundedCornerShape(12.dp), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = colors.brandPrimary, unfocusedBorderColor = colors.borderSubtle, focusedTextColor = colors.textPrimary, unfocusedTextColor = colors.textPrimary, cursorColor = colors.brandPrimary, focusedLabelColor = colors.brandPrimary, unfocusedLabelColor = colors.textMuted))
             Spacer(Modifier.height(12.dp))
-            OutlinedTextField(value = message, onValueChange = { message = it }, label = { Text(stringResource(R.string.support_message)) }, modifier = Modifier.fillMaxWidth().height(120.dp), maxLines = 5, colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = colors.brandPrimary, unfocusedBorderColor = colors.borderSubtle, focusedTextColor = colors.textPrimary, unfocusedTextColor = colors.textPrimary, cursorColor = colors.brandPrimary, focusedLabelColor = colors.brandPrimary, unfocusedLabelColor = colors.textMuted))
+            OutlinedTextField(value = message, onValueChange = { message = it }, label = { Text(stringResource(R.string.support_message)) }, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).height(120.dp), maxLines = 5, shape = RoundedCornerShape(12.dp), colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = colors.brandPrimary, unfocusedBorderColor = colors.borderSubtle, focusedTextColor = colors.textPrimary, unfocusedTextColor = colors.textPrimary, cursorColor = colors.brandPrimary, focusedLabelColor = colors.brandPrimary, unfocusedLabelColor = colors.textMuted))
             Spacer(Modifier.weight(1f))
             Box(
                 modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp))
                     .background(if (subject.isNotBlank() && message.isNotBlank()) colors.brandPrimary else colors.ctaDisabledBg)
                     .clickable(enabled = subject.isNotBlank() && message.isNotBlank()) { onSubmit(subject.trim(), message.trim()) }
-                    .padding(vertical = 14.dp),
+                    .height(48.dp)
+                    .padding(vertical = 12.dp),
                 contentAlignment = Alignment.Center
-            ) { Text(stringResource(R.string.support_submit), fontWeight = FontWeight.SemiBold, color = if (subject.isNotBlank() && message.isNotBlank()) Color.White else colors.textMuted) }
+            ) { Text(stringResource(R.string.support_submit), fontWeight = FontWeight.Bold, color = if (subject.isNotBlank() && message.isNotBlank()) colors.bgPrimary else colors.textMuted) }
         }
     }
 }
@@ -206,7 +207,7 @@ private fun CaseDetailScreen(supportCase: SupportCase, onBack: () -> Unit) {
                 Spacer(Modifier.height(12.dp))
                 Text(supportCase.caseId, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
             }
-            Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(RoundedCornerShape(12.dp)).background(colors.bgCard).padding(16.dp)) {
+            Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp).clip(RoundedCornerShape(16.dp)).background(colors.bgCard).padding(16.dp)) {
                 Text(supportCase.subject, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
                 Spacer(Modifier.height(4.dp))
                 Text(stringResource(R.string.support_status, supportCase.status.name), fontSize = 14.sp, color = colors.textSecondary)
@@ -218,19 +219,19 @@ private fun CaseDetailScreen(supportCase: SupportCase, onBack: () -> Unit) {
                 val isCSP = msg.sender.startsWith("CSP")
                 Column(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(RoundedCornerShape(12.dp))
                         .background(if (isCSP) colors.brandSubtle else colors.bgCard)
                         .padding(12.dp)
                 ) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         Text(msg.sender, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = if (isCSP) colors.brandPrimary else colors.textSecondary)
-                        Text(formatTimeAgo(msg.timestamp), fontSize = 11.sp, color = colors.textMuted)
+                        Text(formatTimeAgo(msg.timestamp), fontSize = 12.sp, color = colors.textMuted)
                     }
                     Spacer(Modifier.height(4.dp))
-                    Text(msg.text, fontSize = 14.sp, color = colors.textPrimary, lineHeight = 18.sp)
+                    Text(msg.text, fontSize = 14.sp, color = colors.textPrimary, lineHeight = 20.sp)
                 }
             }
-            Spacer(Modifier.height(80.dp))
+            Spacer(Modifier.height(84.dp))
         }
     }
 }

@@ -31,9 +31,9 @@ object DarkColors {
     val positive = Color(0xFF008043)
     val positiveLight = Color(0xFFA5E5C6)
     val positiveBg = Color(0xFFE1FAED)
-    val negative = Color(0xFFE01E00)
-    val negativeLight = Color(0xFFFFBDB3)
-    val negativeBg = Color(0xFFFFE9E5)
+    val negative = Color(0xFFD92130)
+    val negativeLight = Color(0xFFFFB0B8)
+    val negativeBg = Color(0xFFFFE5E7)
     val warning = Color(0xFFFF8000)
     val warningDark = Color(0xFFB85C00)
     val warningLight = Color(0xFFFFAA00)
@@ -60,7 +60,7 @@ object DarkColors {
 
     // Subtle backgrounds
     val positiveSubtle = Color(0x1A008043)
-    val negativeSubtle = Color(0x14E01E00)
+    val negativeSubtle = Color(0x14D92130)
     val warningSubtle = Color(0x1AFF8000)
     val brandSubtle = Color(0x14D9008D)
     val moneySubtle = Color(0x142196F3)

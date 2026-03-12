@@ -51,7 +51,7 @@ android {
             dimension = "environment"
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev"
-            buildConfigField("String", "API_BASE_URL", "\"http://localhost:3456\"")
+            buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:3456\"")
             buildConfigField("String", "BACKEND_BASE_URL", "\"http://localhost:4000\"")
             buildConfigField("boolean", "USE_MOCK", "false")
             buildConfigField("String", "SENTRY_DSN", "\"\"")

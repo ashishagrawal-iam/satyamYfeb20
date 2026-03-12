@@ -66,12 +66,12 @@ fun AssuranceStrip(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .clip(RoundedCornerShape(12.dp))
+                .clip(RoundedCornerShape(16.dp))
                 .background(colors.bgCard)
-                .border(1.dp, colors.borderSubtle, RoundedCornerShape(12.dp))
+                .border(1.dp, colors.borderSubtle, RoundedCornerShape(16.dp))
                 .clickable { onDrillDown("activeBase") }
                 .semantics { contentDescription = "Active base: ${assuranceState.activeBase} connections. Tap for details." }
-                .padding(horizontal = 16.dp, vertical = 14.dp)
+                .padding(horizontal = 16.dp, vertical = 16.dp)
         ) {
             Text(
                 text = stringResource(R.string.assurance_active_base),
@@ -80,7 +80,7 @@ fun AssuranceStrip(
                 color = colors.textMuted,
                 letterSpacing = 0.3.sp
             )
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(8.dp))
             Text(
                 text = "${assuranceState.activeBase}",
                 fontSize = 24.sp,
@@ -94,12 +94,12 @@ fun AssuranceStrip(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .clip(RoundedCornerShape(12.dp))
+                .clip(RoundedCornerShape(16.dp))
                 .background(colors.bgCard)
-                .border(1.dp, colors.borderSubtle, RoundedCornerShape(12.dp))
+                .border(1.dp, colors.borderSubtle, RoundedCornerShape(16.dp))
                 .clickable { onDrillDown("earnings") }
                 .semantics { contentDescription = "Cycle earnings: ${formatCurrencyCompact(assuranceState.cycleEarned)}. Tap for details." }
-                .padding(horizontal = 16.dp, vertical = 14.dp)
+                .padding(horizontal = 16.dp, vertical = 16.dp)
         ) {
             Text(
                 text = stringResource(R.string.assurance_cycle_earnings),
@@ -108,13 +108,13 @@ fun AssuranceStrip(
                 color = colors.textMuted,
                 letterSpacing = 0.3.sp
             )
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(8.dp))
             Text(
                 text = formatCurrencyCompact(assuranceState.cycleEarned),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = colors.textPrimary, // white, NOT blue — matches web var(--text-primary)
-                lineHeight = 22.sp
+                lineHeight = 24.sp
             )
         }
 
@@ -128,12 +128,12 @@ fun AssuranceStrip(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(12.dp))
                     .background(colors.bgCard)
-                    .border(1.dp, colors.borderSubtle, RoundedCornerShape(10.dp))
+                    .border(1.dp, colors.borderSubtle, RoundedCornerShape(12.dp))
                     .clickable { if (onOpenSLA != null) onOpenSLA() else onDrillDown("sla") }
                     .semantics { contentDescription = "SLA standing: ${assuranceState.slaStanding.name}. Tap for details." }
-                    .padding(horizontal = 14.dp),
+                    .padding(horizontal = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -160,14 +160,14 @@ fun AssuranceStrip(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(12.dp))
                     .background(colors.bgCard)
-                    .border(1.dp, colors.borderSubtle, RoundedCornerShape(10.dp))
+                    .border(1.dp, colors.borderSubtle, RoundedCornerShape(12.dp))
                     .clickable { onDrillDown("exposure") }
                     .semantics { contentDescription = "Exposure: ${assuranceState.exposureState.name}, ${assuranceState.exposureDirection}. Tap for details." }
-                    .padding(horizontal = 14.dp),
+                    .padding(horizontal = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Box(
                     modifier = Modifier
@@ -251,7 +251,7 @@ fun AssuranceDrillDowns(
             ) {
                 Column {
                     Text(evt.connectionId, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
-                    Spacer(Modifier.height(2.dp))
+                    Spacer(Modifier.height(4.dp))
                     Text(evt.reason, fontSize = 12.sp, color = colors.textMuted)
                 }
                 Column(horizontalAlignment = Alignment.End) {
@@ -260,7 +260,7 @@ fun AssuranceDrillDowns(
                         fontSize = 14.sp, fontWeight = FontWeight.SemiBold,
                         color = if (evt.change > 0) colors.positive else colors.negative
                     )
-                    Spacer(Modifier.height(2.dp))
+                    Spacer(Modifier.height(4.dp))
                     Text(evt.date, fontSize = 12.sp, color = colors.textMuted)
                 }
             }
@@ -276,7 +276,7 @@ fun AssuranceDrillDowns(
         Spacer(Modifier.height(8.dp))
         Text(stringResource(R.string.assurance_cycle_earned), fontSize = 12.sp, color = colors.textSecondary)
         Spacer(Modifier.height(4.dp))
-        Text(formatCurrency(assuranceState.cycleEarned), fontSize = 28.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
+        Text(formatCurrency(assuranceState.cycleEarned), fontSize = 24.sp, fontWeight = FontWeight.Bold, color = colors.textPrimary)
         Spacer(Modifier.height(16.dp))
         Text(stringResource(R.string.assurance_active_base), fontSize = 12.sp, color = colors.textSecondary)
         Spacer(Modifier.height(4.dp))
@@ -294,12 +294,12 @@ fun AssuranceDrillDowns(
             Spacer(Modifier.height(12.dp))
             Text(stringResource(R.string.assurance_lifetime_earned), fontSize = 12.sp, color = colors.textSecondary)
             Spacer(Modifier.height(4.dp))
-            Text(formatCurrency(lifetimeEarnings), fontSize = 22.sp, fontWeight = FontWeight.Bold, color = colors.money)
+            Text(formatCurrency(lifetimeEarnings), fontSize = 24.sp, fontWeight = FontWeight.Bold, color = colors.money)
             Spacer(Modifier.height(16.dp))
         }
         Spacer(Modifier.height(12.dp))
         Box(
-            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)).background(colors.bgPrimary).padding(14.dp)
+            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)).background(colors.bgPrimary).padding(12.dp)
         ) {
             Text(
                 "${stringResource(R.string.assurance_cycle_note)} ${stringResource(R.string.assurance_wallet)} ${stringResource(R.string.assurance_from_menu)}",
@@ -335,7 +335,7 @@ fun AssuranceDrillDowns(
         Text("${assuranceState.unresolvedCount}", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
         Spacer(Modifier.height(16.dp))
         Box(
-            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)).background(colors.bgPrimary).padding(14.dp)
+            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)).background(colors.bgPrimary).padding(12.dp)
         ) {
             Text(
                 stringResource(R.string.assurance_sla_note),
@@ -383,7 +383,7 @@ fun AssuranceDrillDowns(
         Text(assuranceState.exposureSince, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = colors.textPrimary)
         Spacer(Modifier.height(16.dp))
         Box(
-            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)).background(colors.bgPrimary).padding(14.dp)
+            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)).background(colors.bgPrimary).padding(12.dp)
         ) {
             Column {
                 Text(stringResource(R.string.assurance_qual_signal), fontSize = 14.sp, color = colors.textSecondary)

@@ -18,6 +18,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.annotation.StringRes
+import androidx.compose.ui.res.stringResource
+import com.wiom.csp.R
 import com.wiom.csp.domain.model.ActorType
 import com.wiom.csp.domain.model.Task
 import com.wiom.csp.domain.model.TaskType
@@ -50,33 +53,33 @@ fun TechTaskDetailScreen(
                     .padding(horizontal = 20.dp, vertical = 16.dp)
             ) {
                 Text(
-                    text = "\u2190 Back",
+                    text = stringResource(R.string.general_back),
                     modifier = Modifier
                         .clickable { onClose() }
                         .padding(vertical = 4.dp),
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.SemiBold,
                     color = colors.textMuted
                 )
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(8.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     val typeColor = getTypeColor(task.taskType, colors)
                     Text(
                         task.taskType.name,
-                        fontSize = 11.sp,
+                        fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         color = typeColor,
                         modifier = Modifier
-                            .clip(RoundedCornerShape(6.dp))
+                            .clip(RoundedCornerShape(8.dp))
                             .background(typeColor.copy(alpha = 0.09f))
-                            .padding(horizontal = 8.dp, vertical = 3.dp)
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                     Text(
                         task.taskId,
-                        fontSize = 17.sp,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = colors.textPrimary
                     )
@@ -102,9 +105,9 @@ fun TechTaskDetailScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(16.dp))
                         .background(colors.bgCard)
-                        .padding(18.dp)
+                        .padding(16.dp)
                 ) {
                     // Row 1: Connection + Area
                     Row(
@@ -112,18 +115,18 @@ fun TechTaskDetailScreen(
                         horizontalArrangement = Arrangement.spacedBy(20.dp)
                     ) {
                         InfoCell(
-                            label = "CONNECTION",
+                            label = stringResource(R.string.tech_connection).uppercase(),
                             value = task.connectionId ?: task.netboxId ?: "--",
                             modifier = Modifier.weight(1f)
                         )
                         InfoCell(
-                            label = "AREA",
+                            label = stringResource(R.string.tech_area).uppercase(),
                             value = task.customerArea ?: "--",
                             modifier = Modifier.weight(1f)
                         )
                     }
 
-                    Spacer(Modifier.height(14.dp))
+                    Spacer(Modifier.height(12.dp))
 
                     // Row 2: State + Priority
                     Row(
@@ -131,12 +134,12 @@ fun TechTaskDetailScreen(
                         horizontalArrangement = Arrangement.spacedBy(20.dp)
                     ) {
                         InfoCell(
-                            label = "STATE",
+                            label = stringResource(R.string.tech_state).uppercase(),
                             value = task.state,
                             modifier = Modifier.weight(1f)
                         )
                         InfoCell(
-                            label = "PRIORITY",
+                            label = stringResource(R.string.tech_priority).uppercase(),
                             value = task.priority.name,
                             valueColor = if (task.priority == com.wiom.csp.domain.model.TaskPriority.HIGH) colors.negative else colors.textPrimary,
                             modifier = Modifier.weight(1f)
@@ -145,9 +148,9 @@ fun TechTaskDetailScreen(
 
                     // SLA Deadline (full width)
                     if (task.slaDeadlineAt != null) {
-                        Spacer(Modifier.height(14.dp))
+                        Spacer(Modifier.height(12.dp))
                         InfoCell(
-                            label = "SLA DEADLINE",
+                            label = stringResource(R.string.tech_sla_deadline).uppercase(),
                             value = formatTimestamp(task.slaDeadlineAt),
                             valueColor = colors.warning,
                             modifier = Modifier.fillMaxWidth()
@@ -156,9 +159,9 @@ fun TechTaskDetailScreen(
 
                     // Due date (full width)
                     if (task.dueAt != null) {
-                        Spacer(Modifier.height(14.dp))
+                        Spacer(Modifier.height(12.dp))
                         InfoCell(
-                            label = "DUE",
+                            label = stringResource(R.string.tech_due).uppercase(),
                             value = formatTimestamp(task.dueAt),
                             modifier = Modifier.fillMaxWidth()
                         )
@@ -169,13 +172,13 @@ fun TechTaskDetailScreen(
 
                 // Timeline
                 Text(
-                    "Timeline",
-                    fontSize = 13.sp,
+                    stringResource(R.string.tech_timeline),
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.textSecondary
                 )
 
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(12.dp))
 
                 val sortedEvents = task.eventLog.sortedBy {
                     try { Instant.parse(it.timestamp).toEpochMilli() } catch (_: Exception) { 0L }
@@ -235,23 +238,23 @@ fun TechTaskDetailScreen(
                                 ) {
                                     Text(
                                         formatTimestamp(event.timestamp),
-                                        fontSize = 11.sp,
+                                        fontSize = 12.sp,
                                         color = colors.textMuted
                                     )
                                     Text(
                                         event.actor,
-                                        fontSize = 11.sp,
+                                        fontSize = 12.sp,
                                         fontWeight = FontWeight.SemiBold,
                                         color = if (event.actorType == ActorType.TECHNICIAN) colors.positive
                                         else colors.textSecondary
                                     )
                                 }
-                                Spacer(Modifier.height(2.dp))
+                                Spacer(Modifier.height(4.dp))
                                 Text(
                                     event.detail,
-                                    fontSize = 13.sp,
+                                    fontSize = 14.sp,
                                     color = colors.textPrimary,
-                                    lineHeight = 18.sp
+                                    lineHeight = 20.sp
                                 )
                             }
                         }
@@ -279,17 +282,17 @@ fun TechTaskDetailScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(12.dp))
+                            .clip(RoundedCornerShape(24.dp))
                             .background(colors.brandPrimary)
                             .clickable { onAction(task.taskId, nextAction.action) }
-                            .padding(vertical = 15.dp),
+                            .padding(vertical = 16.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            nextAction.label,
+                            stringResource(nextAction.labelRes),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White
+                            color = colors.bgPrimary
                         )
                     }
                 }
@@ -309,11 +312,11 @@ private fun InfoCell(
     Column(modifier = modifier) {
         Text(
             label,
-            fontSize = 11.sp,
+            fontSize = 12.sp,
             color = colors.textMuted,
             letterSpacing = 0.3.sp
         )
-        Spacer(Modifier.height(3.dp))
+        Spacer(Modifier.height(4.dp))
         Text(
             value,
             fontSize = 14.sp,
@@ -331,26 +334,26 @@ private fun getTypeColor(type: TaskType, colors: com.wiom.csp.ui.theme.WiomColor
     }
 }
 
-private data class ActionInfo(val label: String, val action: String)
+private data class ActionInfo(@StringRes val labelRes: Int, val action: String)
 
 private fun getNextAction(task: Task): ActionInfo? {
     return when (task.taskType) {
         TaskType.INSTALL -> when (task.state) {
-            "CLAIMED", "ASSIGNED" -> ActionInfo("Accept Assignment", "ACCEPT_ASSIGNMENT")
-            "ACCEPTED" -> ActionInfo("Start Work", "START_WORK")
-            "SCHEDULED" -> ActionInfo("Mark Installed", "MARK_INSTALLED")
+            "CLAIMED", "ASSIGNED" -> ActionInfo(R.string.tech_accept_assignment, "ACCEPT_ASSIGNMENT")
+            "ACCEPTED" -> ActionInfo(R.string.tech_start_work, "START_WORK")
+            "SCHEDULED" -> ActionInfo(R.string.tech_mark_installed, "MARK_INSTALLED")
             else -> null
         }
         TaskType.RESTORE -> when (task.state) {
-            "ALERTED", "ASSIGNED" -> ActionInfo("Accept Assignment", "ACCEPT_ASSIGNMENT")
-            "ACCEPTED" -> ActionInfo("Start Work", "START_WORK")
-            "IN_PROGRESS" -> ActionInfo("Resolve", "RESOLVE")
+            "ALERTED", "ASSIGNED" -> ActionInfo(R.string.tech_accept_assignment, "ACCEPT_ASSIGNMENT")
+            "ACCEPTED" -> ActionInfo(R.string.tech_start_work, "START_WORK")
+            "IN_PROGRESS" -> ActionInfo(R.string.tech_resolve, "RESOLVE")
             else -> null
         }
         TaskType.NETBOX -> when (task.state) {
-            "ASSIGNED" -> ActionInfo("Accept Assignment", "ACCEPT_ASSIGNMENT")
-            "ACCEPTED", "IN_PROGRESS" -> ActionInfo("Mark Collected", "MARK_COLLECTED")
-            "COLLECTED" -> ActionInfo("Confirm Return", "CONFIRM_RETURN")
+            "ASSIGNED" -> ActionInfo(R.string.tech_accept_assignment, "ACCEPT_ASSIGNMENT")
+            "ACCEPTED", "IN_PROGRESS" -> ActionInfo(R.string.tech_mark_collected, "MARK_COLLECTED")
+            "COLLECTED" -> ActionInfo(R.string.tech_confirm_return, "CONFIRM_RETURN")
             else -> null
         }
     }

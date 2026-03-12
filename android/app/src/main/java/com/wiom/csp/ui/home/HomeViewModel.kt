@@ -11,6 +11,7 @@ import com.wiom.csp.domain.model.*
 import com.wiom.csp.domain.usecase.GetBucketUseCase
 import com.wiom.csp.domain.usecase.SortTasksUseCase
 import android.content.Context
+import com.wiom.csp.R
 import com.wiom.csp.feedback.AudioFeedback
 import com.wiom.csp.feedback.HapticFeedback
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -319,10 +320,10 @@ class HomeViewModel @Inject constructor(
                         "offer_expires_at" to JsonNull,
                         "queue_escalation_flag" to JsonNull,
                         "accept_expires_at" to JsonPrimitive(acceptExpires),
-                    ), newEvent("CLAIMED", "CSP claimed this task. Accept deadline: 15 min."))
+                    ), newEvent("CLAIMED", appContext.getString(R.string.event_detail_claimed)))
                     AudioFeedback.playNotificationSound()
                     HapticFeedback.notifyNewConnection(appContext)
-                    showConfirmation("Claimed $taskId. Accept within 15 min.")
+                    showConfirmation(appContext.getString(R.string.action_claimed, taskId))
                 }
                 "CLAIM_AND_ASSIGN" -> {
                     val slot = extra["preferred_slot"] ?: "Today"
@@ -331,12 +332,12 @@ class HomeViewModel @Inject constructor(
                         "offer_expires_at" to JsonNull,
                         "accept_expires_at" to JsonNull,
                         "queue_escalation_flag" to JsonNull,
-                    ), newEvent("CLAIMED", "CSP claimed this task. Preferred slot: $slot."),
-                        newEvent("ACCEPTED", "CSP accepted. Scheduled for: $slot.")
+                    ), newEvent("CLAIMED", appContext.getString(R.string.event_detail_claimed_slot, slot)),
+                        newEvent("ACCEPTED", appContext.getString(R.string.event_detail_accepted_slot, slot))
                     )
                     AudioFeedback.playNotificationSound()
                     HapticFeedback.notifyNewConnection(appContext)
-                    showConfirmation("Claimed $taskId. Slot: $slot. Now assign a technician.")
+                    showConfirmation(appContext.getString(R.string.action_claimed_and_assigned, taskId, slot))
                     _state.update { it.copy(selectedTaskId = null) }
                     refreshTasks()
                     openAssignPicker(taskId)
@@ -347,8 +348,8 @@ class HomeViewModel @Inject constructor(
                     postUpdate(taskId, task, mapOf(
                         "state" to JsonPrimitive("FAILED"),
                         "queue_escalation_flag" to JsonNull,
-                    ), newEvent("DECLINED", "CSP declined this offer. Reason: $reason"))
-                    showConfirmation("$taskId declined.")
+                    ), newEvent("DECLINED", appContext.getString(R.string.event_detail_declined, reason)))
+                    showConfirmation(appContext.getString(R.string.action_declined, taskId))
                     _state.update { it.copy(selectedTaskId = null) }
                 }
                 "ACCEPT" -> {
@@ -356,8 +357,8 @@ class HomeViewModel @Inject constructor(
                         "state" to JsonPrimitive("ACCEPTED"),
                         "accept_expires_at" to JsonNull,
                         "queue_escalation_flag" to JsonNull,
-                    ), newEvent("ACCEPTED", "CSP accepted this task. Ready to schedule."))
-                    showConfirmation("Accepted $taskId. Schedule or assign a technician.")
+                    ), newEvent("ACCEPTED", appContext.getString(R.string.event_detail_accepted)))
+                    showConfirmation(appContext.getString(R.string.action_accepted, taskId))
                 }
                 "SCHEDULE", "ASSIGN" -> {
                     openAssignPicker(taskId)
@@ -367,8 +368,8 @@ class HomeViewModel @Inject constructor(
                     postUpdate(taskId, task, mapOf(
                         "state" to JsonPrimitive("IN_PROGRESS"),
                         "delegation_state" to JsonPrimitive("IN_PROGRESS"),
-                    ), newEvent("IN_PROGRESS", "CSP started work on this task (self-assigned)."))
-                    showConfirmation("$taskId -- Work started.")
+                    ), newEvent("IN_PROGRESS", appContext.getString(R.string.event_detail_work_started)))
+                    showConfirmation(appContext.getString(R.string.action_work_started, taskId))
                 }
                 "RESOLVE" -> {
                     addFadingTask(taskId)
@@ -376,22 +377,22 @@ class HomeViewModel @Inject constructor(
                         "state" to JsonPrimitive("RESOLVED"),
                         "queue_escalation_flag" to JsonNull,
                         "delegation_state" to JsonPrimitive("DONE"),
-                    ), newEvent("RESOLVED", "Task marked as resolved by CSP."))
-                    showConfirmation("$taskId marked as resolved.")
+                    ), newEvent("RESOLVED", appContext.getString(R.string.event_detail_resolved)))
+                    showConfirmation(appContext.getString(R.string.action_resolved, taskId))
                 }
                 "RESOLVE_BLOCKED" -> {
                     postUpdate(taskId, task, mapOf(
                         "state" to JsonPrimitive("IN_PROGRESS"),
                         "queue_escalation_flag" to JsonNull,
                         "blocked_reason" to JsonNull,
-                    ), newEvent("UNBLOCKED", "Block resolved. Task resumed."))
-                    showConfirmation("$taskId unblocked and resumed.")
+                    ), newEvent("UNBLOCKED", appContext.getString(R.string.event_detail_unblocked)))
+                    showConfirmation(appContext.getString(R.string.action_unblocked, taskId))
                 }
                 "COLLECTED" -> {
                     postUpdate(taskId, task, mapOf(
                         "state" to JsonPrimitive("COLLECTED"),
-                    ), newEvent("COLLECTED", "NetBox collected from customer premises."))
-                    showConfirmation("$taskId -- NetBox marked as collected.")
+                    ), newEvent("COLLECTED", appContext.getString(R.string.event_detail_collected)))
+                    showConfirmation(appContext.getString(R.string.action_collected, taskId))
                 }
                 "CONFIRM_RETURN" -> {
                     addFadingTask(taskId)
@@ -399,18 +400,18 @@ class HomeViewModel @Inject constructor(
                         "state" to JsonPrimitive("RETURN_CONFIRMED"),
                         "queue_escalation_flag" to JsonNull,
                         "delegation_state" to JsonPrimitive("DONE"),
-                    ), newEvent("RETURN_CONFIRMED", "NetBox return confirmed and recorded."))
-                    showConfirmation("$taskId -- Return confirmed.")
+                    ), newEvent("RETURN_CONFIRMED", appContext.getString(R.string.event_detail_return_confirmed)))
+                    showConfirmation(appContext.getString(R.string.action_return_confirmed, taskId))
                 }
                 "VERIFY" -> {
                     addFadingTask(taskId)
                     postUpdate(taskId, task, mapOf(
                         "state" to JsonPrimitive("ACTIVATION_VERIFIED"),
                         "queue_escalation_flag" to JsonNull,
-                    ), newEvent("ACTIVATION_VERIFIED", "Activation manually verified by CSP."))
+                    ), newEvent("ACTIVATION_VERIFIED", appContext.getString(R.string.event_detail_verified)))
                     AudioFeedback.playNotificationSound()
                     HapticFeedback.notifyNewConnection(appContext)
-                    showConfirmation("$taskId -- Activation verified. \u20B9300 earned.")
+                    showConfirmation(appContext.getString(R.string.action_verified, taskId))
                     // Credit earnings
                     assuranceRepo.updateAssurance(
                         AssuranceUpdateRequest(incrementCycleEarned = 300, incrementNextSettlement = 300)
@@ -418,8 +419,8 @@ class HomeViewModel @Inject constructor(
                     notificationRepo.post(NotificationPostRequest(
                         id = "NOTIF-${System.currentTimeMillis()}",
                         type = "SETTLEMENT_CREDIT",
-                        title = "Install Earning Credited",
-                        message = "\u20B9300 earned \u2014 Install activation for ${task.connectionId ?: taskId}",
+                        title = appContext.getString(R.string.action_install_earning_title),
+                        message = appContext.getString(R.string.action_install_earning_message, task.connectionId ?: taskId),
                         timestamp = now,
                     ))
                 }
@@ -427,10 +428,10 @@ class HomeViewModel @Inject constructor(
                     postUpdate(taskId, task, mapOf(
                         "state" to JsonPrimitive("INSTALLED"),
                         "queue_escalation_flag" to JsonPrimitive("VERIFICATION_PENDING"),
-                    ), newEvent("INSTALLED", "Hardware installation completed. Pending activation verification."))
+                    ), newEvent("INSTALLED", appContext.getString(R.string.event_detail_installed)))
                     AudioFeedback.playNotificationSound()
                     HapticFeedback.notifyNewConnection(appContext)
-                    showConfirmation("$taskId -- Installation completed. Verification pending.")
+                    showConfirmation(appContext.getString(R.string.action_installed, taskId))
                 }
                 "VIEW" -> {
                     selectTask(taskId)
@@ -462,7 +463,7 @@ class HomeViewModel @Inject constructor(
             eventType = "ASSIGNED",
             actor = "CSP-MH-1001",
             actorType = ActorType.CSP,
-            detail = "Task assigned to ${tech.name} (${tech.id}). Delegation state: ASSIGNED."
+            detail = appContext.getString(R.string.event_detail_assigned, tech.name, tech.id)
         )
 
         viewModelScope.launch {
@@ -471,7 +472,7 @@ class HomeViewModel @Inject constructor(
                 "delegation_state" to JsonPrimitive("ASSIGNED"),
                 "assigned_to" to JsonPrimitive(tech.name),
             ), event)
-            showConfirmation("$taskId assigned to ${tech.name}.")
+            showConfirmation(appContext.getString(R.string.action_assigned, taskId, tech.name))
             _state.update { it.copy(selectedTaskId = null) }
             closeAssignPicker()
             refreshTasks()

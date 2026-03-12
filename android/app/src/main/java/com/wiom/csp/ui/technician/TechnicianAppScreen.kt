@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.wiom.csp.domain.model.Task
+import androidx.compose.ui.res.stringResource
+import com.wiom.csp.R
 import com.wiom.csp.ui.common.ConfirmationToast
 import com.wiom.csp.ui.theme.WiomCspTheme
 
@@ -69,7 +71,7 @@ fun TechnicianAppScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            "Loading...",
+                            stringResource(R.string.home_loading),
                             fontSize = 14.sp,
                             color = colors.textMuted
                         )

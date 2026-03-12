@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -64,10 +65,11 @@ fun EventModal(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
-                        .widthIn(max = 380.dp)
-                        .clip(RoundedCornerShape(16.dp))
+                        .widthIn(max = 312.dp)
+                        .shadow(elevation = 4.dp, shape = RoundedCornerShape(24.dp))
+                        .clip(RoundedCornerShape(24.dp))
                         .background(colors.bgSecondary)
-                        .border(1.dp, accentAlpha44, RoundedCornerShape(16.dp))
+                        .border(1.dp, accentAlpha44, RoundedCornerShape(24.dp))
                         .clickable(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() }
@@ -95,7 +97,7 @@ fun EventModal(
                         ) {
                             Text(
                                 text = getIconSymbol(notification.type),
-                                fontSize = 22.sp,
+                                fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = accentColor
                             )
@@ -109,7 +111,7 @@ fun EventModal(
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = colors.textPrimary,
-                            lineHeight = 22.sp
+                            lineHeight = 24.sp
                         )
 
                         // Amount callout (payment/settlement only)
@@ -119,7 +121,7 @@ fun EventModal(
                             Spacer(Modifier.height(12.dp))
                             Text(
                                 text = "\u20B9${amountFormatted}",
-                                fontSize = 28.sp,
+                                fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = accentColor
                             )
@@ -131,7 +133,7 @@ fun EventModal(
                             Spacer(Modifier.height(12.dp))
                             Text(
                                 text = "-\u20B9${amountFormatted}",
-                                fontSize = 28.sp,
+                                fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = colors.negative
                             )
@@ -157,7 +159,7 @@ fun EventModal(
                                     color = accentColor,
                                     letterSpacing = 0.3.sp
                                 )
-                                Spacer(Modifier.height(6.dp))
+                                Spacer(Modifier.height(8.dp))
                                 Text(
                                     text = getConsequenceText(notification),
                                     fontSize = 14.sp,
@@ -212,7 +214,7 @@ fun EventModal(
                                     .padding(vertical = 12.dp),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text(stringResource(R.string.event_view), fontWeight = FontWeight.SemiBold, fontSize = 14.sp, color = Color.White)
+                                Text(stringResource(R.string.event_view), fontWeight = FontWeight.SemiBold, fontSize = 14.sp, color = colors.bgPrimary)
                             }
                         }
                     }

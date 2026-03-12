@@ -142,9 +142,9 @@ fun WalletHubScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(RoundedCornerShape(12.dp))
                         .background(colors.negativeSubtle)
-                        .padding(14.dp)
+                        .padding(12.dp)
                 ) {
                     Column {
                         Text(stringResource(R.string.wallet_frozen_title), fontWeight = FontWeight.Bold, color = colors.negative, fontSize = 14.sp)
@@ -163,7 +163,7 @@ fun WalletHubScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(16.dp))
                     .background(colors.bgCard)
                     .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -194,14 +194,15 @@ fun WalletHubScreen(
                                 .clip(RoundedCornerShape(24.dp))
                                 .background(if (canWithdraw) colors.brandPrimary else colors.bgSecondary)
                                 .clickable(enabled = canWithdraw) { showWithdraw = true }
-                                .padding(horizontal = 20.dp, vertical = 10.dp)
+                                .height(48.dp)
+                                .padding(horizontal = 20.dp, vertical = 8.dp)
                         ) {
-                            Text(stringResource(R.string.wallet_withdraw), fontWeight = FontWeight.SemiBold, fontSize = 14.sp,
-                                color = if (canWithdraw) Color.White else colors.textMuted)
+                            Text(stringResource(R.string.wallet_withdraw), fontWeight = FontWeight.Bold, fontSize = 14.sp,
+                                color = if (canWithdraw) colors.bgPrimary else colors.textMuted)
                         }
                     }
                     if (withdrawalCooldown) {
-                        Spacer(Modifier.height(6.dp))
+                        Spacer(Modifier.height(8.dp))
                         Text(
                             stringResource(R.string.wallet_next_withdrawal, 7 - daysSinceLastWithdrawal),
                             fontSize = 12.sp, color = colors.warning
@@ -254,7 +255,7 @@ fun WalletHubScreen(
                 }
             }
 
-            Spacer(Modifier.height(80.dp))
+            Spacer(Modifier.height(84.dp))
         }
 
         // Withdraw flow overlay
@@ -277,7 +278,7 @@ private fun SectionHeader(title: String) {
     Text(
         title,
         modifier = Modifier.padding(horizontal = 16.dp),
-        fontSize = 13.sp,
+        fontSize = 14.sp,
         fontWeight = FontWeight.SemiBold,
         color = colors.textSecondary,
         letterSpacing = 0.5.sp
@@ -307,16 +308,16 @@ private fun EarningsCreditRow(txn: WalletTransaction) {
         Column(modifier = Modifier.weight(1f)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 // Credit type badge
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(4.dp))
                         .background(colors.positiveSubtle)
-                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
-                    Text(creditTypeLabel, fontSize = 10.sp, fontWeight = FontWeight.SemiBold, color = colors.positive)
+                    Text(creditTypeLabel, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, color = colors.positive)
                 }
                 Text(txn.description, fontSize = 14.sp, color = colors.textPrimary, maxLines = 1)
             }
@@ -354,16 +355,16 @@ private fun DepositEntryRow(txn: WalletTransaction) {
         Column(modifier = Modifier.weight(1f)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(4.dp))
                         .background(if (isDeduction) colors.negativeSubtle else colors.warningSubtle)
-                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
-                        entryTypeLabel, fontSize = 10.sp, fontWeight = FontWeight.SemiBold,
+                        entryTypeLabel, fontSize = 12.sp, fontWeight = FontWeight.SemiBold,
                         color = if (isDeduction) colors.negative else colors.warning
                     )
                 }
@@ -436,8 +437,9 @@ private fun WithdrawFlow(
                 value = amountText,
                 onValueChange = { amountText = it.filter { c -> c.isDigit() } },
                 label = { Text(stringResource(R.string.wallet_amount_label)) },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().height(56.dp),
                 singleLine = true,
+                shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = colors.brandPrimary,
                     unfocusedBorderColor = colors.borderSubtle,
@@ -456,16 +458,17 @@ private fun WithdrawFlow(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(24.dp))
-                    .background(if (amount in 1..maxAmount) colors.brandPrimary else colors.bgCardHover)
+                    .background(if (amount in 1..maxAmount) colors.brandPrimary else colors.ctaDisabledBg)
                     .clickable(enabled = amount in 1..maxAmount) { onConfirm(amount) }
-                    .padding(vertical = 14.dp),
+                    .height(48.dp)
+                    .padding(vertical = 12.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     stringResource(R.string.wallet_confirm_withdrawal),
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.Bold,
                     fontSize = 14.sp,
-                    color = if (amount in 1..maxAmount) Color.White else colors.textMuted
+                    color = if (amount in 1..maxAmount) colors.bgPrimary else colors.textMuted
                 )
             }
         }
