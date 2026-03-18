@@ -48,6 +48,13 @@ object SeedDataProvider {
         id = "START_WORK", label = "Start Work", labelHi = "\u0915\u093E\u092E \u0936\u0941\u0930\u0942",
         style = "primary"
     )
+    private val ACTION_START_INSTALLATION = ActionSchema(
+        id = "START_INSTALLATION", label = "Start Installation",
+        labelHi = "\u0907\u0902\u0938\u094D\u091F\u0949\u0932\u0947\u0936\u0928 \u0936\u0941\u0930\u0942",
+        style = "primary",
+        confirmMessage = "Installation flow started",
+        confirmMessageHi = "\u0907\u0902\u0938\u094D\u091F\u0949\u0932\u0947\u0936\u0928 \u092B\u094D\u0932\u094B \u0936\u0941\u0930\u0942"
+    )
     private val ACTION_INSTALL = ActionSchema(
         id = "INSTALL", label = "Complete Install",
         labelHi = "\u0907\u0902\u0938\u094D\u091F\u0949\u0932 \u092A\u0942\u0930\u093E",
@@ -147,7 +154,7 @@ object SeedDataProvider {
                 ),
                 "IN_PROGRESS" to TaskStateSchema(
                     label = "In Progress", labelHi = "\u092A\u094D\u0930\u0917\u0924\u093F \u092E\u0947\u0902",
-                    actions = listOf(ACTION_INSTALL, ACTION_REASSIGN),
+                    actions = listOf(ACTION_START_INSTALLATION, ACTION_REASSIGN),
                     color = "#FDCB6E",
                     timerField = "sla_deadline_at",
                     showProofCapture = true,
@@ -802,7 +809,7 @@ object SeedDataProvider {
             )
         ),
 
-        // 3. INSTALL IN_PROGRESS NORMAL, self-assigned
+        // 3. INSTALL IN_PROGRESS NORMAL, self-assigned by CSP
         TaskData(
             taskId = "TSK-INS-003",
             taskType = "INSTALL",
@@ -814,8 +821,8 @@ object SeedDataProvider {
             customerPhone = "+919988776655",
             slaDeadlineAt = hoursFromNow(4),
             delegationState = "IN_PROGRESS",
-            assignedTo = "TECH-001",
-            assignedToName = "Ajay Patil",
+            assignedTo = "Self (CSP-MH-1001)",
+            assignedToName = "Self (CSP)",
             createdAt = hoursAgo(3),
             updatedAt = minutesAgo(30),
             timeline = listOf(

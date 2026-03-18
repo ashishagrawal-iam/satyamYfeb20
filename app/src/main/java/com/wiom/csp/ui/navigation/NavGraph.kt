@@ -43,6 +43,7 @@ import com.wiom.csp.ui.deposit.DepositScreen
 import com.wiom.csp.ui.deposit.DepositViewModel
 import com.wiom.csp.ui.home.HomeScreen
 import com.wiom.csp.ui.home.HomeViewModel
+import com.wiom.csp.ui.installation.InstallationFlowScreen
 import com.wiom.csp.ui.onboarding.OnboardingScreen
 import com.wiom.csp.ui.policies.PoliciesScreen
 import com.wiom.csp.ui.profile.ProfileScreen
@@ -185,8 +186,9 @@ fun WiomNavGraph(deepLinkIntent: Intent? = null) {
     }
 
     // Back handler chain
-    BackHandler(enabled = selectedTaskId != null || activeSection != null || menuOpen) {
+    BackHandler(enabled = homeState.installationTaskId != null || selectedTaskId != null || activeSection != null || menuOpen) {
         when {
+            homeState.installationTaskId != null -> homeVm.cancelInstallation()
             selectedTaskId != null -> selectedTaskId = null
             activeSection != null -> activeSection = null
             menuOpen -> menuOpen = false
@@ -236,7 +238,13 @@ fun WiomNavGraph(deepLinkIntent: Intent? = null) {
                             fadingTasks = homeState.fadingTasks,
                             onFilterChange = { homeVm.setFilter(it) },
                             onTaskClick = { selectedTaskId = it },
-                            onTaskAction = { id, action -> homeVm.handleTaskAction(id, action) },
+                            onTaskAction = { id, action ->
+                                if (action == "START_INSTALLATION") {
+                                    homeVm.startInstallation(id)
+                                } else {
+                                    homeVm.handleTaskAction(id, action)
+                                }
+                            },
                             onChipClick = { chip ->
                                 if (chip == "sla_standing") activeSection = "sla"
                             },
@@ -376,8 +384,31 @@ fun WiomNavGraph(deepLinkIntent: Intent? = null) {
                                 technicians = emptyList(),
                                 onBack = { selectedTaskId = null },
                                 onAction = { id, action, payload ->
-                                    homeVm.handleTaskAction(id, action, payload)
+                                    if (action == "START_INSTALLATION") {
+                                        homeVm.startInstallation(id)
+                                        selectedTaskId = null
+                                    } else {
+                                        homeVm.handleTaskAction(id, action, payload)
+                                    }
                                 }
+                            )
+                        }
+                    }
+
+                    // Installation flow overlay
+                    AnimatedVisibility(
+                        visible = homeState.installationTaskId != null,
+                        enter = slideInHorizontally(tween(300)) { it },
+                        exit = slideOutHorizontally(tween(300)) { it }
+                    ) {
+                        val installTask = homeState.tasks.find {
+                            it.taskId == homeState.installationTaskId
+                        }
+                        if (installTask != null) {
+                            InstallationFlowScreen(
+                                task = installTask,
+                                onBack = { homeVm.cancelInstallation() },
+                                onComplete = { taskId -> homeVm.finishInstallation(taskId) }
                             )
                         }
                     }

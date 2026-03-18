@@ -63,7 +63,8 @@ class HomeViewModel @Inject constructor(
         val offersEnabled: Boolean = true,
         val hindi: Boolean = false,
         val darkTheme: Boolean = true,
-        val capabilityResetActive: Boolean = false
+        val capabilityResetActive: Boolean = false,
+        val installationTaskId: String? = null
     )
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -361,6 +362,32 @@ class HomeViewModel @Inject constructor(
      * Expose the schema resolver for composables that need it.
      */
     fun getSchemaResolver(): SchemaResolver = schemaResolver
+
+    // ── Installation Flow ───────────────────────────────────────────
+
+    /**
+     * Open the 13-step installation flow for a task.
+     * Clears selectedTask so detail overlay closes.
+     */
+    fun startInstallation(taskId: String) {
+        _uiState.update { it.copy(installationTaskId = taskId, selectedTaskId = null) }
+    }
+
+    /**
+     * Complete the installation flow — fires the INSTALL action to move
+     * the task to INSTALLED state, then closes the flow.
+     */
+    fun finishInstallation(taskId: String) {
+        _uiState.update { it.copy(installationTaskId = null) }
+        handleTaskAction(taskId, "INSTALL")
+    }
+
+    /**
+     * Cancel the installation flow without completing.
+     */
+    fun cancelInstallation() {
+        _uiState.update { it.copy(installationTaskId = null) }
+    }
 
     // ── Private: Notification Polling ───────────────────────────────────
 
