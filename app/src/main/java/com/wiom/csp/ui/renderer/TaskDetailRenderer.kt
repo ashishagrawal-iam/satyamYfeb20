@@ -92,7 +92,7 @@ fun TaskDetailRenderer(
     val typeLabel = remember(taskType, hindi) { schema.resolveTaskTypeLabel(taskType, hindi) }
     val dotColor = remember(taskType) { parseColor(schema.resolveTaskColor(taskType)) }
     val stateColor = remember(taskType, state) { parseColor(schema.resolveStateColor(taskType, state)) }
-    val actions = remember(taskType, state) { schema.resolveActions(taskType, state) }
+    val actions = schema.resolveActions(taskType, state)
 
     var actionLoading by remember { mutableStateOf(false) }
     var selectedTechnician by rememberSaveable { mutableStateOf<String?>(null) }

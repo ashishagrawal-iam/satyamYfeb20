@@ -80,4 +80,5 @@ dependencies {
     implementation(libs.retrofit.kotlinx.serialization)
     implementation(libs.datastore.preferences)
     implementation(libs.work.runtime.ktx)
+    implementation("androidx.webkit:webkit:1.9.0")
 }

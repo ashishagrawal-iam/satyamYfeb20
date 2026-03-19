@@ -106,7 +106,7 @@ fun HomeScreen(
         listOf("All") + typeLabels
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         // ── 1. Header: hamburger + partner ID + avatar ──────────────
         HeaderRow(onMenuClick = onMenuClick)
 
@@ -285,6 +285,7 @@ private fun HeaderRow(onMenuClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 8.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -292,7 +293,8 @@ private fun HeaderRow(onMenuClick: () -> Unit) {
             Icon(
                 imageVector = Icons.Default.Menu,
                 contentDescription = "Open menu",
-                tint = MaterialTheme.colorScheme.onSurface
+                tint = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.size(28.dp)
             )
         }
 

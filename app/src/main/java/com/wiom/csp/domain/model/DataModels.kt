@@ -250,3 +250,29 @@ data class QueuedAction(
     val createdAt: Long = System.currentTimeMillis(),
     val retryCount: Int = 0
 )
+
+// ── ISP Recharge Models ─────────────────────────────────────────────
+
+@Serializable
+data class RechargeCustomer(
+    val id: String,
+    val name: String,
+    val connectionId: String,
+    val deviceId: String,
+    val speed: String = "100 Mbps",
+    val username: String? = null,
+    val phoneLast5: String,
+    val shareAmount: Double = 300.0,
+    val status: String = "PENDING" // PENDING, IN_PROGRESS, COMPLETED, FAILED
+)
+
+@Serializable
+data class ISPPortal(
+    val id: String,
+    val name: String,
+    val url: String,
+    val username: String,
+    val password: String,
+    val verified: Boolean = false,
+    val createdAt: Long = System.currentTimeMillis()
+)

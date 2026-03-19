@@ -8,9 +8,13 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,7 +47,15 @@ import com.wiom.csp.ui.deposit.DepositScreen
 import com.wiom.csp.ui.deposit.DepositViewModel
 import com.wiom.csp.ui.home.HomeScreen
 import com.wiom.csp.ui.home.HomeViewModel
+import com.wiom.csp.BuildConfig
+import com.wiom.csp.ui.dashboard.DevDashboard
 import com.wiom.csp.ui.installation.InstallationFlowScreen
+import com.wiom.csp.ui.isprecharge.AutoRechargeNotification
+import com.wiom.csp.ui.isprecharge.ISPRechargeFlowScreen
+import com.wiom.csp.ui.isprecharge.Phase0AcknowledgeScreen
+import androidx.compose.material.icons.filled.DeveloperMode
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.graphics.Color
 import com.wiom.csp.ui.onboarding.OnboardingScreen
 import com.wiom.csp.ui.policies.PoliciesScreen
 import com.wiom.csp.ui.profile.ProfileScreen
@@ -186,9 +198,11 @@ fun WiomNavGraph(deepLinkIntent: Intent? = null) {
     }
 
     // Back handler chain
-    BackHandler(enabled = homeState.installationTaskId != null || selectedTaskId != null || activeSection != null || menuOpen) {
+    BackHandler(enabled = homeState.installationTaskId != null || homeState.rechargeTaskId != null || homeState.phase0TaskId != null || selectedTaskId != null || activeSection != null || menuOpen) {
         when {
             homeState.installationTaskId != null -> homeVm.cancelInstallation()
+            homeState.rechargeTaskId != null -> homeVm.cancelRecharge()
+            homeState.phase0TaskId != null -> homeVm.cancelPhase0Acknowledge()
             selectedTaskId != null -> selectedTaskId = null
             activeSection != null -> activeSection = null
             menuOpen -> menuOpen = false
@@ -239,10 +253,11 @@ fun WiomNavGraph(deepLinkIntent: Intent? = null) {
                             onFilterChange = { homeVm.setFilter(it) },
                             onTaskClick = { selectedTaskId = it },
                             onTaskAction = { id, action ->
-                                if (action == "START_INSTALLATION") {
-                                    homeVm.startInstallation(id)
-                                } else {
-                                    homeVm.handleTaskAction(id, action)
+                                when (action) {
+                                    "START_INSTALLATION" -> homeVm.startInstallation(id)
+                                    "START_RECHARGE" -> homeVm.startRecharge(id)
+                                    "ACKNOWLEDGE_RECHARGE" -> homeVm.startPhase0Acknowledge(id)
+                                    else -> homeVm.handleTaskAction(id, action)
                                 }
                             },
                             onChipClick = { chip ->
@@ -384,12 +399,41 @@ fun WiomNavGraph(deepLinkIntent: Intent? = null) {
                                 technicians = emptyList(),
                                 onBack = { selectedTaskId = null },
                                 onAction = { id, action, payload ->
-                                    if (action == "START_INSTALLATION") {
-                                        homeVm.startInstallation(id)
-                                        selectedTaskId = null
-                                    } else {
-                                        homeVm.handleTaskAction(id, action, payload)
+                                    when (action) {
+                                        "START_INSTALLATION" -> {
+                                            homeVm.startInstallation(id)
+                                            selectedTaskId = null
+                                        }
+                                        "START_RECHARGE" -> {
+                                            homeVm.startRecharge(id)
+                                            selectedTaskId = null
+                                        }
+                                        "ACKNOWLEDGE_RECHARGE" -> {
+                                            homeVm.startPhase0Acknowledge(id)
+                                            selectedTaskId = null
+                                        }
+                                        else -> homeVm.handleTaskAction(id, action, payload)
                                     }
+                                }
+                            )
+                        }
+                    }
+
+                    // Phase 0: Acknowledge screen overlay
+                    AnimatedVisibility(
+                        visible = homeState.phase0TaskId != null,
+                        enter = slideInHorizontally(tween(300)) { it },
+                        exit = slideOutHorizontally(tween(300)) { it }
+                    ) {
+                        val phase0Task = homeState.tasks.find {
+                            it.taskId == homeState.phase0TaskId
+                        }
+                        if (phase0Task != null) {
+                            Phase0AcknowledgeScreen(
+                                task = phase0Task,
+                                onBack = { homeVm.cancelPhase0Acknowledge() },
+                                onConfirm = { taskId, _ ->
+                                    homeVm.finishPhase0Acknowledge(taskId)
                                 }
                             )
                         }
@@ -411,6 +455,74 @@ fun WiomNavGraph(deepLinkIntent: Intent? = null) {
                                 onComplete = { taskId -> homeVm.finishInstallation(taskId) }
                             )
                         }
+                    }
+
+                    // ISP Recharge flow overlay
+                    AnimatedVisibility(
+                        visible = homeState.rechargeTaskId != null,
+                        enter = slideInHorizontally(tween(300)) { it },
+                        exit = slideOutHorizontally(tween(300)) { it }
+                    ) {
+                        val rechargeTask = homeState.tasks.find {
+                            it.taskId == homeState.rechargeTaskId
+                        }
+                        if (rechargeTask != null) {
+                            ISPRechargeFlowScreen(
+                                task = rechargeTask,
+                                phase = homeState.rechargePhase,
+                                onBack = { homeVm.cancelRecharge() },
+                                onComplete = { taskId -> homeVm.finishRecharge(taskId) }
+                            )
+                        }
+                    }
+
+                    // Dev Dashboard FAB (dev builds only)
+                    if (BuildConfig.USE_MOCK) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.BottomEnd
+                        ) {
+                            androidx.compose.material3.FloatingActionButton(
+                                onClick = { homeVm.openDashboard() },
+                                containerColor = Color(0xFFFF6B6B),
+                                contentColor = Color.White,
+                                modifier = Modifier.size(48.dp)
+                            ) {
+                                androidx.compose.material3.Icon(
+                                    Icons.Default.DeveloperMode,
+                                    contentDescription = "Dev Dashboard",
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+                        }
+                    }
+
+                    // Dev Dashboard overlay
+                    if (homeState.dashboardOpen) {
+                        DevDashboard(
+                            currentRechargePhase = homeState.rechargePhase,
+                            onDismiss = { homeVm.closeDashboard() },
+                            onSetRechargePhase = { phase -> homeVm.setRechargePhase(phase) },
+                            onTriggerInstallation = {
+                                val installTask = homeState.tasks.find {
+                                    it.taskType == "INSTALL" && it.currentState == "IN_PROGRESS"
+                                }
+                                if (installTask != null) {
+                                    homeVm.startInstallation(installTask.taskId)
+                                }
+                            }
+                        )
+                    }
+
+                    // Phase 3: Auto Recharge popup
+                    homeState.autoRechargePopup?.let { popup ->
+                        AutoRechargeNotification(
+                            customerCount = popup.customerCount,
+                            totalEarned = popup.totalEarned,
+                            onDismiss = { homeVm.dismissAutoRechargePopup() }
+                        )
                     }
 
                     // Confirmation toast
@@ -461,12 +573,24 @@ private fun SecondaryMenu(
             .background(MaterialTheme.colorScheme.surface)
     ) {
         Column(Modifier.padding(24.dp)) {
-            androidx.compose.material3.Text(
-                text = if (hindi) "मेनू" else "Menu",
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(bottom = 24.dp)
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 24.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                androidx.compose.material3.Text(
+                    text = if (hindi) "मेनू" else "Menu",
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                androidx.compose.material3.IconButton(onClick = onClose) {
+                    androidx.compose.material3.Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Close menu",
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
             sections.forEach { (id, label) ->
                 androidx.compose.material3.TextButton(
                     onClick = { onSectionSelect(id) },

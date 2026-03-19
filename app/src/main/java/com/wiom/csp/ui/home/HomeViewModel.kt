@@ -45,6 +45,11 @@ class HomeViewModel @Inject constructor(
     private val preferences: UserPreferences
 ) : ViewModel() {
 
+    data class AutoRechargePopup(
+        val customerCount: Int,
+        val totalEarned: Double
+    )
+
     data class HomeUiState(
         val tasks: List<TaskData> = emptyList(),
         val assurance: AssuranceData? = null,
@@ -62,9 +67,14 @@ class HomeViewModel @Inject constructor(
         val fadingTasks: Map<String, Boolean> = emptyMap(),
         val offersEnabled: Boolean = true,
         val hindi: Boolean = false,
-        val darkTheme: Boolean = true,
+        val darkTheme: Boolean = true, // default dark
         val capabilityResetActive: Boolean = false,
-        val installationTaskId: String? = null
+        val installationTaskId: String? = null,
+        val rechargeTaskId: String? = null,
+        val rechargePhase: Int = 1,
+        val phase0TaskId: String? = null,
+        val dashboardOpen: Boolean = false,
+        val autoRechargePopup: AutoRechargePopup? = null
     )
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -387,6 +397,136 @@ class HomeViewModel @Inject constructor(
      */
     fun cancelInstallation() {
         _uiState.update { it.copy(installationTaskId = null) }
+    }
+
+    // ── ISP Recharge Flow ───────────────────────────────────────────
+
+    /**
+     * Open the ISP Recharge flow for a task.
+     * Clears selectedTask so detail overlay closes.
+     */
+    fun startRecharge(taskId: String) {
+        _uiState.update { it.copy(rechargeTaskId = taskId, selectedTaskId = null) }
+    }
+
+    /**
+     * Complete the recharge flow — fires the ACKNOWLEDGE_RECHARGE action to move
+     * the task to COMPLETED state, then closes the flow.
+     */
+    fun finishRecharge(taskId: String) {
+        _uiState.update { it.copy(rechargeTaskId = null) }
+        handleTaskAction(taskId, "ACKNOWLEDGE_RECHARGE")
+    }
+
+    /**
+     * Cancel the recharge flow without completing.
+     */
+    fun cancelRecharge() {
+        _uiState.update { it.copy(rechargeTaskId = null) }
+    }
+
+    // ── Phase 0: Acknowledge Flow ───────────────────────────────────
+
+    fun startPhase0Acknowledge(taskId: String) {
+        _uiState.update { it.copy(phase0TaskId = taskId, selectedTaskId = null) }
+    }
+
+    fun finishPhase0Acknowledge(taskId: String) {
+        _uiState.update { it.copy(phase0TaskId = null) }
+        handleTaskAction(taskId, "ACKNOWLEDGE_RECHARGE")
+    }
+
+    fun cancelPhase0Acknowledge() {
+        _uiState.update { it.copy(phase0TaskId = null) }
+    }
+
+    // ── Dev Dashboard ───────────────────────────────────────────────────
+
+    fun openDashboard() {
+        _uiState.update { it.copy(dashboardOpen = true) }
+    }
+
+    fun closeDashboard() {
+        _uiState.update { it.copy(dashboardOpen = false) }
+    }
+
+    /**
+     * Set the ISP recharge phase. This changes the recharge card's behavior
+     * on the home feed — the user then interacts with the card naturally.
+     * Phase 0: Card shows "Mark as Recharged" only
+     * Phase 1: Card shows "Start Recharge" → opens Phase 1 flow
+     * Phase 2: Card shows "Batch Recharge" → opens Phase 2 flow
+     * Phase 3: Card shows "Auto Recharge" status (automatic)
+     */
+    fun setRechargePhase(phase: Int) {
+        if (phase == 3) {
+            // Phase 3: No card — remove RECHARGE tasks from feed, show auto-recharge popup
+            val customers = com.wiom.csp.mock.SeedDataProvider.buildSeedRechargeCustomers()
+            val totalShare = customers.sumOf { it.shareAmount }
+            _uiState.update {
+                it.copy(
+                    rechargePhase = phase,
+                    dashboardOpen = false,
+                    tasks = it.tasks.filter { task -> task.taskType != "RECHARGE" },
+                    autoRechargePopup = AutoRechargePopup(
+                        customerCount = customers.size,
+                        totalEarned = totalShare
+                    )
+                )
+            }
+            return
+        }
+
+        // Phase 0/1/2: update schema actions and restore RECHARGE tasks
+        val freshSchema = com.wiom.csp.mock.SeedDataProvider.buildSchema()
+        val rechargeType = freshSchema.taskTypes["RECHARGE"] ?: return
+        val pendingState = rechargeType.states["PENDING_RECHARGE"] ?: return
+
+        val newActions = when (phase) {
+            0 -> listOf(
+                pendingState.actions.find { it.id == "ACKNOWLEDGE_RECHARGE" }!!
+            )
+            1 -> pendingState.actions.sortedBy { if (it.id == "START_RECHARGE") 0 else 1 }
+            2 -> listOf(
+                pendingState.actions.find { it.id == "START_RECHARGE" }!!.copy(
+                    label = "Batch Recharge", labelHi = "\u092C\u0948\u091A \u0930\u093F\u091A\u093E\u0930\u094D\u091C"
+                )
+            )
+            else -> pendingState.actions
+        }
+
+        // Rebuild full schema with only the RECHARGE actions changed
+        val currentSchema = schemaResolver.getSchema()
+
+        val updatedPendingState = pendingState.copy(actions = newActions)
+        val updatedRechargeType = rechargeType.copy(
+            states = rechargeType.states + ("PENDING_RECHARGE" to updatedPendingState)
+        )
+        val updatedSchema = currentSchema.copy(
+            taskTypes = currentSchema.taskTypes + ("RECHARGE" to updatedRechargeType)
+        )
+        schemaResolver.updateSchema(updatedSchema)
+
+        // Restore RECHARGE tasks if they were removed by Phase 3
+        val hasRechargeTask = _uiState.value.tasks.any { it.taskType == "RECHARGE" }
+        val restoredTasks = if (!hasRechargeTask) {
+            _uiState.value.tasks + com.wiom.csp.mock.SeedDataProvider.buildSeedTasks().filter { it.taskType == "RECHARGE" }
+        } else {
+            _uiState.value.tasks.toList()
+        }
+
+        _uiState.update {
+            it.copy(
+                rechargePhase = phase,
+                dashboardOpen = false,
+                tasks = restoredTasks,
+                confirmMessage = "Switched to ISP Recharge Phase $phase"
+            )
+        }
+    }
+
+    fun dismissAutoRechargePopup() {
+        _uiState.update { it.copy(autoRechargePopup = null) }
     }
 
     // ── Private: Notification Polling ───────────────────────────────────

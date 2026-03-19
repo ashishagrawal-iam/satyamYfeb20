@@ -94,6 +94,18 @@ object SeedDataProvider {
         labelHi = "\u0935\u093E\u092A\u0938\u0940 \u0915\u0940 \u092A\u0941\u0937\u094D\u091F\u093F",
         style = "primary", requiresProof = true
     )
+    private val ACTION_START_RECHARGE = ActionSchema(
+        id = "START_RECHARGE", label = "Start Recharge",
+        labelHi = "\u0930\u093F\u091A\u093E\u0930\u094D\u091C \u0936\u0941\u0930\u0942",
+        style = "primary",
+        confirmMessage = "ISP Recharge flow started",
+        confirmMessageHi = "ISP \u0930\u093F\u091A\u093E\u0930\u094D\u091C \u092B\u094D\u0932\u094B \u0936\u0941\u0930\u0942"
+    )
+    private val ACTION_ACKNOWLEDGE_RECHARGE = ActionSchema(
+        id = "ACKNOWLEDGE_RECHARGE", label = "Mark as Recharged",
+        labelHi = "\u0930\u093F\u091A\u093E\u0930\u094D\u091C \u0915\u093F\u092F\u093E",
+        style = "primary"
+    )
 
     // ---------------------------------------------------------------
     // 1. buildSchema()
@@ -330,6 +342,44 @@ object SeedDataProvider {
                     reasonLabelHi = "\u0905\u0938\u094D\u0935\u0940\u0915\u0943\u0924"
                 )
             )
+        ),
+        "RECHARGE" to TaskTypeSchema(
+            label = "Recharge",
+            labelHi = "\u0930\u093F\u091A\u093E\u0930\u094D\u091C",
+            color = "#00B894",
+            dotColor = "#00B894",
+            states = mapOf(
+                "PENDING_RECHARGE" to TaskStateSchema(
+                    label = "Pending Recharge", labelHi = "\u0930\u093F\u091A\u093E\u0930\u094D\u091C \u092C\u093E\u0915\u0940",
+                    actions = listOf(ACTION_ACKNOWLEDGE_RECHARGE, ACTION_START_RECHARGE),
+                    color = "#FDCB6E",
+                    timerField = "due_at",
+                    reasonLabel = "Recharge Due",
+                    reasonLabelHi = "\u0930\u093F\u091A\u093E\u0930\u094D\u091C \u092C\u093E\u0915\u0940"
+                ),
+                "IN_PROGRESS" to TaskStateSchema(
+                    label = "Recharging", labelHi = "\u0930\u093F\u091A\u093E\u0930\u094D\u091C \u091C\u093E\u0930\u0940",
+                    actions = emptyList(),
+                    color = "#0984E3",
+                    reasonLabel = "Recharge In Progress",
+                    reasonLabelHi = "\u0930\u093F\u091A\u093E\u0930\u094D\u091C \u091C\u093E\u0930\u0940"
+                ),
+                "COMPLETED" to TaskStateSchema(
+                    label = "Recharged", labelHi = "\u0930\u093F\u091A\u093E\u0930\u094D\u091C \u0939\u0941\u0906",
+                    actions = emptyList(),
+                    color = "#00B894",
+                    isTerminal = true,
+                    reasonLabel = "Recharge Complete",
+                    reasonLabelHi = "\u0930\u093F\u091A\u093E\u0930\u094D\u091C \u092A\u0942\u0930\u093E"
+                ),
+                "FAILED" to TaskStateSchema(
+                    label = "Failed", labelHi = "\u0935\u093F\u092B\u0932",
+                    actions = listOf(ACTION_START_RECHARGE),
+                    color = "#D63031",
+                    reasonLabel = "Recharge Failed",
+                    reasonLabelHi = "\u0930\u093F\u091A\u093E\u0930\u094D\u091C \u0935\u093F\u092B\u0932"
+                )
+            )
         )
     )
 
@@ -398,6 +448,10 @@ object SeedDataProvider {
         "DEDUCTION" to WalletLineTypeSchema(
             label = "Deduction", labelHi = "\u0915\u091F\u094C\u0924\u0940",
             category = "deposits_fees", isCredit = false, color = "#FF3B30"
+        ),
+        "RECHARGE_SHARE" to WalletLineTypeSchema(
+            label = "Recharge Share", labelHi = "\u0930\u093F\u091A\u093E\u0930\u094D\u091C \u0939\u093F\u0938\u094D\u0938\u093E",
+            category = "earnings", isCredit = true, color = "#00B894"
         )
     )
 
@@ -1002,7 +1056,30 @@ object SeedDataProvider {
             )
         ),
 
-        // 8. INSTALL ACTIVATION_VERIFIED NORMAL (terminal, completed)
+        // 8. RECHARGE PENDING_RECHARGE — batch of customers to recharge
+        TaskData(
+            taskId = "TSK-RCH-001",
+            taskType = "RECHARGE",
+            currentState = "PENDING_RECHARGE",
+            priority = "NORMAL",
+            connectionId = "BATCH-001",
+            customerArea = "Hinjewadi, Pune",
+            customerName = "5 Customers",
+            dueAt = hoursFromNow(6),
+            createdAt = hoursAgo(1),
+            updatedAt = hoursAgo(1),
+            timeline = listOf(
+                TimelineEntry(
+                    timestamp = hoursAgo(1),
+                    eventType = "CREATED",
+                    actor = "system",
+                    actorType = "SYSTEM",
+                    detail = "Recharge batch created — 5 customers due for renewal"
+                )
+            )
+        ),
+
+        // 9. INSTALL ACTIVATION_VERIFIED NORMAL (terminal, completed)
         TaskData(
             taskId = "TSK-INS-004",
             taskType = "INSTALL",
@@ -1451,6 +1528,57 @@ object SeedDataProvider {
             taskId = null,
             timestamp = daysAgo(1),
             dismissed = true
+        )
+    )
+
+    // ---------------------------------------------------------------
+    // 10. buildSeedRechargeCustomers()
+    // ---------------------------------------------------------------
+    fun buildSeedRechargeCustomers(): List<RechargeCustomer> = listOf(
+        RechargeCustomer(
+            id = "RCH-C001", name = "Priya Sharma",
+            connectionId = "CN-1001", deviceId = "DEV-4501",
+            speed = "100 Mbps", username = "priya.sharma@isp",
+            phoneLast5 = "56789", shareAmount = 300.0
+        ),
+        RechargeCustomer(
+            id = "RCH-C002", name = "Rajesh Kumar",
+            connectionId = "CN-1045", deviceId = "DEV-4502",
+            speed = "100 Mbps", username = "rajesh.kumar@isp",
+            phoneLast5 = "12345", shareAmount = 300.0
+        ),
+        RechargeCustomer(
+            id = "RCH-C003", name = "Sunita Patil",
+            connectionId = "CN-1102", deviceId = "DEV-4503",
+            speed = "100 Mbps", username = "sunita.patil@isp",
+            phoneLast5 = "67890", shareAmount = 300.0
+        ),
+        RechargeCustomer(
+            id = "RCH-C004", name = "Amit Deshmukh",
+            connectionId = "CN-1200", deviceId = "DEV-4504",
+            speed = "100 Mbps", username = "amit.d@isp",
+            phoneLast5 = "34567", shareAmount = 300.0
+        ),
+        RechargeCustomer(
+            id = "RCH-C005", name = "Kavita Joshi",
+            connectionId = "CN-1305", deviceId = "DEV-4505",
+            speed = "100 Mbps", username = "kavita.j@isp",
+            phoneLast5 = "89012", shareAmount = 300.0
+        )
+    )
+
+    // ---------------------------------------------------------------
+    // 11. buildSeedISPPortals()
+    // ---------------------------------------------------------------
+    fun buildSeedISPPortals(): List<ISPPortal> = listOf(
+        ISPPortal(
+            id = "PORTAL-001",
+            name = "Hathway ISP Portal",
+            url = "https://portal.hathway.com",
+            username = "csp_mh_1001",
+            password = "portal@123",
+            verified = true,
+            createdAt = daysAgo(30)
         )
     )
 }
