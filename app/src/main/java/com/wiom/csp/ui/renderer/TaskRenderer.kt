@@ -71,7 +71,9 @@ fun TaskCardRenderer(
     val timerDeadline = remember(task, timerField) {
         task.getTimerDeadline(timerField)
     }
-    val actions = schema.resolveActions(taskType, state)
+    val actions = remember(taskType, state) {
+        schema.resolveActions(taskType, state)
+    }
 
     val identityText = buildString {
         append(typeLabel)
