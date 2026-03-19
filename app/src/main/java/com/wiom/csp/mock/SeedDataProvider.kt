@@ -1421,7 +1421,7 @@ object SeedDataProvider {
     fun buildSeedNotifications(): List<AppNotification> = listOf(
         AppNotification(
             id = "NOTIF-001",
-            type = "HIGH_RESTORE_ALERT",
+            type = "TASK_OFFERED",
             title = "Urgent: Connectivity Loss",
             titleHi = "\u0905\u0930\u094D\u091C\u0947\u0902\u091F: \u0915\u0928\u0947\u0915\u094D\u091F\u093F\u0935\u093F\u091F\u0940 \u0939\u093E\u0928\u093F",
             body = "CN-4201 in Hinjewadi has lost connectivity. SLA deadline in 1 hour. Immediate action required.",
